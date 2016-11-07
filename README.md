@@ -27,6 +27,7 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
 * [Animation et objets](#animation)<br>
 * [Grilles](#grilles)<br>
 * [DOM](#dom)<br>
+* [SocketIO](#socket)<br>
 * [Ressources](#ressources)<br>
 * [Références](#references)<br>
 
@@ -547,8 +548,6 @@ https://www.openprocessing.org/sketch/388514
 
 
 
-
-
 [^ home](#contenu)<br>
 
 
@@ -568,18 +567,20 @@ https://www.openprocessing.org/sketch/388514
 
 <a name="dom"/>
 ## DOM
-
+gui elements
 video + dom
 mode instance de p5js
-
-
-
-
 
 
 [^ home](#contenu)<br>
 
 
+
+<a name="socket"/>
+## websocket et SocketIO
+
+
+[^ home](#contenu)<br>
 
 
 <a name="ressources"/>
