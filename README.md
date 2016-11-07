@@ -18,12 +18,12 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
 * [Comment travailler avec p5js](#p5js_tools)<br>
 * [Principes de bases](#bases)<br>
 * [Dessiner avec la souris](#dessiner)<br>
-	*[Les couleurs et la transparence](#couleurs)<br>
-	*[Utilisation de variables](#simuler)<br>
-	*[Réaliser des symétries](#symetries)<br>
-	*[Créer des fonctions javascript](#fonctions)<br>
-	*[Utiliser les transformations de l'espace : effet spirographe](#transformations)<br>
-	*[Coordonnées polaires : effet "spray-can"](#spray)<br>
+	*	[Les couleurs et la transparence](#couleurs)<br>
+	*	[Utilisation de variables](#simuler)<br>
+	*	[Réaliser des symétries](#symetries)<br>
+	*	[Créer des fonctions javascript](#fonctions)<br>
+	*	[Utiliser les transformations de l'espace : effet spirographe](#transformations)<br>
+	*	[Coordonnées polaires : effet "spray-can"](#spray)<br>
 * [Animation et objets](#animation)<br>
 * [Grilles](#grilles)<br>
 * [DOM](#dom)<br>
@@ -626,17 +626,17 @@ Des projets exclusivement web :
 
 * Aaron Koblin : 
 
-- Bicycle built for 2000 : http://www.bicyclebuiltfortwothousand.com/ 
+	* Bicycle built for 2000 : http://www.bicyclebuiltfortwothousand.com/ 
 
-- original daisy bell : https://www.youtube.com/watch?v=41U78QP8nBk
+	* original daisy bell : https://www.youtube.com/watch?v=41U78QP8nBk
 
-* Chris Milk & Aaron Koblin
+* Chris Milk & Aaron Koblin :
 
-- http://www.thewildernessdowntown.com/
+	* http://www.thewildernessdowntown.com/
 
-- http://www.thejohnnycashproject.com/
+	* http://www.thejohnnycashproject.com/
 
-- http://www.exquisiteforest.com/
+	* http://www.exquisiteforest.com/
 
 * Vincent Morisset & arcade fire : http://www.sprawl2.com/
 
