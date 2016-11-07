@@ -21,11 +21,14 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
 	*[Les couleurs et la transparence](#couleurs)<br>
 	*[Utilisation de variables](#simuler)<br>
 	*[Réaliser des symétries](#symetries)<br>
-	*[Fonctions transformation de l'espace et formes complexes](#fonctions)<br>
+	*[Créer des fonctions javascript](#fonctions)<br>
+	*[Utiliser les transformations de l'espace : effet spirographe](#transformations)<br>
+	*[Coordonnées polaires : effet "spray-can"](#spray)<br>
 * [Animation et objets](#animation)<br>
 * [Grilles](#grilles)<br>
 * [DOM](#dom)<br>
 * [Ressources](#ressources)<br>
+* [Références](#references)<br>
 
 
 
@@ -288,6 +291,7 @@ function draw() {
 }
 ```
 
+![01_dessiner_01](assets/01_dessiner_01.png)
 https://www.openprocessing.org/sketch/388464
 
 
@@ -336,16 +340,39 @@ function setup() {
 
 function draw() {
   
+  // magnitude du vecteur directeur de la souris avec pythagore
+  //var speed=pow(pow(pmouseX-mouseX,2)+pow(pmouseY-mouseY,2),0.5)/2 
+  // ou une expression beaucoup plus simple ... après tout on souhaite juste que la taille des cercles
+  // soit  dépendente de la vitesse à laquelle on bouge la souris 
   var speed=(abs(pmouseX-mouseX)+abs(pmouseY-mouseY))/2
 
+    // cercle à la position de la souris
   fill(255,0,0,50)
   noStroke()
   ellipse(mouseX, mouseY, speed, speed);
+  
+  // symetrie axiale verticale
+  fill(255,0,255,50)
+  ellipse(mouseX, windowHeight-mouseY, speed, speed);
+  
+  // symetrie axiale horizontale
+  fill(0,0,255,50)
+  ellipse(windowWidth-mouseX, mouseY, speed, speed);
+  
+  // symetrie centrale
+  fill(255,255,0,50)
+  ellipse(windowWidth-mouseX, windowHeight-mouseY, speed, speed);
 }
 
 ```
 
+![01_dessiner_02](assets/01_dessiner_02.png)
 https://www.openprocessing.org/sketch/388181
+
+Pour vous exercer vous pouvez essayer de dessiner des lignes (fonction **line()**)provenant du centre de la fenêtre à la souris, ainsi qu'à ses quatres positions symétriques. Vous pouvez aussi faire varier la taille des traits grace à la fonction **strokeWeight()**. Ce qui vous donnera un résultat similaire à celui-ci
+
+![01_dessiner_03](assets/01_dessiner_03.png)
+(https://www.openprocessing.org/sketch/388511)
 
 
 [^ home](#contenu)<br>
@@ -353,27 +380,163 @@ https://www.openprocessing.org/sketch/388181
 
 
 <a name="fonctions"/>
-### Fonctions, transformations de l'espace et formes complexes
+### Fonctions
 
-En javascript, il est assez facile de définir de nouvelles fonctions :
+En javascript, il est assez facile de définir de nouvelles fonctions : il suffit de créer une variable un peu particulière, une variable qui est en réalité un bout de code js. Par exemple pour créer une fonction permettant de dessiner un carré il suffit d'écrire ceci à la racine de notre fichier sketch.js (c'est à dire en dehors de la fonction draw ou de la fonction setup)
 
 ```javascript
-var draw_rect = function(x,y,size,rot){
-  push()
-  rectMode(CENTER)
-  translate(x,y)
-  rotate(frameCount/10)
-  rect(0,0,size+10  ,size+10)
-  pop()
+var draw_square = function(x,y,size){ // on crée la fonction et on définit les paramètres nécessaires
+	rect(x,y,size,size) // code nécessaire au dessin d'un carré en fonction des paramètres
 }
+```
+
+Pour utiliser cette fonction, il nous suffit alors cette fois dans le **draw()** de l'appeler avec les paramètres adéquats.
+```javascript
+draw_square(25,25,50) // dessiner un carré au coordonnées (25,25) dont le côté fait 50 pixels.
 ```
 
 [^ home](#contenu)<br>
 
 
+<a name="transformations"/>
+### Transformation de l'espace : effet spirographe
+
+Pour l'instant nous avons vu que le repère dans lequel on exprimait les coordonnées dans était fixe. Mais il est possible de le déplacer et de le faire tourner. Cela peu notament être utile pour faire tourner un carré autour de son centre.
+
+Pour cela il faut utiliser les fonctions **translate()** et **rotate()**
+
+Cet exemple interactif vous permettra probablement de mieux comprendre l'utilisation conjointe des deux fonctions. Il est aussi important de savoir qu'il existe deux fonctions **push()** et **pop()** qui fonctionnent de manière conjointe : **push()** permet de créer un nouveau repère pour le transformer et **pop()** permet de restaurer le repère original de processing. Si jamais vous utilisez push() vous devez utiliser pop() sous réserve d'avoir des erreurs à l'exécution.
+
+Nous allons pouvoir maintenant faire tourner un rectangle autour de son centre en modifiant la fonction que nous avions précédement écrite :
+
+```javascript
+var draw_rect = function(x,y,size,rot){
+  push()
+  rectMode(CENTER) // utiliser le centre du carré comme ancre de dessin
+  translate(x,y) // déplacer le repère
+  rotate(rot) // le faire tourner sur lui même en fonction d'une valeur d'angle
+  rect(0,0,size  ,size)
+  pop()
+ }
+``` 
+
+**push()** et **pop()** peuvent aussi être imbriqués les uns dans les autres.
+
+```javascript
+var draw_rect = function(x,y,size,rot){
+  // nouveau repère r1
+  push() 
+  rectMode(CENTER)
+  translate(x,y)
+  rotate(rot)
+  rect(0,0,size  ,size)
+
+  // nouveau repère r2 qui bénificie encore des transformation de r1
+  push() 
+  translate(-50,-50) // notre rectangle va tourner autour du centre de r1 à une distance calculable par pythagore : d = pow(50*50+50*50,0.5)
+  rotate(PI/2)
+  rect(0,0,size  ,size)
+  pop() // on supprime les transformation de r2
+
+  // et on crée un nouveau repère r3 qui est donc dans l'état de r1
+  push() 
+  translate(100,100) // notre rectangle va tourner autour du centre de r1 à une distance calculable par pythagore : d = pow(100*100+100*100,0.5)
+  rotate(rot*3) // et il va tourner sur lui même
+  rect(0,0,size  ,size)
+  pop() // on supprime les transformation de r3
+
+  pop() //on supprime les transformation de r1
+
+  // nous sommes de nouveau dans le repère d'origine
+}
+
+```
+
+Le programme suivant garde se principe, ajoute un niveau de rotation et  ne dessine plus de rectangles mais uniquement des lignes représentant les repères tournants les uns autour des autres :
+
+```javascript
+var draw_lines = function(x,y,size,rot){
+
+    strokeWeight(0.15)
+  // nouveau repère r1
+  push() 
+  rectMode(CENTER)
+  translate(x,y)
+  rotate(rot*0.15)
+  stroke(75)
+  // dessiner une croix
+  line(0,size,0,-size)
+  line(-size,0,size,0)
+
+  // nouveau repère r2 qui bénificie encore des transformation de r1
+  push() 
+  rotate(rot)
+  translate(-size,-size) // notre croix va tourner autour du centre de r1 à une distance calculable par pythagore : d = pow(50*50+50*50,0.5)
+  rotate(PI/2)
+  stroke(50)
+  line(0,size,0,-size)
+  line(-size,0,size,0)
+  pop() // on supprime les transformation de r2
+
+  // et on crée un nouveau repère r3 qui est donc dans l'état de r1
+  push() 
+  stroke(0)
+  rotate(rot)
+  translate(size*3,size*3) // notre croix va tourner autour du centre de r1 à une distance calculable par pythagore : d = pow(100*100+100*100,0.5)
+  rotate(rot*7  ) // et il va tourner sur lui même
+   // dessiner le repère
+  line(0,size,0,-size)
+  line(-size,0,size,0)
+
+  push() // on pousse un nouveau repère r4 qui bénéficie des transformation conjointe de r1 et r3
+  translate(size*2,size*2) // notre croix va tourner autour du centre de r3 à une distance calculable par pythagore : d = pow(35*35+35*35,0.5)
+  rotate(rot*2 ) // et il va tourner sur lui même
+   // dessiner le repère
+  line(0,size,0,-size)
+  line(-size,0,size,0)
+  pop() // on supprime les transformation de r4
+
+  pop() // on supprime les transformation de r3
+
+  pop() //on supprime les transformation de r1
+
+  // nous sommes de nouveau dans le repère d'origine
+}
+
+
+function setup() {
+  createCanvas(windowWidth, windowHeight)
+  background(255)
+  
+} 
+
+function draw() {
+
+
+  var size = (abs(pmouseX-mouseX) + abs(pmouseY - mouseY)) + 25
+  stroke(0)
+  fill(0,180)
+  draw_lines(mouseX, mouseY, size , frameCount/50)
+
+}
 
 
 
+```
+
+![01_dessiner_04](assets/01_dessiner_04.png)
+
+https://www.openprocessing.org/sketch/388514
+
+
+[^ home](#contenu)<br>
+
+
+<a name="spray"/>
+### Effet "Spray-can"
+
+
+[^ home](#contenu)<br>
 
 
 
@@ -441,3 +604,47 @@ mode instance de p5js
 * Introduction web sockets et nodejs : link tuto  https://github.com/processing/p5.js/wiki/p5.js
 
 [^ home](#contenu)<br>
+
+
+
+
+<a name="references"/>
+## Ressources
+
+Quelques projets liant le web à des espaces physiques :
+
+* Liil : installation de projection mapping et visualisation de compte twitter : https://www.youtube.com/watch?v=0YLhYUfJCBA
+
+* Fields : utilisation des smartphones de l'audience comme procédé de diffusion via la web audio api : http://funktion.fm/#/projects/fields-infos
+
+* Google : contrôle d'installation robotiques à distance via des pages web : https://www.youtube.com/watch?v=RrgjufJhmwk
+
+* Sidlee : déploiement d'un parce de capteur et dashboard de visualisation (les capteurs sont aujourd'hui déconnectés) : http://dashboard.sidlee.com/
+
+
+Des projets exclusivement web :
+
+* Aaron Koblin : 
+
+- Bicycle built for 2000 : http://www.bicyclebuiltfortwothousand.com/ 
+
+- original daisy bell : https://www.youtube.com/watch?v=41U78QP8nBk
+
+* Chris Milk & Aaron Koblin
+
+- http://www.thewildernessdowntown.com/
+
+- http://www.thejohnnycashproject.com/
+
+- http://www.exquisiteforest.com/
+
+* Vincent Morisset & arcade fire : http://www.sprawl2.com/
+
+* Carp and seagull : http://thecarpandtheseagull.thecreatorsproject.com/#
+
+* Plink : musique collaborative : http://dinahmoelabs.com/#plink
+
+
+[^ home](#contenu)<br>
+
+
