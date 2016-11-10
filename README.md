@@ -697,6 +697,7 @@ vas transformer la position de la souris - qui est une valeur comprise entre 0 e
 
 Voici le code prenant en compte tous ces changements :
 
+```javascript
 // fonction permettant de dessiner un ensemble de taches de couleurs dans un rayon défini
 // ce rayon dépendera de la vitesse de la souris
 function sp(x,y,size){
@@ -716,6 +717,7 @@ function sp(x,y,size){
   }
   pop()
 }
+```
 
 ![01_dessiner_05](assets/01_dessiner_05.png)
 
