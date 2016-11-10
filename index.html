@@ -72,18 +72,24 @@
 </li>
 <li>  <a href="#transformations">Utiliser les transformations de l'espace : effet spirographe</a><br>
 </li>
-<li>  <a href="#spray">Coordonnées polaires : effet "spray-can"</a><br>
+<li>  <a href="#spray">Conditions, boucles et coordonnées polaires : effet "spray-can"</a><br>
+
+<ul>
+<li>  <a href="#conditions">Conditions : "if"</a><br>
+</li>
+<li>  <a href="#polaire">Coordonnées polaires</a><br>
+</li>
+<li>  <a href="#boucles">Boucles : "for"</a><br>
+</li>
+</ul>
 </li>
 </ul>
 </li>
 <li>
-<a href="#animation">Animation et objets</a><br>
-</li>
-<li>
-<a href="#grilles">Grilles</a><br>
-</li>
-<li>
 <a href="#dom">DOM</a><br>
+</li>
+<li>
+<a href="#animation">Animation et objets</a><br>
 </li>
 <li>
 <a href="#socket">SocketIO</a><br>
@@ -566,26 +572,181 @@ Mais il peut aussi être utilisé avec n'impote quelles autres librairies js.</p
 <p><a name="spray"></a></p>
 
 <h3>
-<a id="effet-spray-can" class="anchor" href="#effet-spray-can" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Effet "Spray-can"</h3>
+<a id="condition-et-coordonnées-polaires--effet-spray-can" class="anchor" href="#condition-et-coordonn%C3%A9es-polaires--effet-spray-can" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Condition et coordonnées polaires : Effet "Spray-can"</h3>
+
+<p>Dans cet exemple nous allons simuler l'effet d'un bombe de peinture. Nous allons utiliser : le mode de couleur HSB, une fonction spécifique utilisant des coordonées polaire pour notre dessin, et des conditions <strong>if</strong> pour actionner le dessin uniquement lorsque la souris est clickée et permettre de choisir la teinte en appuyant sur des touches du clavier.</p>
+
+<p><a name="conditions"></a></p>
+
+<h4>
+<a id="conditions--if" class="anchor" href="#conditions--if" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Conditions : if()</h4>
+
+<p>Commençons par le code déjà connu :</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> hue; <span class="pl-c">// stocker la teinte d'une couleur</span>
+
+<span class="pl-k">function</span> <span class="pl-en">setup</span>() {
+  <span class="pl-en">createCanvas</span>(windowWidth, windowHeight); 
+  <span class="pl-en">background</span>(<span class="pl-c1">0</span>);  
+  hue <span class="pl-k">=</span> <span class="pl-c1">255</span>; <span class="pl-c">// intialisation à bleu</span>
+  <span class="pl-en">colorMode</span>(<span class="pl-c1">HSB</span>,<span class="pl-c1">360</span>,<span class="pl-c1">100</span>,<span class="pl-c1">100</span>,<span class="pl-c1">100</span>) <span class="pl-c">// appliquer le mode HSB</span>
+} 
+
+<span class="pl-k">function</span> <span class="pl-en">draw</span>() {
+
+  <span class="pl-k">var</span> size <span class="pl-k">=</span> (<span class="pl-en">abs</span>(pmouseX<span class="pl-k">-</span>mouseX)<span class="pl-k">+</span><span class="pl-en">abs</span>(pmouseY<span class="pl-k">-</span>mouseY)) <span class="pl-k">+</span> <span class="pl-c1">10</span> 
+  <span class="pl-en">fill</span>(hue,<span class="pl-c1">100</span>,<span class="pl-c1">100</span>,<span class="pl-c1">25</span>)
+  <span class="pl-en">noStroke</span>()
+
+  <span class="pl-k">if</span> (mouseIsPressed) { <span class="pl-c">// si la souris est clickée on dessine avec la fonction de dessin définie ci-dessous</span>
+    <span class="pl-en">ellipse</span>(mouseX,mouseY,size)
+  }
+ }</pre></div>
+
+<p>Peu de choses nouvelles ici par rapport aux exemples précédent, si ce n'est l'utilisation de <strong>colorMode()</strong> pour appliquer le mode HSB. Et l'utilisation d'une condition <strong>if(){}</strong> avec la variable globale de p5 <strong>mouseIsPressed</strong> qui renvoit un booléen (vrai ou faux en fonction de si le bouton de la souris est actionné ou non). Le code est assez transparent lui-même : <strong>si</strong> (on appuie sur la souris) alors on éxecute le code entre les accolades <strong>{}</strong>.</p>
+
+<p>A l'intérieur du <em>draw</em> nous allons continuer avec l'utilisation des <strong>if</strong> pour permettre à l'utilisateur de choisir une teinte. Pour cela nous allons utiliser la fonction <strong>keyIsDown()</strong> qui permet de savoir si une touche du clavier est pressée ou non.
+Nous allons donc pouvoir si une touche est appuyée changer la valeur de la variable <em>hue</em> :</p>
+
+<div class="highlight highlight-source-js"><pre> <span class="pl-k">if</span> (<span class="pl-en">keyIsDown</span>(<span class="pl-c1">LEFT_ARROW</span>)) { <span class="pl-c">// si la flêche de gauche est préssée</span>
+    hue <span class="pl-k">=</span> hue <span class="pl-k">-</span><span class="pl-c1">1</span>  <span class="pl-c">// on modifie la teinte</span>
+    hue <span class="pl-k">=</span> <span class="pl-en">constrain</span>(hue,<span class="pl-c1">0</span>,<span class="pl-c1">360</span>) <span class="pl-c">// on s'assure de rester dans le cadre des valeurs utilisables</span>
+  }
+  <span class="pl-k">else</span> <span class="pl-k">if</span> (<span class="pl-en">keyIsDown</span>(<span class="pl-c1">RIGHT_ARROW</span>)) {
+    hue <span class="pl-k">=</span> hue <span class="pl-k">+</span><span class="pl-c1">1</span>
+    hue <span class="pl-k">=</span> <span class="pl-en">constrain</span>(hue,<span class="pl-c1">0</span>,<span class="pl-c1">360</span>)
+  }</pre></div>
+
+<p>Il ne nous reste plus qu'à informer notre utilisateur de son choix de couleur en affichant un petit rectangle coloré en bas à gauche de notre canvas</p>
+
+<pre><code> // dessiner un petit carré représentant la teinte sélectionnée
+  fill(hue,100,100,100)
+  rect(0, windowHeight -25 ,25,25)
+</code></pre>
 
 <p><a href="#contenu">^ home</a><br></p>
 
-<p><a name="animation"></a></p>
+<p><a name="polaire"></a></p>
 
-<h2>
-<a id="animer-un-déplacement" class="anchor" href="#animer-un-d%C3%A9placement" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Animer un déplacement</h2>
+<h4>
+<a id="coordonnées-polaire" class="anchor" href="#coordonn%C3%A9es-polaire" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Coordonnées polaire</h4>
+
+<p>Les coordonnées polaire vont nous être très utiles ici. Elles permettent d'exprimer les position d'un objet en fonction d'une distance au centre et d'un angle - autrement dit en conservant un rayon constant et en faisant varier l'angle on dessine assez facilement un cercle.</p>
+
+<p>Notre objectif est de remplir un cercle - dont le rayon maximal sera l'épaisseur de notre jet de peinture, de petits cercles de tailles aléatoires à chaque fois que l'on appuie sur la souris.</p>
+
+<p>Commençons par mettre en place une fonction pour créer notre code de dessin ent remplaçant ellipse() par une fonction que nous allons définir après, elle s'appelle <strong>sp()</strong> pour "spray-paint" et va prendre trois arguments : les position de la souris en x et y et la taille ou l'épaisseur de notre jet de peinture.</p>
+
+<p>Dans le <em>draw()</em> nous avons maintenant :</p>
+
+<div class="highlight highlight-source-js"><pre> <span class="pl-k">if</span> (mouseIsPressed) { <span class="pl-c">// si la souris est clickée on dessine avec la fonction de dessin définie ci-dessous</span>
+    <span class="pl-en">sp</span>(mouseX,mouseY,size)
+  }</pre></div>
+
+<p>et en dessous du <em>draw()</em> et donc en dehors de toute accolade nous pouvons créer une fonction vide qui prendra trois arguments :</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// fonction permettant de dessiner un ensemble de taches de couleurs dans un rayon défini</span>
+<span class="pl-c">// ce rayon dépendera de la vitesse de la souris</span>
+<span class="pl-k">function</span> <span class="pl-en">sp</span>(<span class="pl-smi">x</span>,<span class="pl-smi">y</span>,<span class="pl-smi">size</span>){
+
+}
+</pre></div>
+
+<p>Nous pouvons d'ores et déjà mettre en place nos transformation de l'espace pour avoir un repère centré autour de la position de la souris et nos informations de couleur:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// fonction permettant de dessiner un ensemble de taches de couleurs dans un rayon défini</span>
+<span class="pl-c">// ce rayon dépendera de la vitesse de la souris</span>
+<span class="pl-k">function</span> <span class="pl-en">sp</span>(<span class="pl-smi">x</span>,<span class="pl-smi">y</span>,<span class="pl-smi">size</span>){
+  <span class="pl-en">push</span>()
+  <span class="pl-en">noStroke</span>()
+  <span class="pl-en">fill</span>(hue,<span class="pl-c1">100</span>,<span class="pl-c1">100</span>,<span class="pl-c1">30</span>) <span class="pl-c">// on applique la teinte et on garde une transparence importante</span>
+  <span class="pl-en">translate</span>(x,y)
+  <span class="pl-c">// ...</span>
+  <span class="pl-c">// utiliser une boucle for pour dessiner plein de petites ellipse remplissant un plus grand cercle de rayon size.</span>
+  <span class="pl-c">// ...</span>
+  <span class="pl-en">pop</span>()
+}
+</pre></div>
+
+<p>Le commentaire " utiliser une boucle for pour dessiner plein de petites ellipse remplissant un plus grand cercle de rayon size " dit bien ce qu'il veut dire. Il va falloir une boucle for qui va nous permettre de répéter un certain nombre de fois la même opération - <em>même</em> ou presque puisqu'on pourra utiliser <strong>random()</strong> pour obtenir des paramètre au hasard pour chaque petite ellipse.</p>
+
+<p>Il faut que nous utilisions <strong>random()</strong> pour définir la position en coordonnées polaire de notre ellipse par exemple :</p>
+
+<div class="highlight highlight-source-js"><pre>    <span class="pl-c">// coordonées polaire = rayon + angle</span>
+    <span class="pl-k">var</span> radius <span class="pl-k">=</span> <span class="pl-en">random</span>(size) 
+    <span class="pl-k">var</span> angle <span class="pl-k">=</span> <span class="pl-en">random</span>(<span class="pl-c1">TWO_PI</span>) <span class="pl-c">// angle donné en radians et non en degrés.</span></pre></div>
+
+<p>Le problème est que nous ne pouvons pas utiliser cette valeur pour dessiner notre ellipse, puisqu'il nous faut une abscisse et une ordonnée ! Il faut donc convertir ces coordonées polaires en coordonées cartésiennnes, heureusement il existe des formules pour cela</p>
+
+<div class="highlight highlight-source-js"><pre>    <span class="pl-c">// formule de passage de coordonées polaires en coordonnées catésienne</span>
+    <span class="pl-k">var</span> xpos <span class="pl-k">=</span> radius<span class="pl-k">*</span><span class="pl-en">cos</span>(angle)
+    <span class="pl-k">var</span> ypos <span class="pl-k">=</span> radius<span class="pl-k">*</span><span class="pl-en">sin</span>(angle)
+    <span class="pl-c">// nous pouvons maintenant dessiner une ellipse avec un rayon aléatoire</span>
+    <span class="pl-k">var</span> r <span class="pl-k">=</span> <span class="pl-en">random</span>(<span class="pl-c1">1</span>,<span class="pl-c1">5</span>)
+    <span class="pl-en">ellipse</span>(xpos,ypos,r,r)</pre></div>
+
+<p>Ce petit programme vous permettra de mieux vous rendre compte de cela et pourra faire office de pense-bête : </p>
 
 <p><a href="#contenu">^ home</a><br></p>
 
-<p><a name="grilles"></a></p>
+<p><a name="boucles"></a></p>
 
-<h2>
-<a id="grilles-et-patterns" class="anchor" href="#grilles-et-patterns" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Grilles et patterns</h2>
+<h4>
+<a id="boucles--for" class="anchor" href="#boucles--for" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Boucles : for()</h4>
 
-<ul>
-<li>transformation de l'espace</li>
-<li>images, filtres et blends</li>
-</ul>
+<p>Il ne nous rest plus qu'à utiliser une boucle for pour répéter ces opérations un certain nombre de fois. Une boucle <strong>for()</strong> s'écrit de cette manière :</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">for</span> (<span class="pl-k">var</span> i <span class="pl-k">=</span> <span class="pl-c1">0</span> ; i <span class="pl-k">&lt;</span> <span class="pl-c1">100</span> ; i <span class="pl-k">=</span> i<span class="pl-k">+</span><span class="pl-c1">1</span>){
+
+}</pre></div>
+
+<p>Elle prend trois arguments :
+    * le premier est une variable qui augmentera d'une valeur à chaque éxecution du code entre les accolades
+    * le second est une condition d'arrêt sur la variable définie avant : si <em>i</em> est inférieur / supérieur / ou égal à une valeur à ce moment on sort de la boucle et on continue l'éxecution du programme après l'accolade fermante.
+    * le troisième est une expression pour faire évoluer notre première variable : généralement on augment sa valeur de 1, mais cela dépend de sa valeur initiale et de notre condition d'arrêt bien sûr.</p>
+
+<p>Cette boucle <strong>for()</strong> va compter jusqu'à 99 dans la console javascript de votre navigateur.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">for</span> (<span class="pl-k">var</span> i <span class="pl-k">=</span> <span class="pl-c1">0</span> ; i <span class="pl-k">&lt;</span> <span class="pl-c1">100</span> ; i <span class="pl-k">=</span> i<span class="pl-k">+</span><span class="pl-c1">1</span>){
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(i)
+}</pre></div>
+
+<p>Nous allons modifier notre fonction de dessin en utilisant une boucle <strong>for()</strong> mais nous allons compliquer les choses ... en faisant en sorte que le densité - c'est à dire le nombre - de points ne soit pas trop importante notament quand l'épaisseur du jet de peinture - la variable <em>size</em> de notre fonction est petite, et qu'il n'y en ait pas trop peu quand celui-ci est plus épais. Nous allons donc faire en sorte que la condition d'arrêt de notre boucle dépende de la taille de note jet de peinture.</p>
+
+<p>Et nous allons aussi faire en sorte que la taille des particules de peinture soit plus grande lorsqu'elles sont proches du centre (pour avoir une meilleure couverture au centre et un éparpillement plus visible en périphérie). Pour cela nous allons utiliser la fonction <strong>map()</strong> de faire une règle de trois. Il faut lui donner la valeur à transformer, la valeur minimale  et la valeur maximale qu'elle peut prendre, et lui donner les valeurs minimales et maximales que l'on souhaite.</p>
+
+<p>ainsi : </p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> dm <span class="pl-k">=</span> <span class="pl-en">map</span>(mouseX, <span class="pl-c1">0</span>, windowWidth , <span class="pl-c1">20</span> , <span class="pl-c1">50</span>)</pre></div>
+
+<p>vas transformer la position de la souris - qui est une valeur comprise entre 0 et <em>windowWidth</em> (comme on le sait déjà) - en une valeur comprise entre 20 et 50; du coup lorsque ma souris est à gauche la variable <em>dm</em> vaut 20 et lorsqu'elle est à droite de la fenêtre <em>dm</em> vaut 50.</p>
+
+<p>Voici le code prenant en compte tous ces changements :</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// fonction permettant de dessiner un ensemble de taches de couleurs dans un rayon défini</span>
+<span class="pl-c">// ce rayon dépendera de la vitesse de la souris</span>
+<span class="pl-k">function</span> <span class="pl-en">sp</span>(<span class="pl-smi">x</span>,<span class="pl-smi">y</span>,<span class="pl-smi">size</span>){
+  <span class="pl-en">push</span>()
+  <span class="pl-en">noStroke</span>()
+  <span class="pl-en">fill</span>(hue,<span class="pl-c1">100</span>,<span class="pl-c1">100</span>,<span class="pl-c1">30</span>) <span class="pl-c">// on applique la teinte et on garde une transparence importante</span>
+  <span class="pl-en">translate</span>(x,y)
+  <span class="pl-k">for</span> (<span class="pl-k">var</span> i <span class="pl-k">=</span> <span class="pl-c1">0</span> ; i <span class="pl-k">&lt;</span> size<span class="pl-k">*</span><span class="pl-c1">3</span> ; i <span class="pl-k">=</span> i<span class="pl-k">+</span><span class="pl-c1">1</span>){ <span class="pl-c">// la condition d'arrêt dépend de size !</span>
+    <span class="pl-c">// coordonées polaire = rayon + angle</span>
+    <span class="pl-k">var</span> radius <span class="pl-k">=</span> <span class="pl-en">random</span>(size) 
+    <span class="pl-k">var</span> angle <span class="pl-k">=</span> <span class="pl-en">random</span>(<span class="pl-c1">TWO_PI</span>)
+    <span class="pl-c">// formule de passage de coordonées polaires en coordonnées catésienne</span>
+    <span class="pl-k">var</span> xpos <span class="pl-k">=</span> radius<span class="pl-k">*</span><span class="pl-en">cos</span>(angle)
+    <span class="pl-k">var</span> ypos <span class="pl-k">=</span> radius<span class="pl-k">*</span><span class="pl-en">sin</span>(angle)
+    <span class="pl-c">// on dessine une ellipse dont la taille dépend de son éloignement au centre</span>
+    <span class="pl-en">ellipse</span>(xpos, ypos, <span class="pl-en">map</span>(radius,<span class="pl-c1">0</span>,size,size<span class="pl-k">/</span><span class="pl-c1">5</span>,<span class="pl-c1">0</span>), <span class="pl-en">map</span>(radius,<span class="pl-c1">0</span>,size,size<span class="pl-k">/</span><span class="pl-c1">5</span>,<span class="pl-c1">0</span>))
+  }
+  <span class="pl-en">pop</span>()
+}</pre></div>
+
+<p><img src="assets/01_dessiner_05.png" alt="01_dessiner_05"></p>
+
+<p>Le programme est disponible ici sur openprocessing :
+et dans le code téléchargeable</p>
 
 <p><a href="#contenu">^ home</a><br></p>
 
@@ -597,6 +758,13 @@ Mais il peut aussi être utilisé avec n'impote quelles autres librairies js.</p
 <p>gui elements
 video + dom
 mode instance de p5js</p>
+
+<p><a href="#contenu">^ home</a><br></p>
+
+<p><a name="animation"></a></p>
+
+<h2>
+<a id="animer-un-déplacement" class="anchor" href="#animer-un-d%C3%A9placement" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Animer un déplacement</h2>
 
 <p><a href="#contenu">^ home</a><br></p>
 
