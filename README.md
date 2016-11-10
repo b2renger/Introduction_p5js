@@ -717,7 +717,7 @@ function sp(x,y,size){
   pop()
 }
 
-![01_dessiner_05](../assets/01_dessiner_05.png)
+![01_dessiner_05](assets/01_dessiner_05.png)
 
 Le programme est disponible ici sur openprocessing :
 et dans le code téléchargeable
