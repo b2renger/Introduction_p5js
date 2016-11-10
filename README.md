@@ -658,7 +658,7 @@ Le problème est que nous ne pouvons pas utiliser cette valeur pour dessiner not
     ellipse(xpos,ypos,r,r)
 ```
 
-Ce petit programme vous permettra de mieux vous rendre compte de cela et pourra faire office de pense-bête : 
+Ce petit programme vous permettra de mieux vous rendre compte de cela et pourra faire office de pense-bête : https://www.openprocessing.org/sketch/151087
 
  [^ home](#contenu)<br>
 
@@ -721,8 +721,8 @@ function sp(x,y,size){
 
 ![01_dessiner_05](assets/01_dessiner_05.png)
 
-Le programme est disponible ici sur openprocessing :
-et dans le code téléchargeable
+Le programme est disponible sur github et sur openprocessing : https://www.openprocessing.org/sketch/388597
+
 
 
 [^ home](#contenu)<br>
