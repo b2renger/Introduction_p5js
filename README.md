@@ -23,10 +23,12 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
 	*	[Réaliser des symétries](#symetries)<br>
 	*	[Créer des fonctions javascript](#fonctions)<br>
 	*	[Utiliser les transformations de l'espace : effet spirographe](#transformations)<br>
-	*	[Coordonnées polaires : effet "spray-can"](#spray)<br>
-* [Animation et objets](#animation)<br>
-* [Grilles](#grilles)<br>
+	*	[Conditions, boucles et coordonnées polaires : effet "spray-can"](#spray)<br>
+		*	[Conditions : "if"](#conditions)<br>
+		*	[Coordonnées polaires](#polaire)<br>
+		*	[Boucles : "for"](#boucles)<br>
 * [DOM](#dom)<br>
+* [Animation et objets](#animation)<br>
 * [SocketIO](#socket)<br>
 * [Ressources](#ressources)<br>
 * [Références](#references)<br>
@@ -534,11 +536,204 @@ https://www.openprocessing.org/sketch/388514
 
 
 <a name="spray"/>
-### Effet "Spray-can"
+### Condition et coordonnées polaires : Effet "Spray-can"
+
+Dans cet exemple nous allons simuler l'effet d'un bombe de peinture. Nous allons utiliser : le mode de couleur HSB, une fonction spécifique utilisant des coordonées polaire pour notre dessin, et des conditions **if** pour actionner le dessin uniquement lorsque la souris est clickée et permettre de choisir la teinte en appuyant sur des touches du clavier.
+
+<a name="conditions"/>
+#### Conditions : if()
+
+Commençons par le code déjà connu :
+
+```javascript
+var hue; // stocker la teinte d'une couleur
+
+function setup() {
+  createCanvas(windowWidth, windowHeight); 
+  background(0);  
+  hue = 255; // intialisation à bleu
+  colorMode(HSB,360,100,100,100) // appliquer le mode HSB
+} 
+
+function draw() {
+
+  var size = (abs(pmouseX-mouseX)+abs(pmouseY-mouseY)) + 10 
+  fill(hue,100,100,25)
+  noStroke()
+  
+  if (mouseIsPressed) { // si la souris est clickée on dessine avec la fonction de dessin définie ci-dessous
+    ellipse(mouseX,mouseY,size)
+  }
+ }
+ ```
+Peu de choses nouvelles ici par rapport aux exemples précédent, si ce n'est l'utilisation de **colorMode()** pour appliquer le mode HSB. Et l'utilisation d'une condition **if(){}** avec la variable globale de p5 **mouseIsPressed** qui renvoit un booléen (vrai ou faux en fonction de si le bouton de la souris est actionné ou non). Le code est assez transparent lui-même : **si** (on appuie sur la souris) alors on éxecute le code entre les accolades **{}**.
+
+A l'intérieur du *draw* nous allons continuer avec l'utilisation des **if** pour permettre à l'utilisateur de choisir une teinte. Pour cela nous allons utiliser la fonction **keyIsDown()** qui permet de savoir si une touche du clavier est pressée ou non.
+Nous allons donc pouvoir si une touche est appuyée changer la valeur de la variable *hue* :
+
+```javascript
+ if (keyIsDown(LEFT_ARROW)) { // si la flêche de gauche est préssée
+    hue = hue -1  // on modifie la teinte
+    hue = constrain(hue,0,360) // on s'assure de rester dans le cadre des valeurs utilisables
+  }
+  else if (keyIsDown(RIGHT_ARROW)) {
+    hue = hue +1
+    hue = constrain(hue,0,360)
+  }
+```
+Il ne nous reste plus qu'à informer notre utilisateur de son choix de couleur en affichant un petit rectangle coloré en bas à gauche de notre canvas
+
+```
+ // dessiner un petit carré représentant la teinte sélectionnée
+  fill(hue,100,100,100)
+  rect(0, windowHeight -25 ,25,25)
+ ```
+
+ [^ home](#contenu)<br>
+
+<a name="polaire"/>
+#### Coordonnées polaire
+
+Les coordonnées polaire vont nous être très utiles ici. Elles permettent d'exprimer les position d'un objet en fonction d'une distance au centre et d'un angle - autrement dit en conservant un rayon constant et en faisant varier l'angle on dessine assez facilement un cercle.
+
+Notre objectif est de remplir un cercle - dont le rayon maximal sera l'épaisseur de notre jet de peinture, de petits cercles de tailles aléatoires à chaque fois que l'on appuie sur la souris.
+
+Commençons par mettre en place une fonction pour créer notre code de dessin ent remplaçant ellipse() par une fonction que nous allons définir après, elle s'appelle **sp()** pour "spray-paint" et va prendre trois arguments : les position de la souris en x et y et la taille ou l'épaisseur de notre jet de peinture.
+
+Dans le *draw()* nous avons maintenant :
+
+```javascript
+ if (mouseIsPressed) { // si la souris est clickée on dessine avec la fonction de dessin définie ci-dessous
+    sp(mouseX,mouseY,size)
+  }
+```
+
+et en dessous du *draw()* et donc en dehors de toute accolade nous pouvons créer une fonction vide qui prendra trois arguments :
+
+```javascript
+// fonction permettant de dessiner un ensemble de taches de couleurs dans un rayon défini
+// ce rayon dépendera de la vitesse de la souris
+function sp(x,y,size){
+  
+}
+
+```
+
+Nous pouvons d'ores et déjà mettre en place nos transformation de l'espace pour avoir un repère centré autour de la position de la souris et nos informations de couleur:
+
+```javascript
+// fonction permettant de dessiner un ensemble de taches de couleurs dans un rayon défini
+// ce rayon dépendera de la vitesse de la souris
+function sp(x,y,size){
+  push()
+  noStroke()
+  fill(hue,100,100,30) // on applique la teinte et on garde une transparence importante
+  translate(x,y)
+  // ...
+  // utiliser une boucle for pour dessiner plein de petites ellipse remplissant un plus grand cercle de rayon size.
+  // ...
+  pop()
+}
+
+```
+
+Le commentaire " utiliser une boucle for pour dessiner plein de petites ellipse remplissant un plus grand cercle de rayon size " dit bien ce qu'il veut dire. Il va falloir une boucle for qui va nous permettre de répéter un certain nombre de fois la même opération - *même* ou presque puisqu'on pourra utiliser **random()** pour obtenir des paramètre au hasard pour chaque petite ellipse.
+
+Il faut que nous utilisions **random()** pour définir la position en coordonnées polaire de notre ellipse par exemple :
+
+```javascript
+ 	// coordonées polaire = rayon + angle
+    var radius = random(size) 
+    var angle = random(TWO_PI) // angle donné en radians et non en degrés.
+```
+
+Le problème est que nous ne pouvons pas utiliser cette valeur pour dessiner notre ellipse, puisqu'il nous faut une abscisse et une ordonnée ! Il faut donc convertir ces coordonées polaires en coordonées cartésiennnes, heureusement il existe des formules pour cela
+
+```javascript
+	// formule de passage de coordonées polaires en coordonnées catésienne
+    var xpos = radius*cos(angle)
+    var ypos = radius*sin(angle)
+    // nous pouvons maintenant dessiner une ellipse avec un rayon aléatoire
+    var r = random(1,5)
+    ellipse(xpos,ypos,r,r)
+```
+
+Ce petit programme vous permettra de mieux vous rendre compte de cela et pourra faire office de pense-bête : 
+
+ [^ home](#contenu)<br>
+
+<a name="boucles"/>
+#### Boucles : for()
+
+Il ne nous rest plus qu'à utiliser une boucle for pour répéter ces opérations un certain nombre de fois. Une boucle **for()** s'écrit de cette manière :
+
+```javascript
+for (var i = 0 ; i < 100 ; i = i+1){
+
+}
+```
+Elle prend trois arguments :
+	* le premier est une variable qui augmentera d'une valeur à chaque éxecution du code entre les accolades
+	* le second est une condition d'arrêt sur la variable définie avant : si *i* est inférieur / supérieur / ou égal à une valeur à ce moment on sort de la boucle et on continue l'éxecution du programme après l'accolade fermante.
+	* le troisième est une expression pour faire évoluer notre première variable : généralement on augment sa valeur de 1, mais cela dépend de sa valeur initiale et de notre condition d'arrêt bien sûr.
+
+
+Cette boucle **for()** va compter jusqu'à 99 dans la console javascript de votre navigateur.
+```javascript
+for (var i = 0 ; i < 100 ; i = i+1){
+	console.log(i)
+}
+```
+Nous allons modifier notre fonction de dessin en utilisant une boucle **for()** mais nous allons compliquer les choses ... en faisant en sorte que le densité - c'est à dire le nombre - de points ne soit pas trop importante notament quand l'épaisseur du jet de peinture - la variable *size* de notre fonction est petite, et qu'il n'y en ait pas trop peu quand celui-ci est plus épais. Nous allons donc faire en sorte que la condition d'arrêt de notre boucle dépende de la taille de note jet de peinture.
+
+Et nous allons aussi faire en sorte que la taille des particules de peinture soit plus grande lorsqu'elles sont proches du centre (pour avoir une meilleure couverture au centre et un éparpillement plus visible en périphérie). Pour cela nous allons utiliser la fonction **map()** de faire une règle de trois. Il faut lui donner la valeur à transformer, la valeur minimale  et la valeur maximale qu'elle peut prendre, et lui donner les valeurs minimales et maximales que l'on souhaite.
+
+ainsi : 
+
+```javascript
+var dm = map(mouseX, 0, windowWidth , 20 , 50)
+```
+vas transformer la position de la souris - qui est une valeur comprise entre 0 et *windowWidth* (comme on le sait déjà) - en une valeur comprise entre 20 et 50; du coup lorsque ma souris est à gauche la variable *dm* vaut 20 et lorsqu'elle est à droite de la fenêtre *dm* vaut 50.
+
+Voici le code prenant en compte tous ces changements :
+
+// fonction permettant de dessiner un ensemble de taches de couleurs dans un rayon défini
+// ce rayon dépendera de la vitesse de la souris
+function sp(x,y,size){
+  push()
+  noStroke()
+  fill(hue,100,100,30) // on applique la teinte et on garde une transparence importante
+  translate(x,y)
+  for (var i = 0 ; i < size*3 ; i = i+1){ // la condition d'arrêt dépend de size !
+    // coordonées polaire = rayon + angle
+    var radius = random(size) 
+    var angle = random(TWO_PI)
+    // formule de passage de coordonées polaires en coordonnées catésienne
+    var xpos = radius*cos(angle)
+    var ypos = radius*sin(angle)
+    // on dessine une ellipse dont la taille dépend de son éloignement au centre
+    ellipse(xpos, ypos, map(radius,0,size,size/5,0), map(radius,0,size,size/5,0))
+  }
+  pop()
+}
+
+[01_dessiner_05](../assets/01_dessiner_05.png)
+
+Le programme est disponible ici sur openprocessing :
+et dans le code téléchargeable
 
 
 [^ home](#contenu)<br>
 
+
+<a name="dom"/>
+## DOM
+gui elements
+video + dom
+mode instance de p5js
+
+
+[^ home](#contenu)<br>
 
 
 
@@ -550,29 +745,6 @@ https://www.openprocessing.org/sketch/388514
 
 [^ home](#contenu)<br>
 
-
-
-<a name="grilles"/>
-## Grilles et patterns
-
-- transformation de l'espace
-- images, filtres et blends
-
-
-
-
-[^ home](#contenu)<br>
-
-
-
-<a name="dom"/>
-## DOM
-gui elements
-video + dom
-mode instance de p5js
-
-
-[^ home](#contenu)<br>
 
 
 
