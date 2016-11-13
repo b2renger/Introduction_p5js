@@ -55,7 +55,7 @@ La plupart des exemples de ce cours seront probablement porté sur openprocessin
 
 Il est aussi possible d'intégrer des librairies javascript externes voici un exemple pour faire cela : https://www.openprocessing.org/sketch/385808
 
-Openprocessing est pratique car il permet de se passer de serveur local et permet de créer des portofolio d'applications interactives très facilement.
+Openprocessing est pratique car il permet de se passer de serveur local et permet de créer des portofolio d'applications interactives très facilement. Actuellement openprocessing connait malheureusement quelques soucis, l'intégration de la librairie DOM pose parfois problème, et le serveur websocket plante régulièrement (mais le nouveau site est récent, ces problèmes se dissiperont avec le temps)
 
 ![Openprocessing](assets/openprocessing.png)
 ![Openprocessing](assets/openprocessing-2.png)
@@ -185,7 +185,10 @@ function draw() {
 
 Chaque execution d'une boucle draw dessine un cercle de 20 pixels au coordonnées de la souris. Il faut noter que le repère de coordonnées dans p5js par défaut place l'origine, c'est à dire le point de coordonées (0,0) en haut à gauche. Les abscisses sont croissantes lorsqu'on se déplace vers la droite et les ordonnées croissantes lorsqu'on se déplace vers le bas.
 
-Vous pouvez expérimenter avec ce programme pour vous en rendre compte : https://www.openprocessing.org/sketch/388459
+Vous pouvez expérimenter avec ce programme pour vous en rendre compte : 
+
+- https://www.openprocessing.org/sketch/388459
+
 
 **ellipse** est un mot clé permettant de dessiner une ellipse d'une taille précise à une endroit précis en lui passant des **paramètres**, ce sont les valeurs que l'on donne entre parenthèses :
 
@@ -299,7 +302,10 @@ function draw() {
 ```
 
 ![01_dessiner_01](assets/01_dessiner_01.png)
+
 https://www.openprocessing.org/sketch/388464
+
+https://b2renger.github.io/Introduction_p5js/01_dessiner_01/index.html
 
 
 [^ home](#contenu)<br>
@@ -374,12 +380,18 @@ function draw() {
 ```
 
 ![01_dessiner_02](assets/01_dessiner_02.png)
+
 https://www.openprocessing.org/sketch/388181
+
+https://b2renger.github.io/Introduction_p5js/01_dessiner_02/index.html
 
 Pour vous exercer vous pouvez essayer de dessiner des lignes (fonction **line()**)provenant du centre de la fenêtre à la souris, ainsi qu'à ses quatres positions symétriques. Vous pouvez aussi faire varier la taille des traits grace à la fonction **strokeWeight()**. Ce qui vous donnera un résultat similaire à celui-ci
 
 ![01_dessiner_03](assets/01_dessiner_03.png)
-(https://www.openprocessing.org/sketch/388511)
+
+https://www.openprocessing.org/sketch/388511
+
+https://b2renger.github.io/Introduction_p5js/01_dessiner_03/index.html
 
 
 [^ home](#contenu)<br>
@@ -534,6 +546,8 @@ function draw() {
 ![01_dessiner_04](assets/01_dessiner_04.png)
 
 https://www.openprocessing.org/sketch/388514
+
+https://b2renger.github.io/Introduction_p5js/01_dessiner_04/index.html
 
 
 [^ home](#contenu)<br>
@@ -725,7 +739,10 @@ function sp(x,y,size){
 
 ![01_dessiner_05](assets/01_dessiner_05.png)
 
-Le programme est disponible sur github et sur openprocessing : https://www.openprocessing.org/sketch/388597
+https://www.openprocessing.org/sketch/388597
+
+https://b2renger.github.io/Introduction_p5js/01_dessiner_05/index.html
+
 
 Il est possible aussi de reprendre notre programme précédents et de réaliser des symétries grace aux coordonées polaires et à une boucle **for()**. Ici nous spécifions le nombre de branches souhaitées par une variable.
 
@@ -757,6 +774,8 @@ Il est possible aussi de reprendre notre programme précédents et de réaliser 
 ![01_dessiner_06](assets/01_dessiner_06.png)
 
 https://www.openprocessing.org/sketch/389230
+
+https://b2renger.github.io/Introduction_p5js/01_dessiner_06/index.html
 
 
 [^ home](#contenu)<br>
@@ -925,9 +944,11 @@ function sp(x,y,size){
 
 ![02_dom_01](assets/02_dom_01.png)
 
-L'exemple live est disponnible à cette adresse : 
+https://b2renger.github.io/Introduction_p5js/02_dom_01/index.html
+
 
 [^ home](#contenu)<br>
+
 
 L'exemple suivant *02_dom_02*, applique ces principes à notre outil de dessin symétrique. On utilise cette fois la fonction **createInput()** pour créer un champ de texte dans lequel l'utilisateur peut rentrer la valeur qu'il souhaite : nous pourrons donc choisir le nombre de branches de manière interactive.
 
@@ -998,9 +1019,11 @@ L'exemple suivant *02_dom_02*, applique ces principes à notre outil de dessin s
  ```
 ![02_dom_02](assets/02_dom_02.png)
 
-L'exemple live est disponnible à cette adresse : 
+https://b2renger.github.io/Introduction_p5js/01_dessiner_02/index.html
+
 
 *[^ home](#contenu)<br>
+
 
 
 <a name="site"/>-
