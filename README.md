@@ -28,6 +28,10 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
 		*	[Coordonnées polaires](#polaire)<br>
 		*	[Boucles : "for"](#boucles)<br>
 * [DOM](#dom)<br>
+	*	[Utilisation de la librairie](#utilisation)<br>
+	*	[Créer des éléments HTML5](#html5)<br>
+	*	[Styliser avec du css](#css)<br>
+	*	[Exemple de site web](#siteweb)<br>
 * [Animation et objets](#animation)<br>
 * [SocketIO](#socket)<br>
 * [Ressources](#ressources)<br>
@@ -755,32 +759,270 @@ Il est possible aussi de reprendre notre programme précédents et de réaliser 
 https://www.openprocessing.org/sketch/389230
 
 
-
 [^ home](#contenu)<br>
+
 
 
 <a name="dom"/>
 ## DOM
-ajouter la lib dans l'index
 
-css https://github.com/processing/p5.js/wiki/Beyond-the-canvas#using-a-css-stylesheet
-gui elements
-video + dom
-mode instance de p5js
+<a name="utilisation"/>
+### Utilisation de la librairie
 
+Nous allons maintenant nous intéresser à la librairie DOM, qui permet de manipuler des éléments HTML5 par du code p5js. Cela nous permettera de créer des sliders, des champs des textes etc. pour controller nos programmes.
+
+La référence de la librairie est disponnible ici : http://p5js.org/reference/#/libraries/p5.dom
+Elle n'est malheureusement pas forcément toujours simple à comprendre à mon sens il est préférable de regarder les exemples disponnibles à cette adresse, à la rubrique DOM : http://p5js.org/examples/
+
+A partir du programme de dessin précédent nous allons créer des sliders permettant de paramétrer la couleur ainsi que la taille de notre outil de dessin, à l'aide des fonctions **createSlider()** et **createP()** de la librairie DOM.
+
+Tout d'abord, il faut ajouter la librairie à notre page en ajoutant la ligne suivante à l'habituel fichier *index.html*
+
+```html
+<script language="javascript" type="text/javascript" src="../libraries/p5.dom.js"></script>
+```
 
 [^ home](#contenu)<br>
 
 
+<a name="html5"/>
+### Créer des éléments html5 avec du code javascript
 
-<a name="animation"/>
-## Animer un déplacement
+Maintenant nous pouvons utiliser les fonctions **createSlider()** et **createP()** dans le *setup()* de notre programme, car cela va créer des objets HTML5 dans notre page et nous voulons que ces objets ne soient crées qu'une seule fois au chargement de la page.
+
+```javascript
+function setup() {
+  createCanvas(windowWidth, windowHeight); 
+  background(0);  
+  colorMode(HSB,360,100,100,100) // appliquer le mode HSB
+
+  // Créer des éléments html5
+  s_hue = createSlider(0, 360, 50); // créer un slider allant de 0 à 360, initialiser à la valeur 50.
+  s_hue.position(5, windowHeight - 30) // on le positionne en bas à gauche.
+  l_hue = createP('hue :') // créer un label pour notre slider
+  l_hue.position(5, windowHeight - 75) // positionné un peu au dessus.
+}
+```
+
+Nous créeons donc deux éléments un slider et un *paragraphe* faisant office de label pour notre slider. **s_hue** est maintenant un élement de notre page, il peut réagir aux events de type *mouseOver()*. L'élement **l_hue** est lui un paragraphe. Nous pouvons accéder à la valeur de notre slider en utilisant la fonction **.value()** de cette manière :
+
+```javascript
+fill(s_hue.value(),100,100,100)
+```
+
+[^ home](#contenu)<br>
+
+
+<a name="css"/>
+### Styliser avec  du css
+
+Puisque ce sont des élements html, ils peuvent aussi être stylisés par css, il suffit pour cela de créer un fichier css dans le dossier de notre page, par exemple comme celui-ci :
+
+```css
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: 0px;
+    border-radius: 50%;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%px;
+    background: white;
+    opacity: 1;
+}
+
+input[type=range] {
+    -webkit-appearance: none;
+    background-color: white;
+    width: 100px;
+    height: 4px;
+    opacity: 0.75;
+}
+
+p{
+	color: white;
+}
+```
+Notre slider et autres futurs sliders qui ressemblait à ceci : ![slider-dom](assets/slider-dom.png)
+
+Ressembleront maintenant à ceci : ![slider-dom-css](assets/slider-dom-css.png)
+
+Et le texte de nos paragraphes sera blanc.
+
+Il est possible de customiser des groupes d'éléments séparement, vous pouvez vous référer à cette page : https://github.com/processing/p5.js/wiki/Beyond-the-canvas#using-a-css-stylesheet
+
+Si nous créons l'ensemble des contrôles prévus, notre code ressemblera à ceci
+
+```javascript
+function setup() {
+  createCanvas(windowWidth, windowHeight); 
+  background(0);  
+  colorMode(HSB,360,100,100,100) // appliquer le mode HSB
+
+  // Créer des éléments html5 - ces élements peuvent être customisés par css (voir le fichier ci-joint)
+  s_hue = createSlider(0, 360, 50);
+  s_hue.position(5, windowHeight - 30)
+  l_hue = createP('hue :')
+  l_hue.position(5, windowHeight - 75)
+
+  s_sat = createSlider(0, 100, 85);
+  s_sat.position(125, windowHeight - 30)
+  l_sat = createP('saturation :')
+  l_sat.position(125, windowHeight - 75)
+
+  s_bri = createSlider(0, 100, 95);
+  s_bri.position(245, windowHeight - 30)
+  l_bri = createP('brightness :')
+  l_bri.position(245, windowHeight - 75)
+  
+  s_opacity = createSlider(2, 100, 100);
+  s_opacity.position(365, windowHeight - 30)
+  l_opacity = createP('opacity :')
+  l_opacity.position(365, windowHeight - 75)
+
+  s_brush_size = createSlider(5, 60, 40);
+  s_brush_size.position(485, windowHeight - 30)
+  l_brush = createP('size :')
+  l_brush.position(485, windowHeight - 75)
+
+ }
+
+function draw() {
+  var size = (abs(pmouseX-mouseX)+abs(pmouseY-mouseY)) + s_brush_size.value() 
+  if (mouseIsPressed) { // si la souris est clickée on dessine avec la fonction de dessin définie ci-dessous
+    sp(mouseX,mouseY,size)
+  }
+  // dessiner les paramètres sélectionnés
+  push()
+  fill(0,100)
+  rect(0, windowHeight-80 ,710,80)
+  stroke(255)
+  fill(s_hue.value(),s_sat.value(),s_bri.value(),s_opacity.value()+25)
+  ellipse(640 , windowHeight-30 ,s_brush_size.value()+5, s_brush_size.value()+5)
+  pop()   
+}
+
+// fonction permettant de dessiner un ensemble de taches de couleurs dans un rayon défini
+// ce rayon dépendera de la vitesse de la souris
+function sp(x,y,size){
+  push()
+  noStroke()
+  fill(s_hue.value(),s_sat.value(),s_bri.value(),s_opacity.value()) // on applique la teinte et on garde une transparence importante
+  translate(x,y)
+  for (var i = 0 ; i < size*2 ; i = i+1){
+    // coordonées polaire = rayon + angle
+    var radius = random(size) 
+    var angle = random(TWO_PI)
+    // formule de passage de coordonées polaires en coordonnées catésienne
+    var xpos = radius*cos(angle)
+    var ypos = radius*sin(angle)
+    // on dessine une ellipse dont la taille dépend de son éloignement
+    ellipse(xpos, ypos, map(radius,0,size,size/6,0), map(radius,0,size,size/6,0))
+  }
+  pop()
+}
+
+```
+
+![02_dom_01](assets/02_dom_01.png)
+
+L'exemple live est disponnible à cette adresse : 
+
+[^ home](#contenu)<br>
+
+L'exemple suivant *02_dom_02*, applique ces principes à notre outil de dessin symétrique. On utilise cette fois la fonction **createInput()** pour créer un champ de texte dans lequel l'utilisateur peut rentrer la valeur qu'il souhaite : nous pourrons donc choisir le nombre de branches de manière interactive.
+
+```javascript
+  function setup() {
+    createCanvas(windowWidth, windowHeight); 
+    background(0,0,0);  
+    colorMode(HSB,360,100,100,100) 
+    
+    // Créer des éléments html5 - ces élements peuvent être customisés par css (voir le fichier ci-joint)
+    s_hue = createSlider(0, 360, 50);
+    s_hue.position(5, windowHeight - 30)
+    l_hue = createP('hue :')
+    l_hue.position(5, windowHeight - 75)
+
+    s_sat = createSlider(0, 100, 85);
+    s_sat.position(125, windowHeight - 30)
+    l_sat = createP('saturation :')
+    l_sat.position(125, windowHeight - 75)
+
+    s_bri = createSlider(0, 100, 95);
+    s_bri.position(245, windowHeight - 30)
+    l_bri = createP('brightness :')
+    l_bri.position(245, windowHeight - 75)
+  
+    s_opacity = createSlider(2, 100, 100);
+    s_opacity.position(365, windowHeight - 30)
+    l_opacity = createP('opacity :')
+    l_opacity.position(365, windowHeight - 75)
+
+    s_brush_size = createSlider(1, 40, 15);
+    s_brush_size.position(485, windowHeight - 30)
+    l_brush = createP('size :')
+    l_brush.position(485  , windowHeight - 75)
+
+    s_branch_number = createInput(12);
+    s_branch_number.position(655, windowHeight - 30)
+    l_branch_number = createP('branch quantity  (1 - 100) :')
+    l_branch_number.position(655, windowHeight - 75)
+  } 
+
+  function draw() {
+    
+    if(mouseIsPressed && !(mouseY>windowHeight-80 && mouseX< 860 )){
+      noStroke()
+      fill(s_hue.value(),s_sat.value(),s_bri.value(),s_opacity.value())  
+      // calculer les coordonées polaire en fonction des positions centrées de la souris  
+      var radius = pow(pow(windowWidth/2-mouseX,2) + pow(windowHeight/2-mouseY,2) , 0.5) // pythagore 
+      var angle = atan2(windowHeight/2-mouseY, windowWidth/2-mouseX) // atan2(y,x)
+  
+        for (var i = 0 ; i <= TWO_PI ; i = i +PI/(s_branch_number.value()/2)){ // on réalise une boucle for pour couvrir un cercle complet
+            var x =windowWidth/2 + radius * cos(angle +i) // on ajoute i à l'angle à chaque iteration de la boucle
+            var y =windowHeight/2 + radius * sin(angle+i)
+            ellipse(x,y,s_brush_size.value(),s_brush_size.value())
+          }
+      }
+
+    // dessiner les paramètres sélectionnés
+    push()
+    fill(0,100)
+    rect(0, windowHeight-80 ,860,80)
+    stroke(255)
+    fill(s_hue.value(),s_sat.value(),s_bri.value(),s_opacity.value()+25)
+    ellipse(620 , windowHeight-30 ,s_brush_size.value()+5, s_brush_size.value()+5)
+    pop()
+    
+  }
+ ```
+![02_dom_02](assets/02_dom_02.png)
+
+L'exemple live est disponnible à cette adresse : 
+
+*[^ home](#contenu)<br>
+
+
+<a name="site"/>-
+### Exemple de site web
+
+Mon site web personnel est constuit à l'aide de la librairie DOM de p5js. Le principe est d'utiliser un canvas pour la navigation dans les 'pages' plutôt qu'un menu classique.
+
+http://b2renger.github.io
+
+![b2renger website](assets/b2renger_website.png)
+
+La partie de gauche de la page web est donc un canvas faisant fonctionner un sketch p5js. A ce niveau du cours certains aspects du code seront une peu compliqués à comprendre, mais le principe de base est simple : chaque forme géométrique représente un page, lorsque l'on passe au dessus avec la souris, les éléments html de la partie de droite sont détruits, et recrées en fonction d'un fichier csv (qui représente l'article). Le fichier csv est alors analysé et chaque ligne correspond à la création d'un élément html : paragraphe, balise vidéo, lien hypertexte, balise image ou audio etc.
+
+Un peu de documentation et un exemple simple sont disponnibles à cette adresse : http://b2renger.github.io/p5js_algae_dom/index.html
+
+
+*[^ home](#contenu)<br>
 
 
 
 
 [^ home](#contenu)<br>
-
 
 
 
@@ -789,6 +1031,28 @@ mode instance de p5js
 
 
 [^ home](#contenu)<br>
+
+
+
+
+<a name="animation"/>
+## Animer un déplacement
+
+## objets en js
+
+
+[^ home](#contenu)<br>
+
+
+<a name="sound"/>
+## La librairie son
+
+## Mini-projet son websocket
+
+
+[^ home](#contenu)<br>
+
+
 
 
 <a name="ressources"/>
@@ -811,6 +1075,8 @@ mode instance de p5js
 * Exemples Computer Vision : https://kylemcdonald.github.io/cv-examples/
 	
 * Introduction web sockets et nodejs : link tuto  https://github.com/processing/p5.js/wiki/p5.js
+
+* Utilisation de p5js en mode instanciable - avoir plusieurs canvas dans une page : https://github.com/processing/p5.js/wiki/Instantiation-Cases
 
 [^ home](#contenu)<br>
 

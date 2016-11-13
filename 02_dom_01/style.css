@@ -1,0 +1,22 @@
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: 0px;
+    border-radius: 50%;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%px;
+    background: white;
+    opacity: 1;
+}
+
+input[type=range] {
+    -webkit-appearance: none;
+    background-color: white;
+    width: 100px;
+    height: 4px;
+    opacity: 0.75;
+}
+
+p{
+	color: white;
+}
