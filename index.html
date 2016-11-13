@@ -1,36 +1,33 @@
 <!DOCTYPE html>
 <html>
-
   <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="Introduction p5js : This is a french introduction to p5*js">
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
 
-    <title>Introduction p5js</title>
+    <title>Introduction p5js by b2renger</title>
   </head>
 
   <body>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/b2renger/Introduction_p5js">View on GitHub</a>
+    <header>
+      <div class="container">
+        <h1>Introduction p5js</h1>
+        <h2>This is a french introduction to p5*js</h2>
 
-          <h1 id="project_title">Introduction p5js</h1>
-          <h2 id="project_tagline">This is a french introduction to p5*js</h2>
+        <section id="downloads">
+          <a href="https://github.com/b2renger/Introduction_p5js/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/b2renger/Introduction_p5js/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/b2renger/Introduction_p5js" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
 
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/b2renger/Introduction_p5js/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/b2renger/Introduction_p5js/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
+    <div class="container">
+      <section id="main_content">
         <h1>
 <a id="introduction_p5js" class="anchor" href="#introduction_p5js" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Introduction_p5js</h1>
 
@@ -87,6 +84,17 @@
 </li>
 <li>
 <a href="#dom">DOM</a><br>
+
+<ul>
+<li>  <a href="#utilisation">Utilisation de la librairie</a><br>
+</li>
+<li>  <a href="#html5">Créer des éléments HTML5</a><br>
+</li>
+<li>  <a href="#css">Styliser avec du css</a><br>
+</li>
+<li>  <a href="#siteweb">Exemple de site web</a><br>
+</li>
+</ul>
 </li>
 <li>
 <a href="#animation">Animation et objets</a><br>
@@ -685,7 +693,7 @@ Nous allons donc pouvoir si une touche est appuyée changer la valeur de la vari
     <span class="pl-k">var</span> r <span class="pl-k">=</span> <span class="pl-en">random</span>(<span class="pl-c1">1</span>,<span class="pl-c1">5</span>)
     <span class="pl-en">ellipse</span>(xpos,ypos,r,r)</pre></div>
 
-<p>Ce petit programme vous permettra de mieux vous rendre compte de cela et pourra faire office de pense-bête : </p>
+<p>Ce petit programme vous permettra de mieux vous rendre compte de cela et pourra faire office de pense-bête : <a href="https://www.openprocessing.org/sketch/151087">https://www.openprocessing.org/sketch/151087</a></p>
 
 <p><a href="#contenu">^ home</a><br></p>
 
@@ -745,8 +753,36 @@ Nous allons donc pouvoir si une touche est appuyée changer la valeur de la vari
 
 <p><img src="assets/01_dessiner_05.png" alt="01_dessiner_05"></p>
 
-<p>Le programme est disponible ici sur openprocessing :
-et dans le code téléchargeable</p>
+<p>Le programme est disponible sur github et sur openprocessing : <a href="https://www.openprocessing.org/sketch/388597">https://www.openprocessing.org/sketch/388597</a></p>
+
+<p>Il est possible aussi de reprendre notre programme précédents et de réaliser des symétries grace aux coordonées polaires et à une boucle <strong>for()</strong>. Ici nous spécifions le nombre de branches souhaitées par une variable.</p>
+
+<div class="highlight highlight-source-js"><pre>  <span class="pl-k">var</span> s_branch_number <span class="pl-k">=</span> <span class="pl-c1">42</span>
+
+  <span class="pl-k">function</span> <span class="pl-en">setup</span>() {
+    <span class="pl-en">createCanvas</span>(windowWidth, windowHeight); 
+    <span class="pl-en">background</span>(<span class="pl-c1">0</span>,<span class="pl-c1">0</span>,<span class="pl-c1">0</span>);  
+  } 
+
+  <span class="pl-k">function</span> <span class="pl-en">draw</span>() {   
+    <span class="pl-k">if</span>(mouseIsPressed){
+      <span class="pl-en">noStroke</span>()
+      <span class="pl-en">fill</span>(<span class="pl-c1">255</span>,<span class="pl-c1">50</span>)  
+      <span class="pl-c">// calculer les coordonées polaire en fonction des positions centrées de la souris  </span>
+      <span class="pl-k">var</span> radius <span class="pl-k">=</span> <span class="pl-en">pow</span>(<span class="pl-en">pow</span>(windowWidth<span class="pl-k">/</span><span class="pl-c1">2</span><span class="pl-k">-</span>mouseX,<span class="pl-c1">2</span>) <span class="pl-k">+</span> <span class="pl-en">pow</span>(windowHeight<span class="pl-k">/</span><span class="pl-c1">2</span><span class="pl-k">-</span>mouseY,<span class="pl-c1">2</span>) , <span class="pl-c1">0.5</span>) <span class="pl-c">// pythagore </span>
+      <span class="pl-k">var</span> angle <span class="pl-k">=</span> <span class="pl-en">atan2</span>(windowHeight<span class="pl-k">/</span><span class="pl-c1">2</span><span class="pl-k">-</span>mouseY, windowWidth<span class="pl-k">/</span><span class="pl-c1">2</span><span class="pl-k">-</span>mouseX) <span class="pl-c">// atan2(y,x)</span>
+
+         <span class="pl-k">for</span> (<span class="pl-k">var</span> i <span class="pl-k">=</span> <span class="pl-c1">0</span> ; i <span class="pl-k">&lt;=</span> <span class="pl-c1">TWO_PI</span> ; i <span class="pl-k">=</span> i <span class="pl-k">+</span><span class="pl-c1">PI</span><span class="pl-k">/</span>(s_branch_number<span class="pl-k">/</span><span class="pl-c1">2</span>)){ <span class="pl-c">// on réalise une boucle for pour couvrir un cercle complet</span>
+            <span class="pl-k">var</span> x <span class="pl-k">=</span>windowWidth<span class="pl-k">/</span><span class="pl-c1">2</span> <span class="pl-k">+</span> radius <span class="pl-k">*</span> <span class="pl-en">cos</span>(angle <span class="pl-k">+</span>i) <span class="pl-c">// on ajoute i à l'angle à chaque iteration de la boucle</span>
+            <span class="pl-k">var</span> y <span class="pl-k">=</span>windowHeight<span class="pl-k">/</span><span class="pl-c1">2</span> <span class="pl-k">+</span> radius <span class="pl-k">*</span> <span class="pl-en">sin</span>(angle<span class="pl-k">+</span>i)
+            <span class="pl-en">ellipse</span>(x,y,<span class="pl-c1">5</span>,<span class="pl-c1">5</span>)
+          }
+      }    
+  }</pre></div>
+
+<p><img src="assets/01_dessiner_06.png" alt="01_dessiner_06"></p>
+
+<p><a href="https://www.openprocessing.org/sketch/389230">https://www.openprocessing.org/sketch/389230</a></p>
 
 <p><a href="#contenu">^ home</a><br></p>
 
@@ -755,9 +791,259 @@ et dans le code téléchargeable</p>
 <h2>
 <a id="dom" class="anchor" href="#dom" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>DOM</h2>
 
-<p>gui elements
-video + dom
-mode instance de p5js</p>
+<p><a name="utilisation"></a></p>
+
+<h3>
+<a id="utilisation-de-la-librairie" class="anchor" href="#utilisation-de-la-librairie" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Utilisation de la librairie</h3>
+
+<p>Nous allons maintenant nous intéresser à la librairie DOM, qui permet de manipuler des éléments HTML5 par du code p5js. Cela nous permettera de créer des sliders, des champs des textes etc. pour controller nos programmes.</p>
+
+<p>La référence de la librairie est disponnible ici : <a href="http://p5js.org/reference/#/libraries/p5.dom">http://p5js.org/reference/#/libraries/p5.dom</a>
+Elle n'est malheureusement pas forcément toujours simple à comprendre à mon sens il est préférable de regarder les exemples disponnibles à cette adresse, à la rubrique DOM : <a href="http://p5js.org/examples/">http://p5js.org/examples/</a></p>
+
+<p>A partir du programme de dessin précédent nous allons créer des sliders permettant de paramétrer la couleur ainsi que la taille de notre outil de dessin, à l'aide des fonctions <strong>createSlider()</strong> et <strong>createP()</strong> de la librairie DOM.</p>
+
+<p>Tout d'abord, il faut ajouter la librairie à notre page en ajoutant la ligne suivante à l'habituel fichier <em>index.html</em></p>
+
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">language</span>=<span class="pl-s"><span class="pl-pds">"</span>javascript<span class="pl-pds">"</span></span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/javascript<span class="pl-pds">"</span></span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>../libraries/p5.dom.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
+
+<p><a href="#contenu">^ home</a><br></p>
+
+<p><a name="html5"></a></p>
+
+<h3>
+<a id="créer-des-éléments-html5-avec-du-code-javascript" class="anchor" href="#cr%C3%A9er-des-%C3%A9l%C3%A9ments-html5-avec-du-code-javascript" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Créer des éléments html5 avec du code javascript</h3>
+
+<p>Maintenant nous pouvons utiliser les fonctions <strong>createSlider()</strong> et <strong>createP()</strong> dans le <em>setup()</em> de notre programme, car cela va créer des objets HTML5 dans notre page et nous voulons que ces objets ne soient crées qu'une seule fois au chargement de la page.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">function</span> <span class="pl-en">setup</span>() {
+  <span class="pl-en">createCanvas</span>(windowWidth, windowHeight); 
+  <span class="pl-en">background</span>(<span class="pl-c1">0</span>);  
+  <span class="pl-en">colorMode</span>(<span class="pl-c1">HSB</span>,<span class="pl-c1">360</span>,<span class="pl-c1">100</span>,<span class="pl-c1">100</span>,<span class="pl-c1">100</span>) <span class="pl-c">// appliquer le mode HSB</span>
+
+  <span class="pl-c">// Créer des éléments html5</span>
+  s_hue <span class="pl-k">=</span> <span class="pl-en">createSlider</span>(<span class="pl-c1">0</span>, <span class="pl-c1">360</span>, <span class="pl-c1">50</span>); <span class="pl-c">// créer un slider allant de 0 à 360, initialiser à la valeur 50.</span>
+  <span class="pl-smi">s_hue</span>.<span class="pl-en">position</span>(<span class="pl-c1">5</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">30</span>) <span class="pl-c">// on le positionne en bas à gauche.</span>
+  l_hue <span class="pl-k">=</span> <span class="pl-en">createP</span>(<span class="pl-s"><span class="pl-pds">'</span>hue :<span class="pl-pds">'</span></span>) <span class="pl-c">// créer un label pour notre slider</span>
+  <span class="pl-smi">l_hue</span>.<span class="pl-en">position</span>(<span class="pl-c1">5</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">75</span>) <span class="pl-c">// positionné un peu au dessus.</span>
+}</pre></div>
+
+<p>Nous créeons donc deux éléments un slider et un <em>paragraphe</em> faisant office de label pour notre slider. <strong>s_hue</strong> est maintenant un élement de notre page, il peut réagir aux events de type <em>mouseOver()</em>. L'élement <strong>l_hue</strong> est lui un paragraphe. Nous pouvons accéder à la valeur de notre slider en utilisant la fonction <strong>.value()</strong> de cette manière :</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">fill</span>(<span class="pl-smi">s_hue</span>.<span class="pl-c1">value</span>(),<span class="pl-c1">100</span>,<span class="pl-c1">100</span>,<span class="pl-c1">100</span>)</pre></div>
+
+<p><a href="#contenu">^ home</a><br></p>
+
+<p><a name="css"></a></p>
+
+<h3>
+<a id="styliser-avec--du-css" class="anchor" href="#styliser-avec--du-css" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Styliser avec  du css</h3>
+
+<p>Puisque ce sont des élements html, ils peuvent aussi être stylisés par css, il suffit pour cela de créer un fichier css dans le dossier de notre page, par exemple comme celui-ci :</p>
+
+<div class="highlight highlight-source-css"><pre><span class="pl-ent">input</span>[type="range"]::-webkit-slider-thumb {
+    <span class="pl-c1">-webkit-<span class="pl-c1">appearance</span></span>: <span class="pl-c1">none</span>;
+    <span class="pl-c1"><span class="pl-c1">border</span></span>: <span class="pl-c1">0<span class="pl-k">px</span></span>;
+    <span class="pl-c1"><span class="pl-c1">border-radius</span></span>: <span class="pl-c1">50<span class="pl-k">%</span></span>;
+    <span class="pl-c1"><span class="pl-c1">height</span></span>: <span class="pl-c1">15<span class="pl-k">px</span></span>;
+    <span class="pl-c1"><span class="pl-c1">width</span></span>: <span class="pl-c1">15<span class="pl-k">px</span></span>;
+    <span class="pl-c1"><span class="pl-c1">border-radius</span></span>: <span class="pl-c1">50<span class="pl-k">%</span></span>px;
+    <span class="pl-c1"><span class="pl-c1">background</span></span>: <span class="pl-c1">white</span>;
+    <span class="pl-c1"><span class="pl-c1">opacity</span></span>: <span class="pl-c1">1</span>;
+}
+
+<span class="pl-ent">input</span>[type=range] {
+    <span class="pl-c1">-webkit-<span class="pl-c1">appearance</span></span>: <span class="pl-c1">none</span>;
+    <span class="pl-c1"><span class="pl-c1">background-color</span></span>: <span class="pl-c1">white</span>;
+    <span class="pl-c1"><span class="pl-c1">width</span></span>: <span class="pl-c1">100<span class="pl-k">px</span></span>;
+    <span class="pl-c1"><span class="pl-c1">height</span></span>: <span class="pl-c1">4<span class="pl-k">px</span></span>;
+    <span class="pl-c1"><span class="pl-c1">opacity</span></span>: <span class="pl-c1">0.75</span>;
+}
+
+<span class="pl-ent">p</span>{
+    <span class="pl-c1"><span class="pl-c1">color</span></span>: <span class="pl-c1">white</span>;
+}</pre></div>
+
+<p>Notre slider et autres futurs sliders qui ressemblait à ceci : <img src="assets/slider-dom.png" alt="slider-dom"></p>
+
+<p>Ressembleront maintenant à ceci : <img src="assets/slider-dom-css.png" alt="slider-dom-css"></p>
+
+<p>Et le texte de nos paragraphes sera blanc.</p>
+
+<p>Il est possible de customiser des groupes d'éléments séparement, vous pouvez vous référer à cette page : <a href="https://github.com/processing/p5.js/wiki/Beyond-the-canvas#using-a-css-stylesheet">https://github.com/processing/p5.js/wiki/Beyond-the-canvas#using-a-css-stylesheet</a></p>
+
+<p>Si nous créons l'ensemble des contrôles prévus, notre code ressemblera à ceci</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">function</span> <span class="pl-en">setup</span>() {
+  <span class="pl-en">createCanvas</span>(windowWidth, windowHeight); 
+  <span class="pl-en">background</span>(<span class="pl-c1">0</span>);  
+  <span class="pl-en">colorMode</span>(<span class="pl-c1">HSB</span>,<span class="pl-c1">360</span>,<span class="pl-c1">100</span>,<span class="pl-c1">100</span>,<span class="pl-c1">100</span>) <span class="pl-c">// appliquer le mode HSB</span>
+
+  <span class="pl-c">// Créer des éléments html5 - ces élements peuvent être customisés par css (voir le fichier ci-joint)</span>
+  s_hue <span class="pl-k">=</span> <span class="pl-en">createSlider</span>(<span class="pl-c1">0</span>, <span class="pl-c1">360</span>, <span class="pl-c1">50</span>);
+  <span class="pl-smi">s_hue</span>.<span class="pl-en">position</span>(<span class="pl-c1">5</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">30</span>)
+  l_hue <span class="pl-k">=</span> <span class="pl-en">createP</span>(<span class="pl-s"><span class="pl-pds">'</span>hue :<span class="pl-pds">'</span></span>)
+  <span class="pl-smi">l_hue</span>.<span class="pl-en">position</span>(<span class="pl-c1">5</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">75</span>)
+
+  s_sat <span class="pl-k">=</span> <span class="pl-en">createSlider</span>(<span class="pl-c1">0</span>, <span class="pl-c1">100</span>, <span class="pl-c1">85</span>);
+  <span class="pl-smi">s_sat</span>.<span class="pl-en">position</span>(<span class="pl-c1">125</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">30</span>)
+  l_sat <span class="pl-k">=</span> <span class="pl-en">createP</span>(<span class="pl-s"><span class="pl-pds">'</span>saturation :<span class="pl-pds">'</span></span>)
+  <span class="pl-smi">l_sat</span>.<span class="pl-en">position</span>(<span class="pl-c1">125</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">75</span>)
+
+  s_bri <span class="pl-k">=</span> <span class="pl-en">createSlider</span>(<span class="pl-c1">0</span>, <span class="pl-c1">100</span>, <span class="pl-c1">95</span>);
+  <span class="pl-smi">s_bri</span>.<span class="pl-en">position</span>(<span class="pl-c1">245</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">30</span>)
+  l_bri <span class="pl-k">=</span> <span class="pl-en">createP</span>(<span class="pl-s"><span class="pl-pds">'</span>brightness :<span class="pl-pds">'</span></span>)
+  <span class="pl-smi">l_bri</span>.<span class="pl-en">position</span>(<span class="pl-c1">245</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">75</span>)
+
+  s_opacity <span class="pl-k">=</span> <span class="pl-en">createSlider</span>(<span class="pl-c1">2</span>, <span class="pl-c1">100</span>, <span class="pl-c1">100</span>);
+  <span class="pl-smi">s_opacity</span>.<span class="pl-en">position</span>(<span class="pl-c1">365</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">30</span>)
+  l_opacity <span class="pl-k">=</span> <span class="pl-en">createP</span>(<span class="pl-s"><span class="pl-pds">'</span>opacity :<span class="pl-pds">'</span></span>)
+  <span class="pl-smi">l_opacity</span>.<span class="pl-en">position</span>(<span class="pl-c1">365</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">75</span>)
+
+  s_brush_size <span class="pl-k">=</span> <span class="pl-en">createSlider</span>(<span class="pl-c1">5</span>, <span class="pl-c1">60</span>, <span class="pl-c1">40</span>);
+  <span class="pl-smi">s_brush_size</span>.<span class="pl-en">position</span>(<span class="pl-c1">485</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">30</span>)
+  l_brush <span class="pl-k">=</span> <span class="pl-en">createP</span>(<span class="pl-s"><span class="pl-pds">'</span>size :<span class="pl-pds">'</span></span>)
+  <span class="pl-smi">l_brush</span>.<span class="pl-en">position</span>(<span class="pl-c1">485</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">75</span>)
+
+ }
+
+<span class="pl-k">function</span> <span class="pl-en">draw</span>() {
+  <span class="pl-k">var</span> size <span class="pl-k">=</span> (<span class="pl-en">abs</span>(pmouseX<span class="pl-k">-</span>mouseX)<span class="pl-k">+</span><span class="pl-en">abs</span>(pmouseY<span class="pl-k">-</span>mouseY)) <span class="pl-k">+</span> <span class="pl-smi">s_brush_size</span>.<span class="pl-c1">value</span>() 
+  <span class="pl-k">if</span> (mouseIsPressed) { <span class="pl-c">// si la souris est clickée on dessine avec la fonction de dessin définie ci-dessous</span>
+    <span class="pl-en">sp</span>(mouseX,mouseY,size)
+  }
+  <span class="pl-c">// dessiner les paramètres sélectionnés</span>
+  <span class="pl-en">push</span>()
+  <span class="pl-en">fill</span>(<span class="pl-c1">0</span>,<span class="pl-c1">100</span>)
+  <span class="pl-en">rect</span>(<span class="pl-c1">0</span>, windowHeight<span class="pl-k">-</span><span class="pl-c1">80</span> ,<span class="pl-c1">710</span>,<span class="pl-c1">80</span>)
+  <span class="pl-en">stroke</span>(<span class="pl-c1">255</span>)
+  <span class="pl-en">fill</span>(<span class="pl-smi">s_hue</span>.<span class="pl-c1">value</span>(),<span class="pl-smi">s_sat</span>.<span class="pl-c1">value</span>(),<span class="pl-smi">s_bri</span>.<span class="pl-c1">value</span>(),<span class="pl-smi">s_opacity</span>.<span class="pl-c1">value</span>()<span class="pl-k">+</span><span class="pl-c1">25</span>)
+  <span class="pl-en">ellipse</span>(<span class="pl-c1">640</span> , windowHeight<span class="pl-k">-</span><span class="pl-c1">30</span> ,<span class="pl-smi">s_brush_size</span>.<span class="pl-c1">value</span>()<span class="pl-k">+</span><span class="pl-c1">5</span>, <span class="pl-smi">s_brush_size</span>.<span class="pl-c1">value</span>()<span class="pl-k">+</span><span class="pl-c1">5</span>)
+  <span class="pl-en">pop</span>()   
+}
+
+<span class="pl-c">// fonction permettant de dessiner un ensemble de taches de couleurs dans un rayon défini</span>
+<span class="pl-c">// ce rayon dépendera de la vitesse de la souris</span>
+<span class="pl-k">function</span> <span class="pl-en">sp</span>(<span class="pl-smi">x</span>,<span class="pl-smi">y</span>,<span class="pl-smi">size</span>){
+  <span class="pl-en">push</span>()
+  <span class="pl-en">noStroke</span>()
+  <span class="pl-en">fill</span>(<span class="pl-smi">s_hue</span>.<span class="pl-c1">value</span>(),<span class="pl-smi">s_sat</span>.<span class="pl-c1">value</span>(),<span class="pl-smi">s_bri</span>.<span class="pl-c1">value</span>(),<span class="pl-smi">s_opacity</span>.<span class="pl-c1">value</span>()) <span class="pl-c">// on applique la teinte et on garde une transparence importante</span>
+  <span class="pl-en">translate</span>(x,y)
+  <span class="pl-k">for</span> (<span class="pl-k">var</span> i <span class="pl-k">=</span> <span class="pl-c1">0</span> ; i <span class="pl-k">&lt;</span> size<span class="pl-k">*</span><span class="pl-c1">2</span> ; i <span class="pl-k">=</span> i<span class="pl-k">+</span><span class="pl-c1">1</span>){
+    <span class="pl-c">// coordonées polaire = rayon + angle</span>
+    <span class="pl-k">var</span> radius <span class="pl-k">=</span> <span class="pl-en">random</span>(size) 
+    <span class="pl-k">var</span> angle <span class="pl-k">=</span> <span class="pl-en">random</span>(<span class="pl-c1">TWO_PI</span>)
+    <span class="pl-c">// formule de passage de coordonées polaires en coordonnées catésienne</span>
+    <span class="pl-k">var</span> xpos <span class="pl-k">=</span> radius<span class="pl-k">*</span><span class="pl-en">cos</span>(angle)
+    <span class="pl-k">var</span> ypos <span class="pl-k">=</span> radius<span class="pl-k">*</span><span class="pl-en">sin</span>(angle)
+    <span class="pl-c">// on dessine une ellipse dont la taille dépend de son éloignement</span>
+    <span class="pl-en">ellipse</span>(xpos, ypos, <span class="pl-en">map</span>(radius,<span class="pl-c1">0</span>,size,size<span class="pl-k">/</span><span class="pl-c1">6</span>,<span class="pl-c1">0</span>), <span class="pl-en">map</span>(radius,<span class="pl-c1">0</span>,size,size<span class="pl-k">/</span><span class="pl-c1">6</span>,<span class="pl-c1">0</span>))
+  }
+  <span class="pl-en">pop</span>()
+}
+</pre></div>
+
+<p><img src="assets/02_dom_01.png" alt="02_dom_01"></p>
+
+<p>L'exemple live est disponnible à cette adresse : </p>
+
+<p><a href="#contenu">^ home</a><br></p>
+
+<p>L'exemple suivant <em>02_dom_02</em>, applique ces principes à notre outil de dessin symétrique. On utilise cette fois la fonction <strong>createInput()</strong> pour créer un champ de texte dans lequel l'utilisateur peut rentrer la valeur qu'il souhaite : nous pourrons donc choisir le nombre de branches de manière interactive.</p>
+
+<div class="highlight highlight-source-js"><pre>  <span class="pl-k">function</span> <span class="pl-en">setup</span>() {
+    <span class="pl-en">createCanvas</span>(windowWidth, windowHeight); 
+    <span class="pl-en">background</span>(<span class="pl-c1">0</span>,<span class="pl-c1">0</span>,<span class="pl-c1">0</span>);  
+    <span class="pl-en">colorMode</span>(<span class="pl-c1">HSB</span>,<span class="pl-c1">360</span>,<span class="pl-c1">100</span>,<span class="pl-c1">100</span>,<span class="pl-c1">100</span>) 
+
+    <span class="pl-c">// Créer des éléments html5 - ces élements peuvent être customisés par css (voir le fichier ci-joint)</span>
+    s_hue <span class="pl-k">=</span> <span class="pl-en">createSlider</span>(<span class="pl-c1">0</span>, <span class="pl-c1">360</span>, <span class="pl-c1">50</span>);
+    <span class="pl-smi">s_hue</span>.<span class="pl-en">position</span>(<span class="pl-c1">5</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">30</span>)
+    l_hue <span class="pl-k">=</span> <span class="pl-en">createP</span>(<span class="pl-s"><span class="pl-pds">'</span>hue :<span class="pl-pds">'</span></span>)
+    <span class="pl-smi">l_hue</span>.<span class="pl-en">position</span>(<span class="pl-c1">5</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">75</span>)
+
+    s_sat <span class="pl-k">=</span> <span class="pl-en">createSlider</span>(<span class="pl-c1">0</span>, <span class="pl-c1">100</span>, <span class="pl-c1">85</span>);
+    <span class="pl-smi">s_sat</span>.<span class="pl-en">position</span>(<span class="pl-c1">125</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">30</span>)
+    l_sat <span class="pl-k">=</span> <span class="pl-en">createP</span>(<span class="pl-s"><span class="pl-pds">'</span>saturation :<span class="pl-pds">'</span></span>)
+    <span class="pl-smi">l_sat</span>.<span class="pl-en">position</span>(<span class="pl-c1">125</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">75</span>)
+
+    s_bri <span class="pl-k">=</span> <span class="pl-en">createSlider</span>(<span class="pl-c1">0</span>, <span class="pl-c1">100</span>, <span class="pl-c1">95</span>);
+    <span class="pl-smi">s_bri</span>.<span class="pl-en">position</span>(<span class="pl-c1">245</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">30</span>)
+    l_bri <span class="pl-k">=</span> <span class="pl-en">createP</span>(<span class="pl-s"><span class="pl-pds">'</span>brightness :<span class="pl-pds">'</span></span>)
+    <span class="pl-smi">l_bri</span>.<span class="pl-en">position</span>(<span class="pl-c1">245</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">75</span>)
+
+    s_opacity <span class="pl-k">=</span> <span class="pl-en">createSlider</span>(<span class="pl-c1">2</span>, <span class="pl-c1">100</span>, <span class="pl-c1">100</span>);
+    <span class="pl-smi">s_opacity</span>.<span class="pl-en">position</span>(<span class="pl-c1">365</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">30</span>)
+    l_opacity <span class="pl-k">=</span> <span class="pl-en">createP</span>(<span class="pl-s"><span class="pl-pds">'</span>opacity :<span class="pl-pds">'</span></span>)
+    <span class="pl-smi">l_opacity</span>.<span class="pl-en">position</span>(<span class="pl-c1">365</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">75</span>)
+
+    s_brush_size <span class="pl-k">=</span> <span class="pl-en">createSlider</span>(<span class="pl-c1">1</span>, <span class="pl-c1">40</span>, <span class="pl-c1">15</span>);
+    <span class="pl-smi">s_brush_size</span>.<span class="pl-en">position</span>(<span class="pl-c1">485</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">30</span>)
+    l_brush <span class="pl-k">=</span> <span class="pl-en">createP</span>(<span class="pl-s"><span class="pl-pds">'</span>size :<span class="pl-pds">'</span></span>)
+    <span class="pl-smi">l_brush</span>.<span class="pl-en">position</span>(<span class="pl-c1">485</span>  , windowHeight <span class="pl-k">-</span> <span class="pl-c1">75</span>)
+
+    s_branch_number <span class="pl-k">=</span> <span class="pl-en">createInput</span>(<span class="pl-c1">12</span>);
+    <span class="pl-smi">s_branch_number</span>.<span class="pl-en">position</span>(<span class="pl-c1">655</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">30</span>)
+    l_branch_number <span class="pl-k">=</span> <span class="pl-en">createP</span>(<span class="pl-s"><span class="pl-pds">'</span>branch quantity  (1 - 100) :<span class="pl-pds">'</span></span>)
+    <span class="pl-smi">l_branch_number</span>.<span class="pl-en">position</span>(<span class="pl-c1">655</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">75</span>)
+  } 
+
+  <span class="pl-k">function</span> <span class="pl-en">draw</span>() {
+
+    <span class="pl-k">if</span>(mouseIsPressed <span class="pl-k">&amp;&amp;</span> <span class="pl-k">!</span>(mouseY<span class="pl-k">&gt;</span>windowHeight<span class="pl-k">-</span><span class="pl-c1">80</span> <span class="pl-k">&amp;&amp;</span> mouseX<span class="pl-k">&lt;</span> <span class="pl-c1">860</span> )){
+      <span class="pl-en">noStroke</span>()
+      <span class="pl-en">fill</span>(<span class="pl-smi">s_hue</span>.<span class="pl-c1">value</span>(),<span class="pl-smi">s_sat</span>.<span class="pl-c1">value</span>(),<span class="pl-smi">s_bri</span>.<span class="pl-c1">value</span>(),<span class="pl-smi">s_opacity</span>.<span class="pl-c1">value</span>())  
+      <span class="pl-c">// calculer les coordonées polaire en fonction des positions centrées de la souris  </span>
+      <span class="pl-k">var</span> radius <span class="pl-k">=</span> <span class="pl-en">pow</span>(<span class="pl-en">pow</span>(windowWidth<span class="pl-k">/</span><span class="pl-c1">2</span><span class="pl-k">-</span>mouseX,<span class="pl-c1">2</span>) <span class="pl-k">+</span> <span class="pl-en">pow</span>(windowHeight<span class="pl-k">/</span><span class="pl-c1">2</span><span class="pl-k">-</span>mouseY,<span class="pl-c1">2</span>) , <span class="pl-c1">0.5</span>) <span class="pl-c">// pythagore </span>
+      <span class="pl-k">var</span> angle <span class="pl-k">=</span> <span class="pl-en">atan2</span>(windowHeight<span class="pl-k">/</span><span class="pl-c1">2</span><span class="pl-k">-</span>mouseY, windowWidth<span class="pl-k">/</span><span class="pl-c1">2</span><span class="pl-k">-</span>mouseX) <span class="pl-c">// atan2(y,x)</span>
+
+        <span class="pl-k">for</span> (<span class="pl-k">var</span> i <span class="pl-k">=</span> <span class="pl-c1">0</span> ; i <span class="pl-k">&lt;=</span> <span class="pl-c1">TWO_PI</span> ; i <span class="pl-k">=</span> i <span class="pl-k">+</span><span class="pl-c1">PI</span><span class="pl-k">/</span>(<span class="pl-smi">s_branch_number</span>.<span class="pl-c1">value</span>()<span class="pl-k">/</span><span class="pl-c1">2</span>)){ <span class="pl-c">// on réalise une boucle for pour couvrir un cercle complet</span>
+            <span class="pl-k">var</span> x <span class="pl-k">=</span>windowWidth<span class="pl-k">/</span><span class="pl-c1">2</span> <span class="pl-k">+</span> radius <span class="pl-k">*</span> <span class="pl-en">cos</span>(angle <span class="pl-k">+</span>i) <span class="pl-c">// on ajoute i à l'angle à chaque iteration de la boucle</span>
+            <span class="pl-k">var</span> y <span class="pl-k">=</span>windowHeight<span class="pl-k">/</span><span class="pl-c1">2</span> <span class="pl-k">+</span> radius <span class="pl-k">*</span> <span class="pl-en">sin</span>(angle<span class="pl-k">+</span>i)
+            <span class="pl-en">ellipse</span>(x,y,<span class="pl-smi">s_brush_size</span>.<span class="pl-c1">value</span>(),<span class="pl-smi">s_brush_size</span>.<span class="pl-c1">value</span>())
+          }
+      }
+
+    <span class="pl-c">// dessiner les paramètres sélectionnés</span>
+    <span class="pl-en">push</span>()
+    <span class="pl-en">fill</span>(<span class="pl-c1">0</span>,<span class="pl-c1">100</span>)
+    <span class="pl-en">rect</span>(<span class="pl-c1">0</span>, windowHeight<span class="pl-k">-</span><span class="pl-c1">80</span> ,<span class="pl-c1">860</span>,<span class="pl-c1">80</span>)
+    <span class="pl-en">stroke</span>(<span class="pl-c1">255</span>)
+    <span class="pl-en">fill</span>(<span class="pl-smi">s_hue</span>.<span class="pl-c1">value</span>(),<span class="pl-smi">s_sat</span>.<span class="pl-c1">value</span>(),<span class="pl-smi">s_bri</span>.<span class="pl-c1">value</span>(),<span class="pl-smi">s_opacity</span>.<span class="pl-c1">value</span>()<span class="pl-k">+</span><span class="pl-c1">25</span>)
+    <span class="pl-en">ellipse</span>(<span class="pl-c1">620</span> , windowHeight<span class="pl-k">-</span><span class="pl-c1">30</span> ,<span class="pl-smi">s_brush_size</span>.<span class="pl-c1">value</span>()<span class="pl-k">+</span><span class="pl-c1">5</span>, <span class="pl-smi">s_brush_size</span>.<span class="pl-c1">value</span>()<span class="pl-k">+</span><span class="pl-c1">5</span>)
+    <span class="pl-en">pop</span>()
+
+  }</pre></div>
+
+<p><img src="assets/02_dom_02.png" alt="02_dom_02"></p>
+
+<p>L'exemple live est disponnible à cette adresse : </p>
+
+<p>*<a href="#contenu">^ home</a><br></p>
+
+<p><a name="site"></a>-</p>
+
+<h3>
+<a id="exemple-de-site-web" class="anchor" href="#exemple-de-site-web" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Exemple de site web</h3>
+
+<p>Mon site web personnel est constuit à l'aide de la librairie DOM de p5js. Le principe est d'utiliser un canvas pour la navigation dans les 'pages' plutôt qu'un menu classique.</p>
+
+<p><a href="http://b2renger.github.io">http://b2renger.github.io</a></p>
+
+<p><img src="assets/b2renger_website.png" alt="b2renger website"></p>
+
+<p>La partie de gauche de la page web est donc un canvas faisant fonctionner un sketch p5js. A ce niveau du cours certains aspects du code seront une peu compliqués à comprendre, mais le principe de base est simple : chaque forme géométrique représente un page, lorsque l'on passe au dessus avec la souris, les éléments html de la partie de droite sont détruits, et recrées en fonction d'un fichier csv (qui représente l'article). Le fichier csv est alors analysé et chaque ligne correspond à la création d'un élément html : paragraphe, balise vidéo, lien hypertexte, balise image ou audio etc.</p>
+
+<p>Un peu de documentation et un exemple simple sont disponnibles à cette adresse : <a href="http://b2renger.github.io/p5js_algae_dom/index.html">http://b2renger.github.io/p5js_algae_dom/index.html</a></p>
+
+<p>*<a href="#contenu">^ home</a><br></p>
+
+<p><a href="#contenu">^ home</a><br></p>
+
+<p><a name="socket"></a></p>
+
+<h2>
+<a id="websocket-et-socketio" class="anchor" href="#websocket-et-socketio" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>websocket et SocketIO</h2>
 
 <p><a href="#contenu">^ home</a><br></p>
 
@@ -766,12 +1052,18 @@ mode instance de p5js</p>
 <h2>
 <a id="animer-un-déplacement" class="anchor" href="#animer-un-d%C3%A9placement" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Animer un déplacement</h2>
 
+<h2>
+<a id="objets-en-js" class="anchor" href="#objets-en-js" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>objets en js</h2>
+
 <p><a href="#contenu">^ home</a><br></p>
 
-<p><a name="socket"></a></p>
+<p><a name="sound"></a></p>
 
 <h2>
-<a id="websocket-et-socketio" class="anchor" href="#websocket-et-socketio" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>websocket et SocketIO</h2>
+<a id="la-librairie-son" class="anchor" href="#la-librairie-son" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>La librairie son</h2>
+
+<h2>
+<a id="mini-projet-son-websocket" class="anchor" href="#mini-projet-son-websocket" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Mini-projet son websocket</h2>
 
 <p><a href="#contenu">^ home</a><br></p>
 
@@ -790,6 +1082,7 @@ mode instance de p5js</p>
 <li><p>Expérimentations typographiques : <a href="https://b2renger.github.io/p5js_typo/">https://b2renger.github.io/p5js_typo/</a></p></li>
 <li><p>Exemples Computer Vision : <a href="https://kylemcdonald.github.io/cv-examples/">https://kylemcdonald.github.io/cv-examples/</a></p></li>
 <li><p>Introduction web sockets et nodejs : link tuto  <a href="https://github.com/processing/p5.js/wiki/p5.js">https://github.com/processing/p5.js/wiki/p5.js</a></p></li>
+<li><p>Utilisation de p5js en mode instanciable - avoir plusieurs canvas dans une page : <a href="https://github.com/processing/p5.js/wiki/Instantiation-Cases">https://github.com/processing/p5.js/wiki/Instantiation-Cases</a></p></li>
 </ul>
 
 <p><a href="#contenu">^ home</a><br></p>
@@ -837,15 +1130,6 @@ mode instance de p5js</p>
       </section>
     </div>
 
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Introduction p5js maintained by <a href="https://github.com/b2renger">b2renger</a></p>
-        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
     
-
   </body>
 </html>
