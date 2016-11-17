@@ -20,15 +20,15 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
 * [Dessiner avec la souris](#dessiner)<br>
 	*	[Les couleurs et la transparence](#couleurs)<br>
 	*	[Utilisation de variables](#simuler) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/01_dessiner_01/index.html)<br>
-	*	[Réaliser des symétries](#symetries)<br> - [**DEMO**](https://b2renger.github.io/Introduction_p5js/01_dessiner_02/index.html)<br>
+	*	[Réaliser des symétries](#symetries) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/01_dessiner_02/index.html)<br>
 	*	[Créer des fonctions javascript](#fonctions)<br>
-	*	[Utiliser les transformations de l'espace : effet spirographe](#transformations)<br> - [**DEMO**](https://b2renger.github.io/Introduction_p5js/01_dessiner_04/index.html)<br>
-	*	[Conditions, boucles et coordonnées polaires : effet "spray-can"](#spray)<br> - [**DEMO 1**](https://b2renger.github.io/Introduction_p5js/01_dessiner_05/index.html)<br> - [**DEMO 2**](https://b2renger.github.io/Introduction_p5js/01_dessiner_06/index.html)<br>
+	*	[Utiliser les transformations de l'espace : effet spirographe](#transformations) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/01_dessiner_04/index.html)<br>
+	*	[Conditions, boucles et coordonnées polaires : effet "spray-can"](#spray) - [**DEMO 1**](https://b2renger.github.io/Introduction_p5js/01_dessiner_05/index.html) - [**DEMO 2**](https://b2renger.github.io/Introduction_p5js/01_dessiner_06/index.html)<br>
 		*	[Conditions : "if"](#conditions)<br>
 		*	[Coordonnées polaires](#polaire)<br>
 		*	[Boucles : "for"](#boucles)<br> 
 * [DOM](#dom)<br>
-	*	[Utilisation de la librairie](#utilisation)<br> - [**DEMO 1**](https://b2renger.github.io/Introduction_p5js/02_DOM_01/index.html)<br> - - [**DEMO 2**](https://b2renger.github.io/Introduction_p5js/02_DOM_02/index.html)<br>
+	*	[Utilisation de la librairie](#utilisation) - [**DEMO 1**](https://b2renger.github.io/Introduction_p5js/02_DOM_01/index.html) - [**DEMO 2**](https://b2renger.github.io/Introduction_p5js/02_DOM_02/index.html)<br>
 		*	[Créer des éléments HTML5](#html5)<br>
 		*	[Styliser avec du css](#css)<br>
 	*	[Exemple de site web](#siteweb)<br>
