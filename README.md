@@ -19,7 +19,7 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
 * [Principes de bases](#bases)<br>
 * [Dessiner avec la souris](#dessiner)<br>
 	*	[Les couleurs et la transparence](#couleurs)<br>
-	*	[Utilisation de variables](#simuler)<br>
+	*	[Utilisation de variables](#simuler) - [demo link](https://b2renger.github.io/Introduction_p5js/01_dessiner_01/index.html)<br>
 	*	[Réaliser des symétries](#symetries)<br>
 	*	[Créer des fonctions javascript](#fonctions)<br>
 	*	[Utiliser les transformations de l'espace : effet spirographe](#transformations)<br>
@@ -188,7 +188,6 @@ Chaque execution d'une boucle draw dessine un cercle de 20 pixels au coordonnée
 Vous pouvez expérimenter avec ce programme pour vous en rendre compte : 
 
 - https://www.openprocessing.org/sketch/388459
-
 
 **ellipse** est un mot clé permettant de dessiner une ellipse d'une taille précise à une endroit précis en lui passant des **paramètres**, ce sont les valeurs que l'on donne entre parenthèses :
 
@@ -1040,7 +1039,31 @@ La partie de gauche de la page web est donc un canvas faisant fonctionner un ske
 Un peu de documentation et un exemple simple sont disponnibles à cette adresse : http://b2renger.github.io/p5js_algae_dom/index.html
 
 
-*[^ home](#contenu)<br>
+[^ home](#contenu)<br>
+
+<a name="video"/>-
+### Accès vidéo
+
+La librairie DOM permet d'avoir accès au microphone et à la webcam à travers le navigateur via la fonction **createCapture()** : http://p5js.org/reference/#/p5/createCapture, et de lire des vidéos.
+
+```javascript
+var capture;
+
+function setup() {
+  createCanvas(390, 240);
+  capture = createCapture(VIDEO);
+  capture.size(320, 240);
+  //capture.hide();
+}
+
+function draw() {
+  background(255);
+  image(capture, 0, 0, 320, 240);
+  filter('INVERT');
+}
+```
+
+pointer vers les ressources de Dan et Kyle et particuliérement l'excellent checkbox et un face detection
 
 
 
