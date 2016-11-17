@@ -19,7 +19,7 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
 * [Principes de bases](#bases)<br>
 * [Dessiner avec la souris](#dessiner)<br>
 	*	[Les couleurs et la transparence](#couleurs)<br>
-	*	[Utilisation de variables](#simuler) - [demo link](https://b2renger.github.io/Introduction_p5js/01_dessiner_01/index.html)<br>
+	*	[Utilisation de variables](#simuler) **-** [**Demo**](https://b2renger.github.io/Introduction_p5js/01_dessiner_01/index.html)<br>
 	*	[Réaliser des symétries](#symetries)<br>
 	*	[Créer des fonctions javascript](#fonctions)<br>
 	*	[Utiliser les transformations de l'espace : effet spirographe](#transformations)<br>
