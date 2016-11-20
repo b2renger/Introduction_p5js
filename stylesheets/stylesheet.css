@@ -83,7 +83,7 @@ header h2 {
 }
 section img {
   border-radius:10px;
-  max-width: 80%;
+  max-width: 100%;
   height: auto;
 }
 
