@@ -61,23 +61,22 @@
 <ul>
 <li>  <a href="#couleurs">Les couleurs et la transparence</a><br>
 </li>
-<li>  <a href="#simuler">Utilisation de variables</a><br>
+<li>  <a href="#simuler">Utilisation de variables</a> - <a href="https://b2renger.github.io/Introduction_p5js/01_dessiner_01/index.html"><strong>DEMO</strong></a><br>
 </li>
-<li>  <a href="#symetries">Réaliser des symétries</a><br>
+<li>  <a href="#symetries">Réaliser des symétries</a> - <a href="https://b2renger.github.io/Introduction_p5js/01_dessiner_02/index.html"><strong>DEMO</strong></a><br>
 </li>
 <li>  <a href="#fonctions">Créer des fonctions javascript</a><br>
 </li>
-<li>  <a href="#transformations">Utiliser les transformations de l'espace : effet spirographe</a><br>
+<li>  <a href="#transformations">Utiliser les transformations de l'espace : effet spirographe</a> - <a href="https://b2renger.github.io/Introduction_p5js/01_dessiner_04/index.html"><strong>DEMO</strong></a><br>
 </li>
-<li>  <a href="#spray">Conditions, boucles et coordonnées polaires : effet "spray-can"</a><br>
+<li>  <a href="#spray">Conditions, boucles et coordonnées polaires : effet "spray-can"</a> - <a href="https://b2renger.github.io/Introduction_p5js/01_dessiner_05/index.html"><strong>DEMO 1</strong></a> - <a href="https://b2renger.github.io/Introduction_p5js/01_dessiner_06/index.html"><strong>DEMO 2</strong></a><br>
 
 <ul>
 <li>  <a href="#conditions">Conditions : "if"</a><br>
 </li>
 <li>  <a href="#polaire">Coordonnées polaires</a><br>
 </li>
-<li>  <a href="#boucles">Boucles : "for"</a><br>
-</li>
+<li>  <a href="#boucles">Boucles : "for"</a><br> </li>
 </ul>
 </li>
 </ul>
@@ -86,11 +85,20 @@
 <a href="#dom">DOM</a><br>
 
 <ul>
-<li>  <a href="#utilisation">Utilisation de la librairie</a><br>
-</li>
+<li>  <a href="#utilisation">Utilisation de la librairie</a> - <a href="https://b2renger.github.io/Introduction_p5js/02_dom_01/index.html"><strong>DEMO 1</strong></a> - <a href="https://b2renger.github.io/Introduction_p5js/02_dom_02/index.html"><strong>DEMO 2</strong></a><br>
+
+<ul>
 <li>  <a href="#html5">Créer des éléments HTML5</a><br>
 </li>
 <li>  <a href="#css">Styliser avec du css</a><br>
+</li>
+</ul>
+</li>
+<li>  <a href="#video">Utilisation de la vidéo</a> - <a href="https://b2renger.github.io/Introduction_p5js/02_dom_03/index.html"><strong>DEMO</strong></a><br>
+</li>
+<li>  <a href="#video-filtres">Manipulation dun flux vidéo</a> - <a href="https://b2renger.github.io/Introduction_p5js/02_dom_04/index.html"><strong>DEMO</strong></a><br>
+</li>
+<li>  <a href="#instanciation">Mode instance de p5js</a> - <a href="https://b2renger.github.io/Introduction_p5js/02_dom_05/index.html"><strong>DEMO</strong></a><br>
 </li>
 <li>  <a href="#siteweb">Exemple de site web</a><br>
 </li>
@@ -964,6 +972,8 @@ Elle n'est malheureusement pas forcément toujours simple à comprendre à mon s
 
 <p><img src="assets/02_dom_01.png" alt="02_dom_01"></p>
 
+<p><a href="https://www.openprocessing.org/sketch/389277">https://www.openprocessing.org/sketch/389277</a></p>
+
 <p><a href="https://b2renger.github.io/Introduction_p5js/02_dom_01/index.html">https://b2renger.github.io/Introduction_p5js/02_dom_01/index.html</a></p>
 
 <p><a href="#contenu">^ home</a><br></p>
@@ -1036,9 +1046,326 @@ Elle n'est malheureusement pas forcément toujours simple à comprendre à mon s
 
 <p><img src="assets/02_dom_02.png" alt="02_dom_02"></p>
 
-<p><a href="https://b2renger.github.io/Introduction_p5js/01_dessiner_02/index.html">https://b2renger.github.io/Introduction_p5js/01_dessiner_02/index.html</a></p>
+<p><a href="https://b2renger.github.io/Introduction_p5js/02_dom_02/index.html">https://b2renger.github.io/Introduction_p5js/02_dom_02/index.html</a></p>
 
-<p>*<a href="#contenu">^ home</a><br></p>
+<p><a href="https://www.openprocessing.org/sketch/390491">https://www.openprocessing.org/sketch/390491</a></p>
+
+<p><a href="#contenu">^ home</a><br></p>
+
+<p><a name="video"></a>-</p>
+
+<h3>
+<a id="accès-vidéo" class="anchor" href="#acc%C3%A8s-vid%C3%A9o" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Accès vidéo</h3>
+
+<p>La librairie DOM permet d'avoir accès au microphone et à la webcam à travers le navigateur via la fonction <strong>createCapture()</strong> : <a href="http://p5js.org/reference/#/p5/createCapture">http://p5js.org/reference/#/p5/createCapture</a>, et de lire des vidéos.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> capture;
+
+<span class="pl-k">function</span> <span class="pl-en">setup</span>() {
+  <span class="pl-en">createCanvas</span>(<span class="pl-c1">390</span>, <span class="pl-c1">240</span>);
+  capture <span class="pl-k">=</span> <span class="pl-en">createCapture</span>(<span class="pl-c1">VIDEO</span>);
+  <span class="pl-smi">capture</span>.<span class="pl-c1">size</span>(<span class="pl-c1">320</span>, <span class="pl-c1">240</span>);
+  <span class="pl-c">//capture.hide();</span>
+}
+
+<span class="pl-k">function</span> <span class="pl-en">draw</span>() {
+  <span class="pl-en">background</span>(<span class="pl-c1">255</span>);
+  <span class="pl-en">image</span>(capture, <span class="pl-c1">0</span>, <span class="pl-c1">0</span>, <span class="pl-c1">320</span>, <span class="pl-c1">240</span>);
+}</pre></div>
+
+<p>Cet exemple permet de créer un élément vidéo dans notre page web. Le principe est d'utiliser l'objet HTML5 dédié et de récupérer l'image à un instant t pour l'afficher dans notre canvas p5js à l'aide de la fonction <strong>image()</strong>.</p>
+
+<p>La ligne l'instruction :</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">capture</span>.<span class="pl-en">hide</span>()</pre></div>
+
+<p>permet de cacher l'élément HTML5 pour n'afficher que l'image de notre programme. </p>
+
+<p>Vous remarquerez que les mouvements droite gauche de l'image sont inversés par rapport à l'effet "miroir" que l'on pourrait attendre. Il est possible d'y rémedier en utilisant la fonction <strong>scale()</strong> qui permet de changer l'échelle de notre système de coordonnées en précisant la nouvelle échelle pour chaque coordonnée. Pour inverser l'image horizontalement :</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">scale</span>(<span class="pl-k">-</span><span class="pl-c1">1</span>,<span class="pl-c1">1</span>)</pre></div>
+
+<p>nous permet de renverser le système de coordonnées en abscisses, il faudra donc changer les informations que l'on donne pour l'affichage de notre image, qui sont dans l'ordre : <em>image(image à afficher, abscisse, ordonnée, largeur, hauteur)</em></p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">image</span>(capture,<span class="pl-k">-</span><span class="pl-c1">320</span>,<span class="pl-c1">0</span>,<span class="pl-c1">320</span>,<span class="pl-c1">240</span>)</pre></div>
+
+<p>l'abscisse de notre point d'ancrage pour l'image sera donc * -320 x -1 = 320 *</p>
+
+<p><a href="#contenu">^ home</a><br></p>
+
+<p><a name="video-filtres"></a>-</p>
+
+<h3>
+<a id="transformations-dun-flux-vidéo" class="anchor" href="#transformations-dun-flux-vid%C3%A9o" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Transformations d'un flux vidéo</h3>
+
+<p>Le javascript n'est pas forcément le langage le plus approprié pour manipuler des images et des flux vidéos en temps réel pour des questions de performances cependant il est quand même possible de faire des choses. Les fonctions que nous verrons ici peuvent être appliquée à un flux vidéo provenant d'une webcam ou à une vidéo classique, ainsi qu'à une image classique.</p>
+
+<p>La fonction <strong>tint()</strong> permet de "coloriser" l'image à l'aide d'un filtre de teinte. Il suffit de passer une couleur à la fonction pour appliquer ce filtre. Par contre cette fonction est un peu différentes des fonctions <strong>fill()</strong>, <strong>stroke()</strong> qui s'appellent avant de dessiner, celle-ci s'appelle après avoir dessiner les éléments sur lequel ce filtre sera appliqué. Le filtre va en fait récupérer les pixels de la vidéo et les traiter un à un.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> capture; <span class="pl-c">// création d'une variable pour stocker notre élement de capture vidéo</span>
+
+<span class="pl-k">function</span> <span class="pl-en">setup</span>() {
+  <span class="pl-en">createCanvas</span>(windowWidth, windowHeight);
+  capture <span class="pl-k">=</span> <span class="pl-en">createCapture</span>(<span class="pl-c1">VIDEO</span>); <span class="pl-c">// créer un élément html5 d'accès à la webcam</span>
+  <span class="pl-smi">capture</span>.<span class="pl-c1">size</span>(windowWidth<span class="pl-k">/</span><span class="pl-c1">2</span>, windowHeight<span class="pl-k">/</span><span class="pl-c1">2</span>); <span class="pl-c">// définir la résolution de captation</span>
+  <span class="pl-smi">capture</span>.<span class="pl-en">hide</span>(); <span class="pl-c">// cacher l'élement vidéo HTML5</span>
+  <span class="pl-en">colorMode</span>(<span class="pl-c1">HSB</span>,<span class="pl-c1">360</span>,<span class="pl-c1">100</span>,<span class="pl-c1">100</span>,<span class="pl-c1">100</span>) <span class="pl-c">// passer en mode HSB</span>
+}
+
+<span class="pl-k">function</span> <span class="pl-en">draw</span>() {
+  <span class="pl-en">background</span>(<span class="pl-c1">255</span>);
+  <span class="pl-en">scale</span>(<span class="pl-k">-</span><span class="pl-c1">1</span>,<span class="pl-c1">1</span>)  <span class="pl-c">// inverser les coordonnées pour effet miroir</span>
+  <span class="pl-en">image</span>(capture, <span class="pl-k">-</span>windowWidth<span class="pl-k">/</span><span class="pl-c1">2</span>, <span class="pl-c1">0</span>, windowWidth<span class="pl-k">/</span><span class="pl-c1">2</span>, windowHeight<span class="pl-k">/</span><span class="pl-c1">2</span>); <span class="pl-c">// afficher l'image de la capture vidéo</span>
+  <span class="pl-en">tint</span>(<span class="pl-en">map</span>(mouseX,<span class="pl-c1">0</span>,windowWidth,<span class="pl-c1">0</span>,<span class="pl-c1">360</span>),<span class="pl-c1">100</span>,<span class="pl-c1">100</span>,<span class="pl-c1">100</span>) <span class="pl-c">// teinter l'image précédement dessinée en fonction de la position de la souris</span>
+}</pre></div>
+
+<p><img src="assets/02_dom_03.png" alt="02_dom_03"></p>
+
+<p><a href="https://b2renger.github.io/Introduction_p5js/02_dom_03/index.html">https://b2renger.github.io/Introduction_p5js/02_dom_03/index.html</a></p>
+
+<p><a href="https://www.openprocessing.org/sketch/389684">https://www.openprocessing.org/sketch/389684</a></p>
+
+<p>La fonction <strong>filter()</strong> permet aussi différents types d'effets : <a href="http://p5js.org/reference/#/p5/filter">http://p5js.org/reference/#/p5/filter</a></p>
+
+<p>Il faut comprendre que si on multiplie les effets dans le même canvas ceux-ci s'ajoutent les un aux autres.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> capture;
+
+<span class="pl-k">function</span> <span class="pl-en">setup</span>() {
+  <span class="pl-en">createCanvas</span>(windowWidth, windowHeight);
+  capture <span class="pl-k">=</span> <span class="pl-en">createCapture</span>(<span class="pl-c1">VIDEO</span>);
+  <span class="pl-smi">capture</span>.<span class="pl-c1">size</span>(windowWidth<span class="pl-k">/</span><span class="pl-c1">3</span>, windowHeight<span class="pl-k">/</span><span class="pl-c1">3</span>);
+  <span class="pl-smi">capture</span>.<span class="pl-en">hide</span>();
+}
+
+<span class="pl-k">function</span> <span class="pl-en">draw</span>() {
+  <span class="pl-en">background</span>(<span class="pl-c1">255</span>);
+
+  <span class="pl-en">image</span>(capture, <span class="pl-c1">0</span>, windowHeight<span class="pl-k">/</span><span class="pl-c1">2</span>, windowWidth<span class="pl-k">*</span><span class="pl-c1">1</span><span class="pl-k">/</span><span class="pl-c1">2</span>, windowHeight<span class="pl-k">/</span><span class="pl-c1">2</span>);
+  <span class="pl-en">filter</span>(<span class="pl-s"><span class="pl-pds">'</span>THRESHOLD<span class="pl-pds">'</span></span>,mouseX<span class="pl-k">/</span>windowWidth);
+
+  <span class="pl-en">image</span>(capture, windowWidth<span class="pl-k">*</span><span class="pl-c1">1</span><span class="pl-k">/</span><span class="pl-c1">2</span>, <span class="pl-c1">0</span>, windowWidth<span class="pl-k">*</span><span class="pl-c1">1</span><span class="pl-k">/</span><span class="pl-c1">2</span>, windowHeight<span class="pl-k">/</span><span class="pl-c1">2</span>);
+  <span class="pl-en">filter</span>(<span class="pl-s"><span class="pl-pds">'</span>INVERT<span class="pl-pds">'</span></span>);
+
+  <span class="pl-en">image</span>(capture, windowWidth<span class="pl-k">*</span><span class="pl-c1">1</span><span class="pl-k">/</span><span class="pl-c1">2</span>, windowHeight<span class="pl-k">*</span><span class="pl-c1">1</span><span class="pl-k">/</span><span class="pl-c1">2</span>, windowWidth<span class="pl-k">*</span><span class="pl-c1">1</span><span class="pl-k">/</span><span class="pl-c1">2</span>, windowHeight<span class="pl-k">/</span><span class="pl-c1">2</span>);
+  <span class="pl-en">filter</span>(<span class="pl-s"><span class="pl-pds">'</span>POSTERIZE<span class="pl-pds">'</span></span>, <span class="pl-c1">2</span><span class="pl-k">+</span>mouseX<span class="pl-k">*</span><span class="pl-c1">3</span><span class="pl-k">/</span>windowWidth);
+
+  <span class="pl-en">image</span>(capture, <span class="pl-c1">0</span>, <span class="pl-c1">0</span>, windowWidth<span class="pl-k">*</span><span class="pl-c1">1</span><span class="pl-k">/</span><span class="pl-c1">2</span>, windowHeight<span class="pl-k">/</span><span class="pl-c1">2</span>);
+}</pre></div>
+
+<p><img src="assets/02_dom_04.png" alt="02_dom_04"></p>
+
+<p><a href="https://b2renger.github.io/Introduction_p5js/02_dom_04/index.html">https://b2renger.github.io/Introduction_p5js/02_dom_04/index.html</a></p>
+
+<p><a href="https://www.openprocessing.org/sketch/389281">https://www.openprocessing.org/sketch/389281</a></p>
+
+<p>L'usage de la vidéo en temps réel dans le navigateur pourra avoir de nombreux usages. Pour comprendre comment fonctionnent ces filtres il faut se pencher sur les fonctions <strong>loadPixels()</strong>, <strong>updatePixels()</strong>, et le tableau de pixels <strong>pixels[]</strong>.</p>
+
+<p><a href="http://p5js.org/reference/#/p5/loadPixels">http://p5js.org/reference/#/p5/loadPixels</a></p>
+
+<p><a href="http://p5js.org/reference/#/p5/updatePixels">http://p5js.org/reference/#/p5/updatePixels</a></p>
+
+<p><a href="http://p5js.org/reference/#/p5/pixels%5B%5D">http://p5js.org/reference/#/p5/pixels[]</a></p>
+
+<p>Leur usage dépasse une simple introduction à p5js, cependant quelques ressources en anglais sont disponnibles (elles sont aussi référencées dans la rubrique <em>ressources</em>).    </p>
+
+<p><a href="https://kylemcdonald.github.io/cv-examples/">https://kylemcdonald.github.io/cv-examples/</a></p>
+
+<p>L'exemple sur le <strong>threshold</strong> applique le même algorithme que le filtre vu précédement: <a href="https://kylemcdonald.github.io/cv-examples/Thresholding/">https://kylemcdonald.github.io/cv-examples/Thresholding/</a></p>
+
+<p>D'autres exemples peuvent être source d'inspiration pour créer de nouvelles façon d'interagir avec une page web.</p>
+
+<p><a href="https://kylemcdonald.github.io/cv-examples/OpticalFlow/">https://kylemcdonald.github.io/cv-examples/OpticalFlow/</a></p>
+
+<p><a href="https://kylemcdonald.github.io/cv-examples/FaceTracking/">https://kylemcdonald.github.io/cv-examples/FaceTracking/</a></p>
+
+<p>Je vous conseille aussi l'excellent playlist de Daniel Shiffman sur le sujet : <a href="https://www.youtube.com/playlist?list=PLRqwX-V7Uu6aKKsDHZdDvN6oCJ2hRY_Ig">https://www.youtube.com/playlist?list=PLRqwX-V7Uu6aKKsDHZdDvN6oCJ2hRY_Ig</a></p>
+
+<p>et tout particulièrement le checkbox miror qui restitue un flux vidéo par une grille de boîtes à cocher html activées et désactivées programmatiquement grâce à la librairie dom : <a href="https://www.youtube.com/watch?v=m1G6WBvrOBE&amp;list=PLRqwX-V7Uu6aKKsDHZdDvN6oCJ2hRY_Ig&amp;index=5">https://www.youtube.com/watch?v=m1G6WBvrOBE&amp;list=PLRqwX-V7Uu6aKKsDHZdDvN6oCJ2hRY_Ig&amp;index=5</a></p>
+
+<p><a href="#contenu">^ home</a><br></p>
+
+<p><a name="instanciation"></a>-</p>
+
+<h3>
+<a id="mode-instance" class="anchor" href="#mode-instance" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Mode instance</h3>
+
+<p>Le mode instance de p5js permet d'avoir plusieurs canvas utilisant p5js dans une même page web. Dans le cas de notre grille de vidéos teintées cela pourrait nous permettre de contourner le problème du chaînage des effets.</p>
+
+<p>Il sera alors possible de créer quatre canvas avec chacun leur accès à la webcam, leur propre filtre et leur propre interaction aussi.</p>
+
+<p>Le terme <em>instance</em> fait référence à la notion d'objet en javascript que nous developperons plus tard. Mais en gros il faut comprendre qu'un programme p5js répond à un fonctionnement précis : tous les sketchs p5js ont accès aux mêmes fonctionnalités, une instance de p5js permet de bénéficier d'un contexte de programmation dans lequel toutes les fonctions de p5js existent.</p>
+
+<p>Dans la pratique il suffit d'imbriquer notre programme dans une fonction javascript et de préfixer tous les appels à des fonctions de p5js</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> s1 <span class="pl-c">// des variables pour créer les instances de nos programmes.</span>
+
+<span class="pl-k">function</span> <span class="pl-en">setup</span>(){
+  s1 <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">p5</span>(sketch) <span class="pl-c">// on dit que s1 est un nouveau programme de type p5js(ou une instance) et qu'il execute le programme appellé "sketch"</span>
+}
+
+<span class="pl-c">// on crée une nouvelle variable sketch, celle qui est appelée dans le setup</span>
+<span class="pl-c">// ce sera un programme p5js. Il est nécessaire de passer une "instance" de p5</span>
+<span class="pl-c">// pour pouvoir accès aux fonction de p5. C'est le "p" utilisé un peu partout.</span>
+<span class="pl-c">// On doit "l'appeler" avant chaque fonction intégrée dans p5 (par ex : p.fill(255))</span>
+<span class="pl-k">var</span> <span class="pl-en">sketch</span> <span class="pl-k">=</span> <span class="pl-k">function</span>(<span class="pl-smi">p</span>) { 
+  <span class="pl-k">var</span> capture;
+  <span class="pl-smi">p</span>.<span class="pl-en">setup</span> <span class="pl-k">=</span> <span class="pl-k">function</span>() { <span class="pl-c">// on créer le setup de notre programme avec "p." devant le mot clé setup</span>
+    <span class="pl-k">var</span> c <span class="pl-k">=</span> <span class="pl-smi">p</span>.<span class="pl-en">createCanvas</span>(<span class="pl-smi">p</span>.<span class="pl-smi">windowWidth</span><span class="pl-k">/</span><span class="pl-c1">2</span>, <span class="pl-smi">p</span>.<span class="pl-smi">windowHeight</span><span class="pl-k">/</span><span class="pl-c1">2</span>); <span class="pl-c">// on crée un canvas</span>
+    <span class="pl-smi">c</span>.<span class="pl-en">position</span>(<span class="pl-c1">0</span>,<span class="pl-c1">0</span>); <span class="pl-c">// on le place dans la page</span>
+    <span class="pl-c">// initialisation de la capture</span>
+    capture <span class="pl-k">=</span> <span class="pl-smi">p</span>.<span class="pl-en">createCapture</span>(<span class="pl-smi">p</span>.<span class="pl-c1">VIDEO</span>);
+    <span class="pl-smi">capture</span>.<span class="pl-c1">size</span>(<span class="pl-smi">p</span>.<span class="pl-c1">width</span>, <span class="pl-smi">p</span>.<span class="pl-c1">height</span>);
+    <span class="pl-smi">capture</span>.<span class="pl-en">hide</span>()
+  }
+  <span class="pl-smi">p</span>.<span class="pl-en">draw</span> <span class="pl-k">=</span> <span class="pl-k">function</span>() {
+    <span class="pl-smi">p</span>.<span class="pl-c1">background</span>(<span class="pl-c1">255</span>);
+    <span class="pl-smi">p</span>.<span class="pl-en">scale</span>(<span class="pl-k">-</span><span class="pl-c1">1</span>,<span class="pl-c1">1</span>)
+    <span class="pl-smi">p</span>.<span class="pl-en">image</span>(capture, <span class="pl-k">-</span><span class="pl-smi">p</span>.<span class="pl-c1">width</span> , <span class="pl-c1">0</span>, <span class="pl-smi">p</span>.<span class="pl-c1">width</span>, <span class="pl-smi">p</span>.<span class="pl-c1">height</span>);
+  }
+}</pre></div>
+
+<p>Il est alors possible de créer de multipes instances de programmes p5js et de les controler avec des éléments DOM, comme des boutons permettant d'activer/ désactiver l'éxecution des programmes indépendement.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> s1,s2,s3,s4 <span class="pl-c">// des variables pour créer les instances de nos programmes.</span>
+
+<span class="pl-k">function</span> <span class="pl-en">setup</span>(){
+  s1 <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">p5</span>(sketch) <span class="pl-c">// on dit que s1 est un nouveau programme de type p5js(ou une instance) et qu'il execute le programme appellé "sketch"</span>
+  s2 <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">p5</span>(sketch2)
+  s3 <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">p5</span>(sketch3)
+  s4 <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">p5</span>(sketch4)
+  <span class="pl-en">controls</span>(); <span class="pl-c">// on initialise les boutons pour controler les programmes</span>
+}
+
+<span class="pl-c">// on crée une nouvelle variable sketch, celle qui est appelée dans le setup</span>
+<span class="pl-c">// ce sera un programme p5js. Il est nécessaire de passer une "instance" de p5</span>
+<span class="pl-c">// pour pouvoir accès aux fonction de p5. C'est le "p" utilisé un peu partout.</span>
+<span class="pl-c">// On doit "l'appeler" avant chaque fonction intégrée dans p5 (par ex : p.fill(255))</span>
+<span class="pl-k">var</span> <span class="pl-en">sketch</span> <span class="pl-k">=</span> <span class="pl-k">function</span>(<span class="pl-smi">p</span>) { 
+  <span class="pl-k">var</span> capture;
+  <span class="pl-smi">p</span>.<span class="pl-en">setup</span> <span class="pl-k">=</span> <span class="pl-k">function</span>() { <span class="pl-c">// on créer le setup de notre programme avec "p." devant le mot clé setup</span>
+    <span class="pl-k">var</span> c <span class="pl-k">=</span> <span class="pl-smi">p</span>.<span class="pl-en">createCanvas</span>(<span class="pl-smi">p</span>.<span class="pl-smi">windowWidth</span><span class="pl-k">/</span><span class="pl-c1">2</span>, <span class="pl-smi">p</span>.<span class="pl-smi">windowHeight</span><span class="pl-k">/</span><span class="pl-c1">2</span>); <span class="pl-c">// on crée un canvas</span>
+    <span class="pl-smi">c</span>.<span class="pl-en">position</span>(<span class="pl-c1">0</span>,<span class="pl-c1">0</span>); <span class="pl-c">// on le place dans la page</span>
+    <span class="pl-c">// initialisation de la capture</span>
+    capture <span class="pl-k">=</span> <span class="pl-smi">p</span>.<span class="pl-en">createCapture</span>(<span class="pl-smi">p</span>.<span class="pl-c1">VIDEO</span>);
+    <span class="pl-smi">capture</span>.<span class="pl-c1">size</span>(<span class="pl-smi">p</span>.<span class="pl-c1">width</span>, <span class="pl-smi">p</span>.<span class="pl-c1">height</span>);
+    <span class="pl-smi">capture</span>.<span class="pl-en">hide</span>()
+  }
+  <span class="pl-smi">p</span>.<span class="pl-en">draw</span> <span class="pl-k">=</span> <span class="pl-k">function</span>() {
+    <span class="pl-smi">p</span>.<span class="pl-c1">background</span>(<span class="pl-c1">255</span>);
+    <span class="pl-smi">p</span>.<span class="pl-en">scale</span>(<span class="pl-k">-</span><span class="pl-c1">1</span>,<span class="pl-c1">1</span>)
+    <span class="pl-smi">p</span>.<span class="pl-en">image</span>(capture, <span class="pl-k">-</span><span class="pl-smi">p</span>.<span class="pl-c1">width</span> , <span class="pl-c1">0</span>, <span class="pl-smi">p</span>.<span class="pl-c1">width</span>, <span class="pl-smi">p</span>.<span class="pl-c1">height</span>);
+  }
+}
+
+<span class="pl-k">var</span> <span class="pl-en">sketch2</span> <span class="pl-k">=</span> <span class="pl-k">function</span>(<span class="pl-smi">p</span>) {
+  <span class="pl-k">var</span> capture;
+  <span class="pl-smi">p</span>.<span class="pl-en">setup</span> <span class="pl-k">=</span> <span class="pl-k">function</span>() {
+    <span class="pl-k">var</span> c <span class="pl-k">=</span> <span class="pl-smi">p</span>.<span class="pl-en">createCanvas</span>(<span class="pl-smi">p</span>.<span class="pl-smi">windowWidth</span><span class="pl-k">/</span><span class="pl-c1">2</span>, <span class="pl-smi">p</span>.<span class="pl-smi">windowHeight</span><span class="pl-k">/</span><span class="pl-c1">2</span>);
+    <span class="pl-smi">c</span>.<span class="pl-en">position</span>(<span class="pl-smi">p</span>.<span class="pl-smi">windowWidth</span><span class="pl-k">/</span><span class="pl-c1">2</span>,<span class="pl-c1">0</span>)
+    capture <span class="pl-k">=</span> <span class="pl-smi">p</span>.<span class="pl-en">createCapture</span>(<span class="pl-smi">p</span>.<span class="pl-c1">VIDEO</span>);
+    <span class="pl-smi">capture</span>.<span class="pl-c1">size</span>(<span class="pl-smi">p</span>.<span class="pl-c1">width</span>, <span class="pl-smi">p</span>.<span class="pl-c1">height</span>);
+    <span class="pl-smi">capture</span>.<span class="pl-en">hide</span>()
+  }
+  <span class="pl-smi">p</span>.<span class="pl-en">draw</span> <span class="pl-k">=</span> <span class="pl-k">function</span>() {
+    <span class="pl-smi">p</span>.<span class="pl-c1">background</span>(<span class="pl-c1">255</span>);
+    <span class="pl-smi">p</span>.<span class="pl-en">scale</span>(<span class="pl-k">-</span><span class="pl-c1">1</span>,<span class="pl-c1">1</span>)
+    <span class="pl-smi">p</span>.<span class="pl-en">image</span>(capture, <span class="pl-k">-</span><span class="pl-smi">p</span>.<span class="pl-c1">width</span> , <span class="pl-c1">0</span>, <span class="pl-smi">p</span>.<span class="pl-c1">width</span>, <span class="pl-smi">p</span>.<span class="pl-c1">height</span>);
+    <span class="pl-smi">p</span>.<span class="pl-en">filter</span>(<span class="pl-s"><span class="pl-pds">'</span>POSTERIZE<span class="pl-pds">'</span></span>,<span class="pl-c1">4</span><span class="pl-k">+</span><span class="pl-smi">p</span>.<span class="pl-smi">mouseX</span><span class="pl-k">/</span><span class="pl-smi">p</span>.<span class="pl-c1">width</span>);
+  }
+}
+
+<span class="pl-k">var</span> <span class="pl-en">sketch3</span> <span class="pl-k">=</span> <span class="pl-k">function</span>(<span class="pl-smi">p</span>) {
+  <span class="pl-k">var</span> capture;
+  <span class="pl-smi">p</span>.<span class="pl-en">setup</span> <span class="pl-k">=</span> <span class="pl-k">function</span>() {
+    <span class="pl-k">var</span> c <span class="pl-k">=</span> <span class="pl-smi">p</span>.<span class="pl-en">createCanvas</span>(<span class="pl-smi">p</span>.<span class="pl-smi">windowWidth</span><span class="pl-k">/</span><span class="pl-c1">2</span>, <span class="pl-smi">p</span>.<span class="pl-smi">windowHeight</span><span class="pl-k">/</span><span class="pl-c1">2</span>);
+    <span class="pl-smi">c</span>.<span class="pl-en">position</span>(<span class="pl-c1">0</span>,<span class="pl-smi">p</span>.<span class="pl-smi">windowHeight</span><span class="pl-k">/</span><span class="pl-c1">2</span>)
+    capture <span class="pl-k">=</span> <span class="pl-smi">p</span>.<span class="pl-en">createCapture</span>(<span class="pl-smi">p</span>.<span class="pl-c1">VIDEO</span>);
+    <span class="pl-smi">capture</span>.<span class="pl-c1">size</span>(<span class="pl-smi">p</span>.<span class="pl-c1">width</span>, <span class="pl-smi">p</span>.<span class="pl-c1">height</span>);
+    <span class="pl-smi">capture</span>.<span class="pl-en">hide</span>()
+  }
+  <span class="pl-smi">p</span>.<span class="pl-en">draw</span> <span class="pl-k">=</span> <span class="pl-k">function</span>() {
+    <span class="pl-smi">p</span>.<span class="pl-c1">background</span>(<span class="pl-c1">255</span>);
+    <span class="pl-smi">p</span>.<span class="pl-en">scale</span>(<span class="pl-k">-</span><span class="pl-c1">1</span>,<span class="pl-c1">1</span>)
+    <span class="pl-smi">p</span>.<span class="pl-en">image</span>(capture, <span class="pl-k">-</span><span class="pl-smi">p</span>.<span class="pl-c1">width</span> , <span class="pl-c1">0</span>, <span class="pl-smi">p</span>.<span class="pl-c1">width</span>, <span class="pl-smi">p</span>.<span class="pl-c1">height</span>);
+    <span class="pl-smi">p</span>.<span class="pl-en">filter</span>(<span class="pl-s"><span class="pl-pds">'</span>INVERT<span class="pl-pds">'</span></span>);
+  }
+}
+
+<span class="pl-k">var</span> <span class="pl-en">sketch4</span> <span class="pl-k">=</span> <span class="pl-k">function</span>(<span class="pl-smi">p</span>) {
+  <span class="pl-k">var</span> capture;
+  <span class="pl-smi">p</span>.<span class="pl-en">setup</span> <span class="pl-k">=</span> <span class="pl-k">function</span>() {
+    <span class="pl-k">var</span> c <span class="pl-k">=</span>  <span class="pl-smi">p</span>.<span class="pl-en">createCanvas</span>(<span class="pl-smi">p</span>.<span class="pl-smi">windowWidth</span><span class="pl-k">/</span><span class="pl-c1">2</span>, <span class="pl-smi">p</span>.<span class="pl-smi">windowHeight</span><span class="pl-k">/</span><span class="pl-c1">2</span>);
+    <span class="pl-smi">c</span>.<span class="pl-en">position</span>(<span class="pl-smi">p</span>.<span class="pl-smi">windowWidth</span><span class="pl-k">/</span><span class="pl-c1">2</span> , <span class="pl-smi">p</span>.<span class="pl-smi">windowHeight</span><span class="pl-k">/</span><span class="pl-c1">2</span>)
+    capture <span class="pl-k">=</span> <span class="pl-smi">p</span>.<span class="pl-en">createCapture</span>(<span class="pl-smi">p</span>.<span class="pl-c1">VIDEO</span>);
+    <span class="pl-smi">capture</span>.<span class="pl-c1">size</span>(<span class="pl-smi">p</span>.<span class="pl-smi">windowWidth</span>, <span class="pl-smi">p</span>.<span class="pl-c1">height</span>);
+    <span class="pl-smi">capture</span>.<span class="pl-en">hide</span>();
+  }
+  <span class="pl-smi">p</span>.<span class="pl-en">draw</span> <span class="pl-k">=</span> <span class="pl-k">function</span>() {
+    <span class="pl-smi">p</span>.<span class="pl-c1">background</span>(<span class="pl-c1">255</span>);
+    <span class="pl-smi">p</span>.<span class="pl-en">scale</span>(<span class="pl-k">-</span><span class="pl-c1">1</span>,<span class="pl-c1">1</span>)
+    <span class="pl-smi">p</span>.<span class="pl-en">image</span>(capture, <span class="pl-k">-</span><span class="pl-smi">p</span>.<span class="pl-c1">width</span>, <span class="pl-c1">0</span>, <span class="pl-smi">p</span>.<span class="pl-c1">width</span>, <span class="pl-smi">p</span>.<span class="pl-c1">height</span>);
+    <span class="pl-smi">p</span>.<span class="pl-en">filter</span>(<span class="pl-s"><span class="pl-pds">'</span>THRESHOLD<span class="pl-pds">'</span></span>,<span class="pl-smi">p</span>.<span class="pl-smi">mouseX</span><span class="pl-k">/</span><span class="pl-smi">p</span>.<span class="pl-smi">windowWidth</span>);
+  }
+}
+
+<span class="pl-k">var</span> b_stop1,b_start1,b_stop2,b_start2, b_start3, b_stop3, b_start4, b_stop4
+
+<span class="pl-c">// Création des boutons pour mettre en pause et relancer les programmes</span>
+<span class="pl-k">function</span> <span class="pl-en">controls</span>(){
+  <span class="pl-c">// controles pour le premier sketch</span>
+  b_stop1 <span class="pl-k">=</span> <span class="pl-en">createButton</span>(<span class="pl-s"><span class="pl-pds">'</span>pause<span class="pl-pds">'</span></span>); <span class="pl-c">// on crée un bouton</span>
+  <span class="pl-smi">b_stop1</span>.<span class="pl-en">position</span>(<span class="pl-c1">0</span>, <span class="pl-c1">0</span>); <span class="pl-c">// on le positionne</span>
+  <span class="pl-c">// la fonction mousePressed du bouton est activé lorsqu'on clique sur le bouton</span>
+  <span class="pl-smi">b_stop1</span>.<span class="pl-en">mousePressed</span>(<span class="pl-k">function</span> <span class="pl-en">sketch_off</span> (){ <span class="pl-c">// on passe en argument de la fonction mousePressed une fonction javascript</span>
+    <span class="pl-smi">s1</span>.<span class="pl-en">noLoop</span>() <span class="pl-c">// cette fonction a une seulle instruction appeler noLoop sur la variable s1 qui est notre premier sketch.</span>
+  }); 
+  b_start1 <span class="pl-k">=</span> <span class="pl-en">createButton</span>(<span class="pl-s"><span class="pl-pds">'</span>resume<span class="pl-pds">'</span></span>); <span class="pl-c">// on crée un second bouton</span>
+  <span class="pl-smi">b_start1</span>.<span class="pl-en">position</span>(<span class="pl-c1">50</span>, <span class="pl-c1">0</span>);
+  <span class="pl-smi">b_start1</span>.<span class="pl-en">mousePressed</span>(<span class="pl-k">function</span> <span class="pl-en">sketch_on</span> (){
+    <span class="pl-smi">s1</span>.<span class="pl-en">loop</span>()
+  });
+  <span class="pl-c">// controles pour le deuxième sketch</span>
+  b_stop2 <span class="pl-k">=</span> <span class="pl-en">createButton</span>(<span class="pl-s"><span class="pl-pds">'</span>pause<span class="pl-pds">'</span></span>);
+  <span class="pl-smi">b_stop2</span>.<span class="pl-en">position</span>(windowWidth<span class="pl-k">/</span><span class="pl-c1">2</span>, <span class="pl-c1">0</span>);
+  <span class="pl-smi">b_stop2</span>.<span class="pl-en">mousePressed</span>(<span class="pl-k">function</span> <span class="pl-en">sketch_off</span> (){
+    <span class="pl-smi">s2</span>.<span class="pl-en">noLoop</span>()
+  });
+  b_start2 <span class="pl-k">=</span> <span class="pl-en">createButton</span>(<span class="pl-s"><span class="pl-pds">'</span>resume<span class="pl-pds">'</span></span>);
+  <span class="pl-smi">b_start2</span>.<span class="pl-en">position</span>(windowWidth<span class="pl-k">/</span><span class="pl-c1">2</span><span class="pl-k">+</span><span class="pl-c1">50</span>, <span class="pl-c1">0</span>);
+  <span class="pl-smi">b_start2</span>.<span class="pl-en">mousePressed</span>(<span class="pl-k">function</span> <span class="pl-en">sketch_on</span> (){
+    <span class="pl-smi">s2</span>.<span class="pl-en">loop</span>()
+  });
+  <span class="pl-c">// controles pour le troisième sketch</span>
+  b_stop3 <span class="pl-k">=</span> <span class="pl-en">createButton</span>(<span class="pl-s"><span class="pl-pds">'</span>pause<span class="pl-pds">'</span></span>);
+  <span class="pl-smi">b_stop3</span>.<span class="pl-en">position</span>(<span class="pl-c1">0</span>, windowHeight<span class="pl-k">/</span><span class="pl-c1">2</span>);
+  <span class="pl-smi">b_stop3</span>.<span class="pl-en">mousePressed</span>(<span class="pl-k">function</span> <span class="pl-en">sketch_off</span> (){
+    <span class="pl-smi">s3</span>.<span class="pl-en">noLoop</span>()
+  });
+  b_start3 <span class="pl-k">=</span> <span class="pl-en">createButton</span>(<span class="pl-s"><span class="pl-pds">'</span>resume<span class="pl-pds">'</span></span>);
+  <span class="pl-smi">b_start3</span>.<span class="pl-en">position</span>(<span class="pl-c1">50</span>, windowHeight<span class="pl-k">/</span><span class="pl-c1">2</span>);
+  <span class="pl-smi">b_start3</span>.<span class="pl-en">mousePressed</span>(<span class="pl-k">function</span> <span class="pl-en">sketch_on</span> (){
+    <span class="pl-smi">s3</span>.<span class="pl-en">loop</span>()
+  });
+  <span class="pl-c">// controles pour le quatrième sketch</span>
+  b_stop4 <span class="pl-k">=</span> <span class="pl-en">createButton</span>(<span class="pl-s"><span class="pl-pds">'</span>pause<span class="pl-pds">'</span></span>);
+  <span class="pl-smi">b_stop4</span>.<span class="pl-en">position</span>(windowWidth<span class="pl-k">/</span><span class="pl-c1">2</span>, windowHeight<span class="pl-k">/</span><span class="pl-c1">2</span>);
+  <span class="pl-smi">b_stop4</span>.<span class="pl-en">mousePressed</span>(<span class="pl-k">function</span> <span class="pl-en">sketch_off</span> (){
+    <span class="pl-smi">s4</span>.<span class="pl-en">noLoop</span>()
+  });
+  b_start4 <span class="pl-k">=</span> <span class="pl-en">createButton</span>(<span class="pl-s"><span class="pl-pds">'</span>resume<span class="pl-pds">'</span></span>);
+  <span class="pl-smi">b_start4</span>.<span class="pl-en">position</span>(windowWidth<span class="pl-k">/</span><span class="pl-c1">2</span> <span class="pl-k">+</span> <span class="pl-c1">50</span>, windowHeight<span class="pl-k">/</span><span class="pl-c1">2</span>);
+  <span class="pl-smi">b_start4</span>.<span class="pl-en">mousePressed</span>(<span class="pl-k">function</span> <span class="pl-en">sketch_on</span> (){
+    <span class="pl-smi">s4</span>.<span class="pl-en">loop</span>()
+  });
+
+}</pre></div>
+
+<p><img src="assets/02_dom_05.png" alt="02_dom_05"></p>
+
+<p><a href="https://b2renger.github.io/Introduction_p5js/02_dom_05/index.html">https://b2renger.github.io/Introduction_p5js/02_dom_05/index.html</a></p>
+
+<p><a href="#contenu">^ home</a><br></p>
 
 <p><a name="site"></a>-</p>
 
@@ -1054,8 +1381,6 @@ Elle n'est malheureusement pas forcément toujours simple à comprendre à mon s
 <p>La partie de gauche de la page web est donc un canvas faisant fonctionner un sketch p5js. A ce niveau du cours certains aspects du code seront une peu compliqués à comprendre, mais le principe de base est simple : chaque forme géométrique représente un page, lorsque l'on passe au dessus avec la souris, les éléments html de la partie de droite sont détruits, et recrées en fonction d'un fichier csv (qui représente l'article). Le fichier csv est alors analysé et chaque ligne correspond à la création d'un élément html : paragraphe, balise vidéo, lien hypertexte, balise image ou audio etc.</p>
 
 <p>Un peu de documentation et un exemple simple sont disponnibles à cette adresse : <a href="http://b2renger.github.io/p5js_algae_dom/index.html">http://b2renger.github.io/p5js_algae_dom/index.html</a></p>
-
-<p>*<a href="#contenu">^ home</a><br></p>
 
 <p><a href="#contenu">^ home</a><br></p>
 
@@ -1146,10 +1471,6 @@ Elle n'est malheureusement pas forcément toujours simple à comprendre à mon s
 </ul>
 
 <p><a href="#contenu">^ home</a><br></p>
-
-<hr>
-
-<hr>
       </section>
     </div>
 
