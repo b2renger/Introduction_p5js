@@ -19,18 +19,21 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
 * [Principes de bases](#bases)<br>
 * [Dessiner avec la souris](#dessiner)<br>
 	*	[Les couleurs et la transparence](#couleurs)<br>
-	*	[Utilisation de variables](#simuler)<br>
-	*	[Réaliser des symétries](#symetries)<br>
+	*	[Utilisation de variables](#simuler) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/01_dessiner_01/index.html)<br>
+	*	[Réaliser des symétries](#symetries) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/01_dessiner_02/index.html)<br>
 	*	[Créer des fonctions javascript](#fonctions)<br>
-	*	[Utiliser les transformations de l'espace : effet spirographe](#transformations)<br>
-	*	[Conditions, boucles et coordonnées polaires : effet "spray-can"](#spray)<br>
+	*	[Utiliser les transformations de l'espace : effet spirographe](#transformations) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/01_dessiner_04/index.html)<br>
+	*	[Conditions, boucles et coordonnées polaires : effet "spray-can"](#spray) - [**DEMO 1**](https://b2renger.github.io/Introduction_p5js/01_dessiner_05/index.html) - [**DEMO 2**](https://b2renger.github.io/Introduction_p5js/01_dessiner_06/index.html)<br>
 		*	[Conditions : "if"](#conditions)<br>
 		*	[Coordonnées polaires](#polaire)<br>
-		*	[Boucles : "for"](#boucles)<br>
+		*	[Boucles : "for"](#boucles)<br> 
 * [DOM](#dom)<br>
-	*	[Utilisation de la librairie](#utilisation)<br>
-	*	[Créer des éléments HTML5](#html5)<br>
-	*	[Styliser avec du css](#css)<br>
+	*	[Utilisation de la librairie](#utilisation) - [**DEMO 1**](https://b2renger.github.io/Introduction_p5js/02_dom_01/index.html) - [**DEMO 2**](https://b2renger.github.io/Introduction_p5js/02_dom_02/index.html)<br>
+		*	[Créer des éléments HTML5](#html5)<br>
+		*	[Styliser avec du css](#css)<br>
+	*	[Utilisation de la vidéo](#video) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/02_dom_03/index.html)<br>
+	*	[Manipulation dun flux vidéo](#video-filtres) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/02_dom_04/index.html)<br>
+	*	[Mode instance de p5js](#instanciation) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/02_dom_05/index.html)<br>
 	*	[Exemple de site web](#siteweb)<br>
 * [Animation et objets](#animation)<br>
 * [SocketIO](#socket)<br>
@@ -188,7 +191,6 @@ Chaque execution d'une boucle draw dessine un cercle de 20 pixels au coordonnée
 Vous pouvez expérimenter avec ce programme pour vous en rendre compte : 
 
 - https://www.openprocessing.org/sketch/388459
-
 
 **ellipse** est un mot clé permettant de dessiner une ellipse d'une taille précise à une endroit précis en lui passant des **paramètres**, ce sont les valeurs que l'on donne entre parenthèses :
 
@@ -944,6 +946,8 @@ function sp(x,y,size){
 
 ![02_dom_01](assets/02_dom_01.png)
 
+https://www.openprocessing.org/sketch/389277
+
 https://b2renger.github.io/Introduction_p5js/02_dom_01/index.html
 
 
@@ -1019,10 +1023,344 @@ L'exemple suivant *02_dom_02*, applique ces principes à notre outil de dessin s
  ```
 ![02_dom_02](assets/02_dom_02.png)
 
-https://b2renger.github.io/Introduction_p5js/01_dessiner_02/index.html
+https://b2renger.github.io/Introduction_p5js/02_dom_02/index.html
+
+https://www.openprocessing.org/sketch/390491
 
 
-*[^ home](#contenu)<br>
+[^ home](#contenu)<br>
+
+
+
+<a name="video"/>-
+### Accès vidéo
+
+La librairie DOM permet d'avoir accès au microphone et à la webcam à travers le navigateur via la fonction **createCapture()** : http://p5js.org/reference/#/p5/createCapture, et de lire des vidéos.
+
+```javascript
+var capture;
+
+function setup() {
+  createCanvas(390, 240);
+  capture = createCapture(VIDEO);
+  capture.size(320, 240);
+  //capture.hide();
+}
+
+function draw() {
+  background(255);
+  image(capture, 0, 0, 320, 240);
+}
+```
+
+Cet exemple permet de créer un élément vidéo dans notre page web. Le principe est d'utiliser l'objet HTML5 dédié et de récupérer l'image à un instant t pour l'afficher dans notre canvas p5js à l'aide de la fonction **image()**.
+
+La ligne l'instruction :
+
+```javascript
+capture.hide()
+```
+
+permet de cacher l'élément HTML5 pour n'afficher que l'image de notre programme. 
+
+Vous remarquerez que les mouvements droite gauche de l'image sont inversés par rapport à l'effet "miroir" que l'on pourrait attendre. Il est possible d'y rémedier en utilisant la fonction **scale()** qui permet de changer l'échelle de notre système de coordonnées en précisant la nouvelle échelle pour chaque coordonnée. Pour inverser l'image horizontalement :
+
+```javascript
+scale(-1,1)
+```
+nous permet de renverser le système de coordonnées en abscisses, il faudra donc changer les informations que l'on donne pour l'affichage de notre image, qui sont dans l'ordre : *image(image à afficher, abscisse, ordonnée, largeur, hauteur)*
+
+```javascript
+image(capture,-320,0,320,240)
+```
+l'abscisse de notre point d'ancrage pour l'image sera donc * -320 x -1 = 320 *
+
+[^ home](#contenu)<br>
+
+
+<a name="video-filtres"/>-
+### Transformations d'un flux vidéo
+
+Le javascript n'est pas forcément le langage le plus approprié pour manipuler des images et des flux vidéos en temps réel pour des questions de performances cependant il est quand même possible de faire des choses. Les fonctions que nous verrons ici peuvent être appliquée à un flux vidéo provenant d'une webcam ou à une vidéo classique, ainsi qu'à une image classique.
+
+La fonction **tint()** permet de "coloriser" l'image à l'aide d'un filtre de teinte. Il suffit de passer une couleur à la fonction pour appliquer ce filtre. Par contre cette fonction est un peu différentes des fonctions **fill()**, **stroke()** qui s'appellent avant de dessiner, celle-ci s'appelle après avoir dessiner les éléments sur lequel ce filtre sera appliqué. Le filtre va en fait récupérer les pixels de la vidéo et les traiter un à un.
+
+```javascript
+var capture; // création d'une variable pour stocker notre élement de capture vidéo
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  capture = createCapture(VIDEO); // créer un élément html5 d'accès à la webcam
+  capture.size(windowWidth/2, windowHeight/2); // définir la résolution de captation
+  capture.hide(); // cacher l'élement vidéo HTML5
+  colorMode(HSB,360,100,100,100) // passer en mode HSB
+}
+
+function draw() {
+  background(255);
+  scale(-1,1)  // inverser les coordonnées pour effet miroir
+  image(capture, -windowWidth/2, 0, windowWidth/2, windowHeight/2); // afficher l'image de la capture vidéo
+  tint(map(mouseX,0,windowWidth,0,360),100,100,100) // teinter l'image précédement dessinée en fonction de la position de la souris
+}
+```
+
+![02_dom_03](assets/02_dom_03.png)
+
+https://b2renger.github.io/Introduction_p5js/02_dom_03/index.html
+
+https://www.openprocessing.org/sketch/389684
+
+
+La fonction **filter()** permet aussi différents types d'effets : http://p5js.org/reference/#/p5/filter
+
+Il faut comprendre que si on multiplie les effets dans le même canvas ceux-ci s'ajoutent les un aux autres.
+
+```javascript
+var capture;
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  capture = createCapture(VIDEO);
+  capture.size(windowWidth/3, windowHeight/3);
+  capture.hide();
+}
+
+function draw() {
+  background(255);
+  
+  image(capture, 0, windowHeight/2, windowWidth*1/2, windowHeight/2);
+  filter('THRESHOLD',mouseX/windowWidth);
+ 
+  image(capture, windowWidth*1/2, 0, windowWidth*1/2, windowHeight/2);
+  filter('INVERT');
+  
+  image(capture, windowWidth*1/2, windowHeight*1/2, windowWidth*1/2, windowHeight/2);
+  filter('POSTERIZE', 2+mouseX*3/windowWidth);
+  
+  image(capture, 0, 0, windowWidth*1/2, windowHeight/2);
+}
+```
+
+![02_dom_04](assets/02_dom_04.png)
+
+https://b2renger.github.io/Introduction_p5js/02_dom_04/index.html
+
+https://www.openprocessing.org/sketch/389281
+
+L'usage de la vidéo en temps réel dans le navigateur pourra avoir de nombreux usages. Pour comprendre comment fonctionnent ces filtres il faut se pencher sur les fonctions **loadPixels()**, **updatePixels()**, et le tableau de pixels **pixels[]**.
+
+http://p5js.org/reference/#/p5/loadPixels
+
+http://p5js.org/reference/#/p5/updatePixels
+
+http://p5js.org/reference/#/p5/pixels[]
+
+
+Leur usage dépasse une simple introduction à p5js, cependant quelques ressources en anglais sont disponnibles (elles sont aussi référencées dans la rubrique *ressources*).	
+
+https://kylemcdonald.github.io/cv-examples/
+
+L'exemple sur le **threshold** applique le même algorithme que le filtre vu précédement: https://kylemcdonald.github.io/cv-examples/Thresholding/
+
+D'autres exemples peuvent être source d'inspiration pour créer de nouvelles façon d'interagir avec une page web.
+
+https://kylemcdonald.github.io/cv-examples/OpticalFlow/
+
+https://kylemcdonald.github.io/cv-examples/FaceTracking/
+
+
+Je vous conseille aussi l'excellent playlist de Daniel Shiffman sur le sujet : https://www.youtube.com/playlist?list=PLRqwX-V7Uu6aKKsDHZdDvN6oCJ2hRY_Ig
+
+et tout particulièrement le checkbox miror qui restitue un flux vidéo par une grille de boîtes à cocher html activées et désactivées programmatiquement grâce à la librairie dom : https://www.youtube.com/watch?v=m1G6WBvrOBE&list=PLRqwX-V7Uu6aKKsDHZdDvN6oCJ2hRY_Ig&index=5
+
+
+[^ home](#contenu)<br>
+
+
+<a name="instanciation"/>-
+### Mode instance
+
+Le mode instance de p5js permet d'avoir plusieurs canvas utilisant p5js dans une même page web. Dans le cas de notre grille de vidéos teintées cela pourrait nous permettre de contourner le problème du chaînage des effets.
+
+Il sera alors possible de créer quatre canvas avec chacun leur accès à la webcam, leur propre filtre et leur propre interaction aussi.
+
+Le terme *instance* fait référence à la notion d'objet en javascript que nous developperons plus tard. Mais en gros il faut comprendre qu'un programme p5js répond à un fonctionnement précis : tous les sketchs p5js ont accès aux mêmes fonctionnalités, une instance de p5js permet de bénéficier d'un contexte de programmation dans lequel toutes les fonctions de p5js existent.
+
+Dans la pratique il suffit d'imbriquer notre programme dans une fonction javascript et de préfixer tous les appels à des fonctions de p5js
+
+```javascript
+var s1 // des variables pour créer les instances de nos programmes.
+
+function setup(){
+  s1 = new p5(sketch) // on dit que s1 est un nouveau programme de type p5js(ou une instance) et qu'il execute le programme appellé "sketch"
+}
+
+// on crée une nouvelle variable sketch, celle qui est appelée dans le setup
+// ce sera un programme p5js. Il est nécessaire de passer une "instance" de p5
+// pour pouvoir accès aux fonction de p5. C'est le "p" utilisé un peu partout.
+// On doit "l'appeler" avant chaque fonction intégrée dans p5 (par ex : p.fill(255))
+var sketch = function(p) { 
+  var capture;
+  p.setup = function() { // on créer le setup de notre programme avec "p." devant le mot clé setup
+    var c = p.createCanvas(p.windowWidth/2, p.windowHeight/2); // on crée un canvas
+    c.position(0,0); // on le place dans la page
+    // initialisation de la capture
+    capture = p.createCapture(p.VIDEO);
+    capture.size(p.width, p.height);
+    capture.hide()
+  }
+  p.draw = function() {
+    p.background(255);
+    p.scale(-1,1)
+    p.image(capture, -p.width , 0, p.width, p.height);
+  }
+}
+```
+
+Il est alors possible de créer de multipes instances de programmes p5js et de les controler avec des éléments DOM, comme des boutons permettant d'activer/ désactiver l'éxecution des programmes indépendement.
+
+```javascript
+var s1,s2,s3,s4 // des variables pour créer les instances de nos programmes.
+
+function setup(){
+  s1 = new p5(sketch) // on dit que s1 est un nouveau programme de type p5js(ou une instance) et qu'il execute le programme appellé "sketch"
+  s2 = new p5(sketch2)
+  s3 = new p5(sketch3)
+  s4 = new p5(sketch4)
+  controls(); // on initialise les boutons pour controler les programmes
+}
+
+// on crée une nouvelle variable sketch, celle qui est appelée dans le setup
+// ce sera un programme p5js. Il est nécessaire de passer une "instance" de p5
+// pour pouvoir accès aux fonction de p5. C'est le "p" utilisé un peu partout.
+// On doit "l'appeler" avant chaque fonction intégrée dans p5 (par ex : p.fill(255))
+var sketch = function(p) { 
+  var capture;
+  p.setup = function() { // on créer le setup de notre programme avec "p." devant le mot clé setup
+    var c = p.createCanvas(p.windowWidth/2, p.windowHeight/2); // on crée un canvas
+    c.position(0,0); // on le place dans la page
+    // initialisation de la capture
+    capture = p.createCapture(p.VIDEO);
+    capture.size(p.width, p.height);
+    capture.hide()
+  }
+  p.draw = function() {
+    p.background(255);
+    p.scale(-1,1)
+    p.image(capture, -p.width , 0, p.width, p.height);
+  }
+}
+
+var sketch2 = function(p) {
+  var capture;
+  p.setup = function() {
+    var c = p.createCanvas(p.windowWidth/2, p.windowHeight/2);
+    c.position(p.windowWidth/2,0)
+    capture = p.createCapture(p.VIDEO);
+    capture.size(p.width, p.height);
+    capture.hide()
+  }
+  p.draw = function() {
+    p.background(255);
+    p.scale(-1,1)
+    p.image(capture, -p.width , 0, p.width, p.height);
+    p.filter('POSTERIZE',4+p.mouseX/p.width);
+  }
+}
+
+var sketch3 = function(p) {
+  var capture;
+  p.setup = function() {
+    var c = p.createCanvas(p.windowWidth/2, p.windowHeight/2);
+    c.position(0,p.windowHeight/2)
+    capture = p.createCapture(p.VIDEO);
+    capture.size(p.width, p.height);
+    capture.hide()
+  }
+  p.draw = function() {
+    p.background(255);
+    p.scale(-1,1)
+    p.image(capture, -p.width , 0, p.width, p.height);
+    p.filter('INVERT');
+  }
+}
+
+var sketch4 = function(p) {
+  var capture;
+  p.setup = function() {
+    var c =  p.createCanvas(p.windowWidth/2, p.windowHeight/2);
+    c.position(p.windowWidth/2 , p.windowHeight/2)
+    capture = p.createCapture(p.VIDEO);
+    capture.size(p.windowWidth, p.height);
+    capture.hide();
+  }
+  p.draw = function() {
+    p.background(255);
+    p.scale(-1,1)
+    p.image(capture, -p.width, 0, p.width, p.height);
+    p.filter('THRESHOLD',p.mouseX/p.windowWidth);
+  }
+}
+
+var b_stop1,b_start1,b_stop2,b_start2, b_start3, b_stop3, b_start4, b_stop4
+
+// Création des boutons pour mettre en pause et relancer les programmes
+function controls(){
+  // controles pour le premier sketch
+  b_stop1 = createButton('pause'); // on crée un bouton
+  b_stop1.position(0, 0); // on le positionne
+  // la fonction mousePressed du bouton est activé lorsqu'on clique sur le bouton
+  b_stop1.mousePressed(function sketch_off (){ // on passe en argument de la fonction mousePressed une fonction javascript
+    s1.noLoop() // cette fonction a une seulle instruction appeler noLoop sur la variable s1 qui est notre premier sketch.
+  }); 
+  b_start1 = createButton('resume'); // on crée un second bouton
+  b_start1.position(50, 0);
+  b_start1.mousePressed(function sketch_on (){
+    s1.loop()
+  });
+  // controles pour le deuxième sketch
+  b_stop2 = createButton('pause');
+  b_stop2.position(windowWidth/2, 0);
+  b_stop2.mousePressed(function sketch_off (){
+    s2.noLoop()
+  });
+  b_start2 = createButton('resume');
+  b_start2.position(windowWidth/2+50, 0);
+  b_start2.mousePressed(function sketch_on (){
+    s2.loop()
+  });
+  // controles pour le troisième sketch
+  b_stop3 = createButton('pause');
+  b_stop3.position(0, windowHeight/2);
+  b_stop3.mousePressed(function sketch_off (){
+    s3.noLoop()
+  });
+  b_start3 = createButton('resume');
+  b_start3.position(50, windowHeight/2);
+  b_start3.mousePressed(function sketch_on (){
+    s3.loop()
+  });
+  // controles pour le quatrième sketch
+  b_stop4 = createButton('pause');
+  b_stop4.position(windowWidth/2, windowHeight/2);
+  b_stop4.mousePressed(function sketch_off (){
+    s4.noLoop()
+  });
+  b_start4 = createButton('resume');
+  b_start4.position(windowWidth/2 + 50, windowHeight/2);
+  b_start4.mousePressed(function sketch_on (){
+    s4.loop()
+  });
+
+}
+```
+
+![02_dom_05](assets/02_dom_05.png)
+
+https://b2renger.github.io/Introduction_p5js/02_dom_05/index.html
+
+
+[^ home](#contenu)<br>
 
 
 
@@ -1038,11 +1376,6 @@ http://b2renger.github.io
 La partie de gauche de la page web est donc un canvas faisant fonctionner un sketch p5js. A ce niveau du cours certains aspects du code seront une peu compliqués à comprendre, mais le principe de base est simple : chaque forme géométrique représente un page, lorsque l'on passe au dessus avec la souris, les éléments html de la partie de droite sont détruits, et recrées en fonction d'un fichier csv (qui représente l'article). Le fichier csv est alors analysé et chaque ligne correspond à la création d'un élément html : paragraphe, balise vidéo, lien hypertexte, balise image ou audio etc.
 
 Un peu de documentation et un exemple simple sont disponnibles à cette adresse : http://b2renger.github.io/p5js_algae_dom/index.html
-
-
-*[^ home](#contenu)<br>
-
-
 
 
 [^ home](#contenu)<br>
