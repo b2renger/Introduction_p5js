@@ -28,12 +28,12 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
 		*	[Coordonnées polaires](#polaire)<br>
 		*	[Boucles : "for"](#boucles)<br> 
 * [DOM](#dom)<br>
-	*	[Utilisation de la librairie](#utilisation) - [**DEMO 1**](https://b2renger.github.io/Introduction_p5js/02_DOM_01/index.html) - [**DEMO 2**](https://b2renger.github.io/Introduction_p5js/02_DOM_02/index.html)<br>
+	*	[Utilisation de la librairie](#utilisation) - [**DEMO 1**](https://b2renger.github.io/Introduction_p5js/02_dom_01/index.html) - [**DEMO 2**](https://b2renger.github.io/Introduction_p5js/02_dom_02/index.html)<br>
 		*	[Créer des éléments HTML5](#html5)<br>
 		*	[Styliser avec du css](#css)<br>
-	*	[Utilisation de la vidéo](#video) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/02_DOM_03/index.html)<br>
-	*	[Manipulation dun flux vidéo](#video-filtres) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/02_DOM_04/index.html)<br>
-	*	[Mode instance de p5js](#instanciation) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/02_DOM_05/index.html)<br>
+	*	[Utilisation de la vidéo](#video) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/02_dom_03/index.html)<br>
+	*	[Manipulation dun flux vidéo](#video-filtres) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/02_dom_04/index.html)<br>
+	*	[Mode instance de p5js](#instanciation) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/02_dom_05/index.html)<br>
 	*	[Exemple de site web](#siteweb)<br>
 * [Animation et objets](#animation)<br>
 * [SocketIO](#socket)<br>
@@ -1023,7 +1023,7 @@ L'exemple suivant *02_dom_02*, applique ces principes à notre outil de dessin s
  ```
 ![02_dom_02](assets/02_dom_02.png)
 
-https://b2renger.github.io/Introduction_p5js/01_dessiner_02/index.html
+https://b2renger.github.io/Introduction_p5js/02_dom_02/index.html
 
 https://www.openprocessing.org/sketch/390491
 
@@ -1106,7 +1106,7 @@ function draw() {
 
 ![02_dom_03](assets/02_dom_03.png)
 
-https://b2renger.github.io/Introduction_p5js/01_dessiner_03/index.html
+https://b2renger.github.io/Introduction_p5js/02_dom_03/index.html
 
 https://www.openprocessing.org/sketch/389684
 
@@ -1143,7 +1143,7 @@ function draw() {
 
 ![02_dom_04](assets/02_dom_04.png)
 
-https://b2renger.github.io/Introduction_p5js/01_dessiner_04/index.html
+https://b2renger.github.io/Introduction_p5js/02_dom_04/index.html
 
 https://www.openprocessing.org/sketch/389281
 
@@ -1357,7 +1357,7 @@ function controls(){
 
 ![02_dom_05](assets/02_dom_05.png)
 
-https://b2renger.github.io/Introduction_p5js/01_dessiner_05/index.html
+https://b2renger.github.io/Introduction_p5js/02_dom_05/index.html
 
 
 [^ home](#contenu)<br>
