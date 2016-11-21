@@ -35,8 +35,8 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
 	*	[Manipulation dun flux vidéo](#video-filtres) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/02_dom_04/index.html)<br>
 	*	[Mode instance de p5js](#instanciation) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/02_dom_05/index.html)<br>
 	*	[Exemple de site web](#siteweb)<br>
-* [Animation et objets](#animation)<br>
 * [SocketIO](#socket)<br>
+* [Animation et objets](#animation)<br>
 * [Ressources](#ressources)<br>
 * [Références](#references)<br>
 
@@ -1385,11 +1385,207 @@ Un peu de documentation et un exemple simple sont disponnibles à cette adresse 
 <a name="socket"/>
 ## websocket et SocketIO
 
+Dans le cadre de cette découverte de p5js nous allons effleurer le sujet des websockets qui permet des informations entre plusieurs ordinateurs dans une même page web. Les utilisateurs peuvent alors collaborer.
 
+Un excellent exemple est l'application de musique collaborative **Plink** :  http://dinahmoelabs.com/#plink
+
+<a name="socket-libs"/>
+### Les librairies et leur utilisation
+
+Nous n'allons pas nous lancer dans l'écriture de code côté serveur mais nous allons nous concentrer sur l'utilisation de la librairie inclue à openprocessing. 
+
+Si jamais vous souhaitez vous lancer dans l'écriture d'applications websocket plus avancées, il vous faudra écrire un serveur capable d'utiliser cette technologie.
+
+Les exemples du cours seront disponnibles sur openprocessing sans avoir recours à un serveur, mais aussi executables en local à l'aide du serveur websocket écrit en nodejs dans ce tutoriel :  https://github.com/processing/p5.js/wiki/p5.js,-node.js,-socket.io
+
+Nous allons donc nous attacher à modifier nos programmes de dessin pour permettre l'interaction de plusieurs utilisateurs sur la même page.
+
+Tout d'abord il faut ajouter les librairies DOM et socketIO à notre programme openprocessing en cliquant sur le menu (les trois points verticaux) sous le bouton *save*. 
+
+![openprocessing add libraries](assets/03_socket_openprocessing.png)
+
+Puis il faut sauvegarder le programme pour s'assurer d'avoir une connection socket fonctionnelle.
+
+On va commencer par déclarer une variable pour la connection websocket à laquelle on pourra ajouter des fonctionalités plus tard
+
+```javascript
+var socket = io.connect(":30000?sketch=390497");
+
+```
+
+Cette ligne de code vous est fournie dans le menu ":30000" signifie que l'on communique via le port 3000, et "sketch=390497" est un identifiant pour votre programme une fois qu'il est sauvegardé. 
+
+![openprocessing add libraries](assets/03_socket_info.png)
+
+
+Nous allons ensuite garder la même fonction *setup()* que pour notre dernier exemple de dessin *02_Dom_02* avec les éléments de gui
+
+```javascript
+// variable pour stocker les élements DOM, sliders ...
+var s_hue,l_hue, s_sat, l_sat, s_bri, l_bri, s_opacity, l_opacity, s_brush_size, l_brush_size, s_branch_number, l_branch_number
+
+function setup() {
+    createCanvas(windowWidth, windowHeight); 
+    background(0,0,0);  
+    colorMode(HSB,360,100,100,100) 
+    // créer l'ensemble de l'interface utilisateur
+  	s_hue = createSlider(0, 360, 50);
+  	s_hue.position(5, windowHeight - 30)
+  	s_hue.size(110,AUTO)
+  	l_hue = createP('hue ')
+  	l_hue.style("color","rgb(255,255,255)")
+  	l_hue.position(5, windowHeight - 75)
+
+  	s_sat = createSlider(0, 100, 85);
+  	s_sat.position(125, windowHeight - 30)
+  	s_sat.size(110,AUTO)
+  	l_sat = createP('saturation ')
+  	l_sat.style("color","rgb(255,255,255)")
+  	l_sat.position(125, windowHeight - 75)
+
+  	s_bri = createSlider(0, 100, 95);
+  	s_bri.position(245, windowHeight - 30)
+  	s_bri.size(110,AUTO)
+  	l_bri = createP('brightness ')
+  	l_bri.style("color","rgb(255,255,255)")
+  	l_bri.position(245, windowHeight - 75)
+  
+ 	s_opacity = createSlider(2, 100, 100);
+  	s_opacity.position(365, windowHeight - 30)
+  	s_opacity.size(110,AUTO)
+  	l_opacity = createP('opacity ')
+  	l_opacity.style("color","rgb(255,255,255)")
+  	l_opacity.position(365, windowHeight - 75)
+
+  	s_brush_size = createSlider(5, 60, 40);
+  	s_brush_size.position(485, windowHeight - 30)
+  	s_brush_size.size(110,AUTO)
+  	l_brush = createP('size :')
+  	l_brush.style("color","rgb(255,255,255)")
+  	l_brush.position(485, windowHeight - 75)
+  	
+    s_branch_number = createInput(12);
+    s_branch_number.position(675, windowHeight - 30)
+    l_branch_number = createP('branch quantity  (1 - 100) :')
+    l_branch_number.style("color","rgb(255,255,255)")
+    l_branch_number.position(675, windowHeight - 75)   
+ } 
+ ```
+ 
 [^ home](#contenu)<br>
 
 
+<a name="socket-json"/>
+### format JSON : JavaScript Object Notation
 
+Ensuite pour que chaque utilisateur puisse choisir son "crayon", il faut que les données relatives à chaque paramètre qu'il a choisit soient envoyés à la page web principale qui accepte toutes les connections des utilisateurs. Pour cela nous allons créer un objet javascript au format **JSON** qui est un format très utilisé en developpement. Le format json fonctionne avec un système de clé. Entre deux accolades, il suffit d'inscrire "maClé : maValeur".
+
+Par exemple, si je crée une variable javascript sur ce modèle
+
+```javascript
+var data = {
+	a : 320,
+	b : 0.123
+}
+```
+
+Je peux ensuite récupérer les valeur inscrite dans l'objet *data* à la clé "a", en tapant :
+
+```javascript
+data.a
+```
+Il est possible alors d'écrire une fonction qui pourra nous **retourner** un objet javascript encodé en JSON. Le terme **retourner** est important car jusqu'à maintenant nous n'avons écrit que des fonctions permettant de dessiner des choses, ces fonctions qui utilisent le mot-clé **return** peuvent elle former des objet javascripts selon nos besoins (un objet json, un tableau de valeur etc.)
+
+```javascript
+function getData(xpos, ypos ,hue,sat,bri,op,brush_size,branch_num){
+   var data = {
+    x: xpos,
+    y: ypos, 
+    h: hue,
+    s: sat,
+    b: bri,
+    o: op,
+    siz : brush_size,
+    branch: branch_num
+  };
+  return data;
+}
+```
+
+Une fois que cette fonction est créee, il est possible de créer une variable comprenant toutes nos valeurs au format JSON.
+
+```javascript
+var mesValeurs = getData(mouseX,mouseY,s_hue.value(),s_sat.value(),s_bri.value(),s_opacity.value(),s_brush_size.value(), s_branch_number.value())
+```
+
+Il est alors possible d'accéder à chacune des valeurs indépendement, pour accéder à la tailler de notre crayon
+
+```
+mesValeur.siz
+```
+
+nous permet d'accéder à cette information, nous pouvons alors réécrire notre procédure de dessin en utilisant ce même formattage :
+
+```javascript
+function draw_params(data){
+  noStroke()
+  fill(data.h,data.s,data.b,data.o)  // utiliser les paramètres des slides
+  var radius = pow(pow(windowWidth/2-data.x,2) + pow(windowHeight/2-data.y,2) , 0.5) // pythagore sur les positions de la souris
+  var angle = atan2(windowHeight/2-data.y, windowWidth/2-data.x) // atan2(y,x)
+  for (var i = 0 ; i <= TWO_PI ; i = i +PI/(data.branch/2)){ 
+    var x =windowWidth/2 + radius * cos(angle +i)
+    var y =windowHeight/2 + radius * sin(angle+i)
+    ellipse(x,y,data.siz,data.siz)
+  }
+}
+
+```
+
+[^ home](#contenu)<br>
+
+<a name="socket-emit"/>
+### Envoyer et Recevoir des informations
+
+Il ne nous reste maintenant plus qu'à envoyer et recevoir les paramètres via le système de socket. Le process pour émettre est très simple émettre :
+
+```javascript
+socket.emit('params',data);
+```
+
+Dans notre cas on peut placer cette instruction dans la fonction **mouseDragged()**, pour que les données soient envoyées quand l'utilisateur dessine :
+
+```javascript
+function mouseDragged() {
+ if( !(mouseY>windowHeight-80 && mouseX< 860 )){ // éviter de dessiner quand on manipule les paramètres
+    // créer l'objet data avec les paramètres
+    var data = getData(mouseX,mouseY,s_hue.value(),s_sat.value(),s_bri.value(),s_opacity.value(),s_brush_size.value(), s_branch_number.value())
+    //console.log(data);
+  	draw_params(data) // dessiner les formes avec les paramètres de l'utilisateur qui est connecté sur la page
+  	socket.emit('params',data);
+  }
+}
+```
+
+pour recevoir on utilise le même principe sauf qu'au lieu de passer un objet "data", on peut passer une fonction javascript. En javascript on peut même écrire la fonction directement entre les parenthèses :
+
+```javascript
+socket.on('params',function(data){
+    	draw_params(data); // on utilise les données reçues pour dessiner
+})
+```
+
+Ce qui est une forme condensée de :
+
+```javascript
+socket.on('params', doSomething)
+function doSomething (data){
+    	draw_params(data);
+})
+```
+
+Et voilà ! : https://www.openprocessing.org/sketch/390497
+
+[^ home](#contenu)<br>
 
 <a name="animation"/>
 ## Animer un déplacement
@@ -1430,7 +1626,7 @@ Un peu de documentation et un exemple simple sont disponnibles à cette adresse 
 
 * Exemples Computer Vision : https://kylemcdonald.github.io/cv-examples/
 	
-* Introduction web sockets et nodejs : link tuto  https://github.com/processing/p5.js/wiki/p5.js
+* Introduction web sockets et nodejs : https://github.com/processing/p5.js/wiki/p5.js,-node.js,-socket.io
 
 * Utilisation de p5js en mode instanciable - avoir plusieurs canvas dans une page : https://github.com/processing/p5.js/wiki/Instantiation-Cases
 
