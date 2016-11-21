@@ -105,10 +105,22 @@
 </ul>
 </li>
 <li>
-<a href="#animation">Animation et objets</a><br>
+<a href="#socket">SocketIO</a> - <a href="https://www.openprocessing.org/sketch/390497"><strong>DEMO</strong></a><br>
+
+<ul>
+<li>
+<a href="#socket-libs">Utilisation des librairies</a><br>
 </li>
 <li>
-<a href="#socket">SocketIO</a><br>
+<a href="#socket-json">JSON = JavaScript Object Notation</a><br>
+</li>
+<li>
+<a href="#socket-emit">Emettre et recevoir des données dans une page web</a><br>
+</li>
+</ul>
+</li>
+<li>
+<a href="#animation">Animation et objets</a><br>
 </li>
 <li>
 <a href="#ressources">Ressources</a><br>
@@ -1389,6 +1401,188 @@ Elle n'est malheureusement pas forcément toujours simple à comprendre à mon s
 <h2>
 <a id="websocket-et-socketio" class="anchor" href="#websocket-et-socketio" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>websocket et SocketIO</h2>
 
+<p>Dans le cadre de cette découverte de p5js nous allons effleurer le sujet des websockets qui permet des informations entre plusieurs ordinateurs dans une même page web. Les utilisateurs peuvent alors collaborer.</p>
+
+<p>Un excellent exemple est l'application de musique collaborative <strong>Plink</strong> :  <a href="http://dinahmoelabs.com/#plink">http://dinahmoelabs.com/#plink</a></p>
+
+<p><a name="socket-libs"></a></p>
+
+<h3>
+<a id="les-librairies-et-leur-utilisation" class="anchor" href="#les-librairies-et-leur-utilisation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Les librairies et leur utilisation</h3>
+
+<p>Nous n'allons pas nous lancer dans l'écriture de code côté serveur mais nous allons nous concentrer sur l'utilisation de la librairie inclue à openprocessing. </p>
+
+<p>Si jamais vous souhaitez vous lancer dans l'écriture d'applications websocket plus avancées, il vous faudra écrire un serveur capable d'utiliser cette technologie.</p>
+
+<p>Les exemples du cours seront disponnibles sur openprocessing sans avoir recours à un serveur, mais aussi executables en local à l'aide du serveur websocket écrit en nodejs dans ce tutoriel :  <a href="https://github.com/processing/p5.js/wiki/p5.js,-node.js,-socket.io">https://github.com/processing/p5.js/wiki/p5.js,-node.js,-socket.io</a></p>
+
+<p>Nous allons donc nous attacher à modifier nos programmes de dessin pour permettre l'interaction de plusieurs utilisateurs sur la même page.</p>
+
+<p>Tout d'abord il faut ajouter les librairies DOM et socketIO à notre programme openprocessing en cliquant sur le menu (les trois points verticaux) sous le bouton <em>save</em>. </p>
+
+<p><img src="assets/03_socket_openprocessing.png" alt="openprocessing add libraries"></p>
+
+<p>Puis il faut sauvegarder le programme pour s'assurer d'avoir une connection socket fonctionnelle.</p>
+
+<p>On va commencer par déclarer une variable pour la connection websocket à laquelle on pourra ajouter des fonctionalités plus tard</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> socket <span class="pl-k">=</span> <span class="pl-smi">io</span>.<span class="pl-en">connect</span>(<span class="pl-s"><span class="pl-pds">"</span>:30000?sketch=390497<span class="pl-pds">"</span></span>);
+</pre></div>
+
+<p>Cette ligne de code vous est fournie dans le menu ":30000" signifie que l'on communique via le port 3000, et "sketch=390497" est un identifiant pour votre programme une fois qu'il est sauvegardé. </p>
+
+<p><img src="assets/03_socket_info.png" alt="openprocessing add libraries"></p>
+
+<p>Nous allons ensuite garder la même fonction <em>setup()</em> que pour notre dernier exemple de dessin <em>02_Dom_02</em> avec les éléments de gui</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// variable pour stocker les élements DOM, sliders ...</span>
+<span class="pl-k">var</span> s_hue,l_hue, s_sat, l_sat, s_bri, l_bri, s_opacity, l_opacity, s_brush_size, l_brush_size, s_branch_number, l_branch_number
+
+<span class="pl-k">function</span> <span class="pl-en">setup</span>() {
+    <span class="pl-en">createCanvas</span>(windowWidth, windowHeight); 
+    <span class="pl-en">background</span>(<span class="pl-c1">0</span>,<span class="pl-c1">0</span>,<span class="pl-c1">0</span>);  
+    <span class="pl-en">colorMode</span>(<span class="pl-c1">HSB</span>,<span class="pl-c1">360</span>,<span class="pl-c1">100</span>,<span class="pl-c1">100</span>,<span class="pl-c1">100</span>) 
+    <span class="pl-c">// créer l'ensemble de l'interface utilisateur</span>
+    s_hue <span class="pl-k">=</span> <span class="pl-en">createSlider</span>(<span class="pl-c1">0</span>, <span class="pl-c1">360</span>, <span class="pl-c1">50</span>);
+    <span class="pl-smi">s_hue</span>.<span class="pl-en">position</span>(<span class="pl-c1">5</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">30</span>)
+    <span class="pl-smi">s_hue</span>.<span class="pl-c1">size</span>(<span class="pl-c1">110</span>,<span class="pl-c1">AUTO</span>)
+    l_hue <span class="pl-k">=</span> <span class="pl-en">createP</span>(<span class="pl-s"><span class="pl-pds">'</span>hue <span class="pl-pds">'</span></span>)
+    <span class="pl-smi">l_hue</span>.<span class="pl-c1">style</span>(<span class="pl-s"><span class="pl-pds">"</span>color<span class="pl-pds">"</span></span>,<span class="pl-s"><span class="pl-pds">"</span>rgb(255,255,255)<span class="pl-pds">"</span></span>)
+    <span class="pl-smi">l_hue</span>.<span class="pl-en">position</span>(<span class="pl-c1">5</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">75</span>)
+
+    s_sat <span class="pl-k">=</span> <span class="pl-en">createSlider</span>(<span class="pl-c1">0</span>, <span class="pl-c1">100</span>, <span class="pl-c1">85</span>);
+    <span class="pl-smi">s_sat</span>.<span class="pl-en">position</span>(<span class="pl-c1">125</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">30</span>)
+    <span class="pl-smi">s_sat</span>.<span class="pl-c1">size</span>(<span class="pl-c1">110</span>,<span class="pl-c1">AUTO</span>)
+    l_sat <span class="pl-k">=</span> <span class="pl-en">createP</span>(<span class="pl-s"><span class="pl-pds">'</span>saturation <span class="pl-pds">'</span></span>)
+    <span class="pl-smi">l_sat</span>.<span class="pl-c1">style</span>(<span class="pl-s"><span class="pl-pds">"</span>color<span class="pl-pds">"</span></span>,<span class="pl-s"><span class="pl-pds">"</span>rgb(255,255,255)<span class="pl-pds">"</span></span>)
+    <span class="pl-smi">l_sat</span>.<span class="pl-en">position</span>(<span class="pl-c1">125</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">75</span>)
+
+    s_bri <span class="pl-k">=</span> <span class="pl-en">createSlider</span>(<span class="pl-c1">0</span>, <span class="pl-c1">100</span>, <span class="pl-c1">95</span>);
+    <span class="pl-smi">s_bri</span>.<span class="pl-en">position</span>(<span class="pl-c1">245</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">30</span>)
+    <span class="pl-smi">s_bri</span>.<span class="pl-c1">size</span>(<span class="pl-c1">110</span>,<span class="pl-c1">AUTO</span>)
+    l_bri <span class="pl-k">=</span> <span class="pl-en">createP</span>(<span class="pl-s"><span class="pl-pds">'</span>brightness <span class="pl-pds">'</span></span>)
+    <span class="pl-smi">l_bri</span>.<span class="pl-c1">style</span>(<span class="pl-s"><span class="pl-pds">"</span>color<span class="pl-pds">"</span></span>,<span class="pl-s"><span class="pl-pds">"</span>rgb(255,255,255)<span class="pl-pds">"</span></span>)
+    <span class="pl-smi">l_bri</span>.<span class="pl-en">position</span>(<span class="pl-c1">245</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">75</span>)
+
+    s_opacity <span class="pl-k">=</span> <span class="pl-en">createSlider</span>(<span class="pl-c1">2</span>, <span class="pl-c1">100</span>, <span class="pl-c1">100</span>);
+    <span class="pl-smi">s_opacity</span>.<span class="pl-en">position</span>(<span class="pl-c1">365</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">30</span>)
+    <span class="pl-smi">s_opacity</span>.<span class="pl-c1">size</span>(<span class="pl-c1">110</span>,<span class="pl-c1">AUTO</span>)
+    l_opacity <span class="pl-k">=</span> <span class="pl-en">createP</span>(<span class="pl-s"><span class="pl-pds">'</span>opacity <span class="pl-pds">'</span></span>)
+    <span class="pl-smi">l_opacity</span>.<span class="pl-c1">style</span>(<span class="pl-s"><span class="pl-pds">"</span>color<span class="pl-pds">"</span></span>,<span class="pl-s"><span class="pl-pds">"</span>rgb(255,255,255)<span class="pl-pds">"</span></span>)
+    <span class="pl-smi">l_opacity</span>.<span class="pl-en">position</span>(<span class="pl-c1">365</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">75</span>)
+
+    s_brush_size <span class="pl-k">=</span> <span class="pl-en">createSlider</span>(<span class="pl-c1">5</span>, <span class="pl-c1">60</span>, <span class="pl-c1">40</span>);
+    <span class="pl-smi">s_brush_size</span>.<span class="pl-en">position</span>(<span class="pl-c1">485</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">30</span>)
+    <span class="pl-smi">s_brush_size</span>.<span class="pl-c1">size</span>(<span class="pl-c1">110</span>,<span class="pl-c1">AUTO</span>)
+    l_brush <span class="pl-k">=</span> <span class="pl-en">createP</span>(<span class="pl-s"><span class="pl-pds">'</span>size :<span class="pl-pds">'</span></span>)
+    <span class="pl-smi">l_brush</span>.<span class="pl-c1">style</span>(<span class="pl-s"><span class="pl-pds">"</span>color<span class="pl-pds">"</span></span>,<span class="pl-s"><span class="pl-pds">"</span>rgb(255,255,255)<span class="pl-pds">"</span></span>)
+    <span class="pl-smi">l_brush</span>.<span class="pl-en">position</span>(<span class="pl-c1">485</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">75</span>)
+
+    s_branch_number <span class="pl-k">=</span> <span class="pl-en">createInput</span>(<span class="pl-c1">12</span>);
+    <span class="pl-smi">s_branch_number</span>.<span class="pl-en">position</span>(<span class="pl-c1">675</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">30</span>)
+    l_branch_number <span class="pl-k">=</span> <span class="pl-en">createP</span>(<span class="pl-s"><span class="pl-pds">'</span>branch quantity  (1 - 100) :<span class="pl-pds">'</span></span>)
+    <span class="pl-smi">l_branch_number</span>.<span class="pl-c1">style</span>(<span class="pl-s"><span class="pl-pds">"</span>color<span class="pl-pds">"</span></span>,<span class="pl-s"><span class="pl-pds">"</span>rgb(255,255,255)<span class="pl-pds">"</span></span>)
+    <span class="pl-smi">l_branch_number</span>.<span class="pl-en">position</span>(<span class="pl-c1">675</span>, windowHeight <span class="pl-k">-</span> <span class="pl-c1">75</span>)   
+ } </pre></div>
+
+<p><a href="#contenu">^ home</a><br></p>
+
+<p><a name="socket-json"></a></p>
+
+<h3>
+<a id="format-json--javascript-object-notation" class="anchor" href="#format-json--javascript-object-notation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>format JSON : JavaScript Object Notation</h3>
+
+<p>Ensuite pour que chaque utilisateur puisse choisir son "crayon", il faut que les données relatives à chaque paramètre qu'il a choisit soient envoyés à la page web principale qui accepte toutes les connections des utilisateurs. Pour cela nous allons créer un objet javascript au format <strong>JSON</strong> qui est un format très utilisé en developpement. Le format json fonctionne avec un système de clé. Entre deux accolades, il suffit d'inscrire "maClé : maValeur".</p>
+
+<p>Par exemple, si je crée une variable javascript sur ce modèle</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> data <span class="pl-k">=</span> {
+    a <span class="pl-k">:</span> <span class="pl-c1">320</span>,
+    b <span class="pl-k">:</span> <span class="pl-c1">0.123</span>
+}</pre></div>
+
+<p>Je peux ensuite récupérer les valeur inscrite dans l'objet <em>data</em> à la clé "a", en tapant :</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">data</span>.<span class="pl-smi">a</span></pre></div>
+
+<p>Il est possible alors d'écrire une fonction qui pourra nous <strong>retourner</strong> un objet javascript encodé en JSON. Le terme <strong>retourner</strong> est important car jusqu'à maintenant nous n'avons écrit que des fonctions permettant de dessiner des choses, ces fonctions qui utilisent le mot-clé <strong>return</strong> peuvent elle former des objet javascripts selon nos besoins (un objet json, un tableau de valeur etc.)</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">function</span> <span class="pl-en">getData</span>(<span class="pl-smi">xpos</span>, <span class="pl-smi">ypos</span> ,<span class="pl-smi">hue</span>,<span class="pl-smi">sat</span>,<span class="pl-smi">bri</span>,<span class="pl-smi">op</span>,<span class="pl-smi">brush_size</span>,<span class="pl-smi">branch_num</span>){
+   <span class="pl-k">var</span> data <span class="pl-k">=</span> {
+    x<span class="pl-k">:</span> xpos,
+    y<span class="pl-k">:</span> ypos, 
+    h<span class="pl-k">:</span> hue,
+    s<span class="pl-k">:</span> sat,
+    b<span class="pl-k">:</span> bri,
+    o<span class="pl-k">:</span> op,
+    siz <span class="pl-k">:</span> brush_size,
+    branch<span class="pl-k">:</span> branch_num
+  };
+  <span class="pl-k">return</span> data;
+}</pre></div>
+
+<p>Une fois que cette fonction est créee, il est possible de créer une variable comprenant toutes nos valeurs au format JSON.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> mesValeurs <span class="pl-k">=</span> <span class="pl-en">getData</span>(mouseX,mouseY,<span class="pl-smi">s_hue</span>.<span class="pl-c1">value</span>(),<span class="pl-smi">s_sat</span>.<span class="pl-c1">value</span>(),<span class="pl-smi">s_bri</span>.<span class="pl-c1">value</span>(),<span class="pl-smi">s_opacity</span>.<span class="pl-c1">value</span>(),<span class="pl-smi">s_brush_size</span>.<span class="pl-c1">value</span>(), <span class="pl-smi">s_branch_number</span>.<span class="pl-c1">value</span>())</pre></div>
+
+<p>Il est alors possible d'accéder à chacune des valeurs indépendement, pour accéder à la tailler de notre crayon</p>
+
+<pre><code>mesValeur.siz
+</code></pre>
+
+<p>nous permet d'accéder à cette information, nous pouvons alors réécrire notre procédure de dessin en utilisant ce même formattage :</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">function</span> <span class="pl-en">draw_params</span>(<span class="pl-smi">data</span>){
+  <span class="pl-en">noStroke</span>()
+  <span class="pl-en">fill</span>(<span class="pl-smi">data</span>.<span class="pl-smi">h</span>,<span class="pl-smi">data</span>.<span class="pl-smi">s</span>,<span class="pl-smi">data</span>.<span class="pl-smi">b</span>,<span class="pl-smi">data</span>.<span class="pl-smi">o</span>)  <span class="pl-c">// utiliser les paramètres des slides</span>
+  <span class="pl-k">var</span> radius <span class="pl-k">=</span> <span class="pl-en">pow</span>(<span class="pl-en">pow</span>(windowWidth<span class="pl-k">/</span><span class="pl-c1">2</span><span class="pl-k">-</span><span class="pl-smi">data</span>.<span class="pl-c1">x</span>,<span class="pl-c1">2</span>) <span class="pl-k">+</span> <span class="pl-en">pow</span>(windowHeight<span class="pl-k">/</span><span class="pl-c1">2</span><span class="pl-k">-</span><span class="pl-smi">data</span>.<span class="pl-c1">y</span>,<span class="pl-c1">2</span>) , <span class="pl-c1">0.5</span>) <span class="pl-c">// pythagore sur les positions de la souris</span>
+  <span class="pl-k">var</span> angle <span class="pl-k">=</span> <span class="pl-en">atan2</span>(windowHeight<span class="pl-k">/</span><span class="pl-c1">2</span><span class="pl-k">-</span><span class="pl-smi">data</span>.<span class="pl-c1">y</span>, windowWidth<span class="pl-k">/</span><span class="pl-c1">2</span><span class="pl-k">-</span><span class="pl-smi">data</span>.<span class="pl-c1">x</span>) <span class="pl-c">// atan2(y,x)</span>
+  <span class="pl-k">for</span> (<span class="pl-k">var</span> i <span class="pl-k">=</span> <span class="pl-c1">0</span> ; i <span class="pl-k">&lt;=</span> <span class="pl-c1">TWO_PI</span> ; i <span class="pl-k">=</span> i <span class="pl-k">+</span><span class="pl-c1">PI</span><span class="pl-k">/</span>(<span class="pl-smi">data</span>.<span class="pl-smi">branch</span><span class="pl-k">/</span><span class="pl-c1">2</span>)){ 
+    <span class="pl-k">var</span> x <span class="pl-k">=</span>windowWidth<span class="pl-k">/</span><span class="pl-c1">2</span> <span class="pl-k">+</span> radius <span class="pl-k">*</span> <span class="pl-en">cos</span>(angle <span class="pl-k">+</span>i)
+    <span class="pl-k">var</span> y <span class="pl-k">=</span>windowHeight<span class="pl-k">/</span><span class="pl-c1">2</span> <span class="pl-k">+</span> radius <span class="pl-k">*</span> <span class="pl-en">sin</span>(angle<span class="pl-k">+</span>i)
+    <span class="pl-en">ellipse</span>(x,y,<span class="pl-smi">data</span>.<span class="pl-smi">siz</span>,<span class="pl-smi">data</span>.<span class="pl-smi">siz</span>)
+  }
+}
+</pre></div>
+
+<p><a href="#contenu">^ home</a><br></p>
+
+<p><a name="socket-emit"></a></p>
+
+<h3>
+<a id="envoyer-et-recevoir-des-informations" class="anchor" href="#envoyer-et-recevoir-des-informations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Envoyer et Recevoir des informations</h3>
+
+<p>Il ne nous reste maintenant plus qu'à envoyer et recevoir les paramètres via le système de socket. Le process pour émettre est très simple émettre :</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">socket</span>.<span class="pl-en">emit</span>(<span class="pl-s"><span class="pl-pds">'</span>params<span class="pl-pds">'</span></span>,data);</pre></div>
+
+<p>Dans notre cas on peut placer cette instruction dans la fonction <strong>mouseDragged()</strong>, pour que les données soient envoyées quand l'utilisateur dessine :</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">function</span> <span class="pl-en">mouseDragged</span>() {
+ <span class="pl-k">if</span>( <span class="pl-k">!</span>(mouseY<span class="pl-k">&gt;</span>windowHeight<span class="pl-k">-</span><span class="pl-c1">80</span> <span class="pl-k">&amp;&amp;</span> mouseX<span class="pl-k">&lt;</span> <span class="pl-c1">860</span> )){ <span class="pl-c">// éviter de dessiner quand on manipule les paramètres</span>
+    <span class="pl-c">// créer l'objet data avec les paramètres</span>
+    <span class="pl-k">var</span> data <span class="pl-k">=</span> <span class="pl-en">getData</span>(mouseX,mouseY,<span class="pl-smi">s_hue</span>.<span class="pl-c1">value</span>(),<span class="pl-smi">s_sat</span>.<span class="pl-c1">value</span>(),<span class="pl-smi">s_bri</span>.<span class="pl-c1">value</span>(),<span class="pl-smi">s_opacity</span>.<span class="pl-c1">value</span>(),<span class="pl-smi">s_brush_size</span>.<span class="pl-c1">value</span>(), <span class="pl-smi">s_branch_number</span>.<span class="pl-c1">value</span>())
+    <span class="pl-c">//console.log(data);</span>
+    <span class="pl-en">draw_params</span>(data) <span class="pl-c">// dessiner les formes avec les paramètres de l'utilisateur qui est connecté sur la page</span>
+    <span class="pl-smi">socket</span>.<span class="pl-en">emit</span>(<span class="pl-s"><span class="pl-pds">'</span>params<span class="pl-pds">'</span></span>,data);
+  }
+}</pre></div>
+
+<p>pour recevoir on utilise le même principe sauf qu'au lieu de passer un objet "data", on peut passer une fonction javascript. En javascript on peut même écrire la fonction directement entre les parenthèses :</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">socket</span>.<span class="pl-en">on</span>(<span class="pl-s"><span class="pl-pds">'</span>params<span class="pl-pds">'</span></span>,<span class="pl-k">function</span>(<span class="pl-smi">data</span>){
+        <span class="pl-en">draw_params</span>(data); <span class="pl-c">// on utilise les données reçues pour dessiner</span>
+})</pre></div>
+
+<p>Ce qui est une forme condensée de :</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">socket</span>.<span class="pl-en">on</span>(<span class="pl-s"><span class="pl-pds">'</span>params<span class="pl-pds">'</span></span>, doSomething)
+<span class="pl-k">function</span> <span class="pl-en">doSomething</span> (<span class="pl-smi">data</span>){
+        <span class="pl-en">draw_params</span>(data);
+})</pre></div>
+
+<p>Et voilà ! : <a href="https://www.openprocessing.org/sketch/390497">https://www.openprocessing.org/sketch/390497</a></p>
+
 <p><a href="#contenu">^ home</a><br></p>
 
 <p><a name="animation"></a></p>
@@ -1425,7 +1619,7 @@ Elle n'est malheureusement pas forcément toujours simple à comprendre à mon s
 <li><p>Travailler avec p5.sound : <a href="https://github.com/b2renger/p5js_sound_examples">https://github.com/b2renger/p5js_sound_examples</a></p></li>
 <li><p>Expérimentations typographiques : <a href="https://b2renger.github.io/p5js_typo/">https://b2renger.github.io/p5js_typo/</a></p></li>
 <li><p>Exemples Computer Vision : <a href="https://kylemcdonald.github.io/cv-examples/">https://kylemcdonald.github.io/cv-examples/</a></p></li>
-<li><p>Introduction web sockets et nodejs : link tuto  <a href="https://github.com/processing/p5.js/wiki/p5.js">https://github.com/processing/p5.js/wiki/p5.js</a></p></li>
+<li><p>Introduction web sockets et nodejs : <a href="https://github.com/processing/p5.js/wiki/p5.js,-node.js,-socket.io">https://github.com/processing/p5.js/wiki/p5.js,-node.js,-socket.io</a></p></li>
 <li><p>Utilisation de p5js en mode instanciable - avoir plusieurs canvas dans une page : <a href="https://github.com/processing/p5.js/wiki/Instantiation-Cases">https://github.com/processing/p5.js/wiki/Instantiation-Cases</a></p></li>
 </ul>
 
