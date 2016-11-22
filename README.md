@@ -39,6 +39,7 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
 	* [Utilisation des librairies](#socket-libs)<br>
 	* [JSON = JavaScript Object Notation](#socket-json)<br>
 	* [Emettre et recevoir des données dans une page web](#socket-emit)<br>
+	* [NodeJs et serveur local](#socket-localhost)<br>
 * [Animation et objets](#animation)<br>
 * [Ressources](#ressources)<br>
 * [Références](#references)<br>
@@ -1603,17 +1604,17 @@ Comme mentionné en intro vous pouez vous référer à ce tutorial pour apprendr
 
 Pour faire résumer et faire fonctionner les exemples fournis, il faut :
 
-	- installer NodeJS
-	- naviguer vers le dossier de l'exemple que vous souhaitez tester.
-	- installer les dépendences, grace au node package manager, ligne de commande à taper dans une invite de commande nodejs ou un terminal.
+- installer NodeJS
+- naviguer vers le dossier de l'exemple que vous souhaitez tester.
+- installer les dépendences, grace au node package manager, ligne de commande à taper dans une invite de commande nodejs ou un terminal.
 		```
 		npm install socket.io
 		```
-	- lancer le serveur local : 
+- lancer le serveur local : 
 		```
 		node servers.js
 		```
-	- se rendre sur la page :
+- se rendre sur la page :
 		```
 		http://localhost:8080/
 		```
