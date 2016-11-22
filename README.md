@@ -1150,31 +1150,34 @@ https://b2renger.github.io/Introduction_p5js/02_dom_04/index.html
 
 https://www.openprocessing.org/sketch/389281
 
+
 L'usage de la vidéo en temps réel dans le navigateur pourra avoir de nombreux usages. Pour comprendre comment fonctionnent ces filtres il faut se pencher sur les fonctions **loadPixels()**, **updatePixels()**, et le tableau de pixels **pixels[]**.
 
-http://p5js.org/reference/#/p5/loadPixels
+	-	http://p5js.org/reference/#/p5/loadPixels
 
-http://p5js.org/reference/#/p5/updatePixels
+	-	http://p5js.org/reference/#/p5/updatePixels
 
-http://p5js.org/reference/#/p5/pixels[]
+	-	http://p5js.org/reference/#/p5/pixels[]
 
 
 Leur usage dépasse une simple introduction à p5js, cependant quelques ressources en anglais sont disponnibles (elles sont aussi référencées dans la rubrique *ressources*).	
 
-https://kylemcdonald.github.io/cv-examples/
+	https://kylemcdonald.github.io/cv-examples/
 
 L'exemple sur le **threshold** applique le même algorithme que le filtre vu précédement: https://kylemcdonald.github.io/cv-examples/Thresholding/
 
 D'autres exemples peuvent être source d'inspiration pour créer de nouvelles façon d'interagir avec une page web.
 
-https://kylemcdonald.github.io/cv-examples/OpticalFlow/
+	-	https://kylemcdonald.github.io/cv-examples/OpticalFlow/
 
-https://kylemcdonald.github.io/cv-examples/FaceTracking/
+	-	https://kylemcdonald.github.io/cv-examples/FaceTracking/
 
 
-Je vous conseille aussi l'excellent playlist de Daniel Shiffman sur le sujet : https://www.youtube.com/playlist?list=PLRqwX-V7Uu6aKKsDHZdDvN6oCJ2hRY_Ig
+Je vous conseille aussi l'excellent playlist de Daniel Shiffman sur le sujet : 
+	-	https://www.youtube.com/playlist?list=PLRqwX-V7Uu6aKKsDHZdDvN6oCJ2hRY_Ig
 
-et tout particulièrement le checkbox miror qui restitue un flux vidéo par une grille de boîtes à cocher html activées et désactivées programmatiquement grâce à la librairie dom : https://www.youtube.com/watch?v=m1G6WBvrOBE&list=PLRqwX-V7Uu6aKKsDHZdDvN6oCJ2hRY_Ig&index=5
+et tout particulièrement le checkbox miror qui restitue un flux vidéo par une grille de boîtes à cocher html activées et désactivées programmatiquement grâce à la librairie dom : 
+	-	https://www.youtube.com/watch?v=m1G6WBvrOBE&list=PLRqwX-V7Uu6aKKsDHZdDvN6oCJ2hRY_Ig&index=5
 
 
 [^ home](#contenu)<br>
@@ -1589,6 +1592,31 @@ function doSomething (data){
 Et voilà ! : https://www.openprocessing.org/sketch/390497
 
 Voici l'adaptation du sketch de "spray-paint" : https://www.openprocessing.org/sketch/390650
+
+[^ home](#contenu)<br>
+
+
+<a name="socket-localhost"/>
+### Node et serveur local
+
+Comme mentionné en intro vous pouez vous référer à ce tutorial pour apprendre à coder un serveur wwebsocket avec nodeJS : https://github.com/processing/p5.js/wiki/p5.js,-node.js,-socket.io
+
+Pour faire résumer et faire fonctionner les exemples fournis, il faut :
+
+	- installer NodeJS
+	- naviguer vers le dossier de l'exemple que vous souhaitez tester.
+	- installer les dépendences, grace au node package manager, ligne de commande à taper dans une invite de commande nodejs ou un terminal.
+		```
+		npm install socket.io
+		```
+	- lancer le serveur local : 
+		```
+		node servers.js
+		```
+	- se rendre sur la page :
+		```
+		http://localhost:8080/
+		```
 
 [^ home](#contenu)<br>
 
