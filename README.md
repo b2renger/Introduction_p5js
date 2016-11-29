@@ -68,7 +68,7 @@ Openprocessing est pratique car il permet de se passer de serveur local et perme
 ![Openprocessing](assets/openprocessing-2.png)
 
 
-### editor
+### Editor
 
 Il existe une application windows, osx ou linux, faisant office d'éditeur et de serveur web. Il est disponnible sur la page de téléchargement de p5js
 
@@ -77,7 +77,7 @@ http://p5js.org/download/
 L'éditeur fait aussi office de serveur, et permet donc de travailler avec des images, vidéos et sons, sans avoir à lancer de serveur local.
 
 
-### developpeur web 
+### Développeur web 
 
 Le plus simple est probablement de [télécharger](http://p5js.org/download/) et d'ajouter la bibliothèque js ou d'utiliser les liens cdn dans votre fichier index.html.
 
@@ -86,7 +86,7 @@ Pour rappel CDN signifie Content Delivery Network et permet de lier son code à 
 Généralement un bon éditeur de texte suffit. Parfois il pourra être utile d'utiliser un serveur local pour servir certaines pages demandant accès à des fonctions ou fichiers spécifiques (généralement des pages utilisant des images ou des sons sous formes de fichier doivent être ouvertes avec un serveur local). Il y a des nombreuses possibilités pour cela et beaucoup de documentation en ligne : personnellement j'utilise 'sinatra' un serveur en ruby, simplehttpserver pour python peut-être une alternative, ou d'autres encore via nodejs voire même des logiciels comme mamp.
 
 
-### des bibliothèques
+### Des bibliothèques
 
 P5js recense un bon nombre de bibliothèques compatibles et revendiquant le même esprit : http://p5js.org/libraries/
 Mais il peut aussi être utilisé avec n'impote quelles autres bibliothèques js.
@@ -263,7 +263,7 @@ function draw() {
 
 
 <a name="simuler"/>
-### utilisation de variables :"Simuler" un pinceau
+### Utilisation de variables :"Simuler" un pinceau
 
 Nous allons vouloir maintenant compléxifier notre programme. La première chose que nous allons faire est de rendre le dessin un peu plus sensible. L'idée serait de faire en sorte que lorsque notre geste est rapide les cercles soit gros et qu'ils soient petit quand notre geste est lent (une sorte de pinceau inversé).
 
@@ -616,7 +616,7 @@ Il ne nous reste plus qu'à informer notre utilisateur de son choix de couleur e
  [^ home](#contenu)<br>
 
 <a name="polaire"/>
-#### Coordonnées polaire
+#### Coordonnées polaires
 
 Les coordonnées polaire vont nous être très utiles ici. Elles permettent d'exprimer les position d'un objet en fonction d'une distance au centre et d'un angle - autrement dit en conservant un rayon constant et en faisant varier l'angle on dessine assez facilement un cercle.
 
@@ -839,7 +839,7 @@ fill(s_hue.value(),100,100,100)
 
 
 <a name="css"/>
-### Styliser avec  du css
+### Styliser avec du CSS
 
 Puisque ce sont des élements html, ils peuvent aussi être stylisés par css, il suffit pour cela de créer un fichier css dans le dossier de notre page, par exemple comme celui-ci :
 
@@ -1390,7 +1390,7 @@ Un peu de documentation et un exemple simple sont disponnibles à cette adresse 
 
 
 <a name="socket"/>
-## websocket et SocketIO
+## Websocket et SocketIO
 
 Dans le cadre de cette découverte de p5js nous allons effleurer le sujet des websockets qui permet des informations entre plusieurs ordinateurs dans une même page web. Les utilisateurs peuvent alors collaborer.
 
@@ -1483,7 +1483,7 @@ function setup() {
 
 
 <a name="socket-json"/>
-### format JSON : JavaScript Object Notation
+### Format JSON : JavaScript Object Notation
 
 Ensuite pour que chaque utilisateur puisse choisir son "crayon", il faut que les données relatives à chaque paramètre qu'il a choisit soient envoyés à la page web principale qui accepte toutes les connections des utilisateurs. Pour cela nous allons créer un objet javascript au format **JSON** qui est un format très utilisé en developpement. Le format json fonctionne avec un système de clé. Entre deux accolades, il suffit d'inscrire "maClé : maValeur".
 
@@ -1600,7 +1600,7 @@ Voici l'adaptation du sketch de "spray-paint" : https://www.openprocessing.org/s
 <a name="socket-localhost"/>
 ### Node et serveur local
 
-Comme mentionné en intro vous pouez vous référer à ce tutorial pour apprendre à coder un serveur wwebsocket avec nodeJS : https://github.com/processing/p5.js/wiki/p5.js,-node.js,-socket.io
+Comme mentionné en intro vous pouvez vous référer à ce tutorial pour apprendre à coder un serveur wwebsocket avec nodeJS : https://github.com/processing/p5.js/wiki/p5.js,-node.js,-socket.io
 
 Pour faire résumer et faire fonctionner les exemples fournis, il faut :
 
