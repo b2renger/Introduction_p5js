@@ -6,7 +6,7 @@ P5js est un projet issu de processing qui est un langage de programmation basé 
 
 P5js propose l'intégration dans un canvas html5 d'un maximum de fonction pour le dessin et d'animation, des possibilités d'interaction à travers différentes interfaces homme machine (clavier, souris, webcam, micro ...), ou encore avec les composants d'une page web et un support partiel mais en développement de webgl.
 
-De nombreuses librairies viennent offrir de nouvelles possibilité, mais il p5js peut naturellement s'interfacer avec n'importe quelle librairies js.
+De nombreuses bibliothèques viennent offrir de nouvelles possibilité, mais il p5js peut naturellement s'interfacer avec n'importe quelle bibliothèques js.
 
 P5js est différent de processing.js par le fait que le langage de base est le js. Lorsqu'on utilise processing.js on a générallement développé un programme avec processing et on utilise processing.js pour traduire le programme en javascript qui devient alors exécutable dans une page web. Avec p5js on code directement en javascript un langage natif pour les navigateurs.
 
@@ -28,7 +28,7 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
 		*	[Coordonnées polaires](#polaire)<br>
 		*	[Boucles : "for"](#boucles)<br> 
 * [DOM](#dom)<br>
-	*	[Utilisation de la librairie](#utilisation) - [**DEMO 1**](https://b2renger.github.io/Introduction_p5js/02_dom_01/index.html) - [**DEMO 2**](https://b2renger.github.io/Introduction_p5js/02_dom_02/index.html)<br>
+	*	[Utilisation de la bibliothèque](#utilisation) - [**DEMO 1**](https://b2renger.github.io/Introduction_p5js/02_dom_01/index.html) - [**DEMO 2**](https://b2renger.github.io/Introduction_p5js/02_dom_02/index.html)<br>
 		*	[Créer des éléments HTML5](#html5)<br>
 		*	[Styliser avec du css](#css)<br>
 	*	[Utilisation de la vidéo](#video) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/02_dom_03/index.html)<br>
@@ -36,7 +36,7 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
 	*	[Mode instance de p5js](#instanciation) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/02_dom_05/index.html)<br>
 	*	[Exemple de site web](#siteweb)<br>
 * [SocketIO](#socket) - [**DEMO1**](https://www.openprocessing.org/sketch/390650) - [**DEMO2**](https://www.openprocessing.org/sketch/390497)<br>
-	* [Utilisation des librairies](#socket-libs)<br>
+	* [Utilisation des bibliothèques](#socket-libs)<br>
 	* [JSON = JavaScript Object Notation](#socket-json)<br>
 	* [Emettre et recevoir des données dans une page web](#socket-emit)<br>
 	* [NodeJs et serveur local](#socket-localhost)<br>
@@ -49,20 +49,20 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
 <a name="p5js_tools"/>
 ## Comment travailler avec p5js
 
-Vous avez plusieurs choix : 
+Vous avez plusieurs possibilités : 
 
 
 ### openprocessing
 
-Openprocessing est une plateforme collaborative qui permet de coder avec p5js ou processing.js. Il suffit de créer un compte gratuit et de cliquer sur 'create a new sketch' et c'est partit ! Openprocessing permet d'uploader des images, des vidéos ou des sons et supporte plusieurs librairies y compris un librairie websocket qui permet à plusieurs utilisateur d'interagir à distance dans un même canvas.
+Openprocessing est une plateforme collaborative qui permet de coder avec p5js ou processing.js. Il suffit de créer un compte gratuit et de cliquer sur 'create a new sketch' et c'est partit ! Openprocessing permet d'uploader des images, des vidéos ou des sons et supporte plusieurs bibliothèques y compris un bibliothèque websocket qui permet à plusieurs utilisateur d'interagir à distance dans un même canvas.
 
 [Openprocessing](http://openprocessing.org)
 
 La plupart des exemples de ce cours seront probablement porté sur openprocessing à une date indéfinie. Mais vous pouvez copier l'intégralité du fichier "sketch.js" de n'importe quel dossier dans l'éditeur de code d'openprocessing, puis de cliquer sur "run".
 
-Il est aussi possible d'intégrer des librairies javascript externes voici un exemple pour faire cela : https://www.openprocessing.org/sketch/385808
+Il est aussi possible d'intégrer des bibliothèques javascript externes voici un exemple pour faire cela : https://www.openprocessing.org/sketch/385808
 
-Openprocessing est pratique car il permet de se passer de serveur local et permet de créer des portofolio d'applications interactives très facilement. Actuellement openprocessing connait malheureusement quelques soucis, l'intégration de la librairie DOM pose parfois problème, et le serveur websocket plante régulièrement (mais le nouveau site est récent, ces problèmes se dissiperont avec le temps)
+Openprocessing est pratique car il permet de se passer de serveur local et permet de créer des portofolio d'applications interactives très facilement. Actuellement openprocessing connait malheureusement quelques soucis, l'intégration de la bibliothèque DOM pose parfois problème, et le serveur websocket plante régulièrement (mais le nouveau site est récent, ces problèmes se dissiperont avec le temps)
 
 ![Openprocessing](assets/openprocessing.png)
 ![Openprocessing](assets/openprocessing-2.png)
@@ -79,17 +79,17 @@ L'éditeur fait aussi office de serveur, et permet donc de travailler avec des i
 
 ### developpeur web 
 
-Le plus simple est probablement de [télécharger](http://p5js.org/download/) et d'ajouter la librairie js ou d'utiliser les liens cdn dans votre fichier index.html.
+Le plus simple est probablement de [télécharger](http://p5js.org/download/) et d'ajouter la bibliothèque js ou d'utiliser les liens cdn dans votre fichier index.html.
 
-Pour rappel CDN signifie Content Delivery Network et permet de lier son code à des librairies qui sont déjà hébergées en ligne.
+Pour rappel CDN signifie Content Delivery Network et permet de lier son code à des bibliothèques qui sont déjà hébergées en ligne.
 
 Généralement un bon éditeur de texte suffit. Parfois il pourra être utile d'utiliser un serveur local pour servir certaines pages demandant accès à des fonctions ou fichiers spécifiques (généralement des pages utilisant des images ou des sons sous formes de fichier doivent être ouvertes avec un serveur local). Il y a des nombreuses possibilités pour cela et beaucoup de documentation en ligne : personnellement j'utilise 'sinatra' un serveur en ruby, simplehttpserver pour python peut-être une alternative, ou d'autres encore via nodejs voire même des logiciels comme mamp.
 
 
-### des librairies
+### des bibliothèques
 
-P5js recense un bon nombre de librairies compatibles et revendiquant le même esprit : http://p5js.org/libraries/
-Mais il peut aussi être utilisé avec n'impote quelles autres librairies js.
+P5js recense un bon nombre de bibliothèques compatibles et revendiquant le même esprit : http://p5js.org/libraries/
+Mais il peut aussi être utilisé avec n'impote quelles autres bibliothèques js.
 
 [^ home](#contenu)<br>
 
@@ -98,7 +98,7 @@ Mais il peut aussi être utilisé avec n'impote quelles autres librairies js.
 <a name="bases"/>
 ## Les principes de bases
 
-Un programme p5js est destiné à être utilisé dans une page web. Généralement en dispose d'un fichier *index.html* qui nous permet de définir notre page web et les fichiers ressources (liens vers les librairies) et d'un fichier *sketch.js* qui va être notre programme écrit en javascript.
+Un programme p5js est destiné à être utilisé dans une page web. Généralement en dispose d'un fichier *index.html* qui nous permet de définir notre page web et les fichiers ressources (liens vers les bibliothèques) et d'un fichier *sketch.js* qui va être notre programme écrit en javascript.
 
 ### HTML et JS
 
@@ -110,9 +110,9 @@ Le fichier *sketch.js* est lié au fichier *index.html* par une déclaration dan
 ```
 Lorsqu'on ouvre le fichier *index.html* celui-ci executera alors le fichier *sketch.js* dans la page web.
 
-Dans le cas de nos exemples nous trouverons les librairies javascripts dans un dossier **/librairies** dédié : on y trouve *p5.js*, *p5.dom.js*, *p5.sound.js*.
+Dans le cas de nos exemples nous trouverons les bibliothèques javascripts dans un dossier **/bibliothèques** dédié : on y trouve *p5.js*, *p5.dom.js*, *p5.sound.js*.
 
-Le fichier *index.html* ressemblera donc à ceci si on utilise toutes les librairies :
+Le fichier *index.html* ressemblera donc à ceci si on utilise toutes les bibliothèques :
 
 ```HTML
 <html>
@@ -792,16 +792,16 @@ https://b2renger.github.io/Introduction_p5js/01_dessiner_06/index.html
 ## DOM
 
 <a name="utilisation"/>
-### Utilisation de la librairie
+### Utilisation de la bibliothèque
 
-Nous allons maintenant nous intéresser à la librairie DOM, qui permet de manipuler des éléments HTML5 par du code p5js. Cela nous permettera de créer des sliders, des champs des textes etc. pour controller nos programmes.
+Nous allons maintenant nous intéresser à la bibliothèque DOM, qui permet de manipuler des éléments HTML5 par du code p5js. Cela nous permettera de créer des sliders, des champs des textes etc. pour controller nos programmes.
 
-La référence de la librairie est disponnible ici : http://p5js.org/reference/#/libraries/p5.dom
+La référence de la bibliothèque est disponnible ici : http://p5js.org/reference/#/libraries/p5.dom
 Elle n'est malheureusement pas forcément toujours simple à comprendre à mon sens il est préférable de regarder les exemples disponnibles à cette adresse, à la rubrique DOM : http://p5js.org/examples/
 
-A partir du programme de dessin précédent nous allons créer des sliders permettant de paramétrer la couleur ainsi que la taille de notre outil de dessin, à l'aide des fonctions **createSlider()** et **createP()** de la librairie DOM.
+A partir du programme de dessin précédent nous allons créer des sliders permettant de paramétrer la couleur ainsi que la taille de notre outil de dessin, à l'aide des fonctions **createSlider()** et **createP()** de la bibliothèque DOM.
 
-Tout d'abord, il faut ajouter la librairie à notre page en ajoutant la ligne suivante à l'habituel fichier *index.html*
+Tout d'abord, il faut ajouter la bibliothèque à notre page en ajoutant la ligne suivante à l'habituel fichier *index.html*
 
 ```html
 <script language="javascript" type="text/javascript" src="../libraries/p5.dom.js"></script>
@@ -1039,7 +1039,7 @@ https://www.openprocessing.org/sketch/390491
 <a name="video"/>-
 ### Accès vidéo
 
-La librairie DOM permet d'avoir accès au microphone et à la webcam à travers le navigateur via la fonction **createCapture()** : http://p5js.org/reference/#/p5/createCapture, et de lire des vidéos.
+La bibliothèque DOM permet d'avoir accès au microphone et à la webcam à travers le navigateur via la fonction **createCapture()** : http://p5js.org/reference/#/p5/createCapture, et de lire des vidéos.
 
 ```javascript
 var capture;
@@ -1177,7 +1177,7 @@ D'autres exemples peuvent être source d'inspiration pour créer de nouvelles fa
 Je vous conseille aussi l'excellent playlist de Daniel Shiffman sur le sujet : 
 	-	https://www.youtube.com/playlist?list=PLRqwX-V7Uu6aKKsDHZdDvN6oCJ2hRY_Ig
 
-et tout particulièrement le checkbox miror qui restitue un flux vidéo par une grille de boîtes à cocher html activées et désactivées programmatiquement grâce à la librairie dom : 
+et tout particulièrement le checkbox miror qui restitue un flux vidéo par une grille de boîtes à cocher html activées et désactivées programmatiquement grâce à la bibliothèque dom : 
 	-	https://www.youtube.com/watch?v=m1G6WBvrOBE&list=PLRqwX-V7Uu6aKKsDHZdDvN6oCJ2hRY_Ig&index=5
 
 
@@ -1374,7 +1374,7 @@ https://b2renger.github.io/Introduction_p5js/02_dom_05/index.html
 <a name="site"/>-
 ### Exemple de site web
 
-Mon site web personnel est constuit à l'aide de la librairie DOM de p5js. Le principe est d'utiliser un canvas pour la navigation dans les 'pages' plutôt qu'un menu classique.
+Mon site web personnel est constuit à l'aide de la bibliothèque DOM de p5js. Le principe est d'utiliser un canvas pour la navigation dans les 'pages' plutôt qu'un menu classique.
 
 http://b2renger.github.io
 
@@ -1397,9 +1397,9 @@ Dans le cadre de cette découverte de p5js nous allons effleurer le sujet des we
 Un excellent exemple est l'application de musique collaborative **Plink** :  http://dinahmoelabs.com/#plink
 
 <a name="socket-libs"/>
-### Les librairies et leur utilisation
+### Les bibliothèques et leur utilisation
 
-Nous n'allons pas nous lancer dans l'écriture de code côté serveur mais nous allons nous concentrer sur l'utilisation de la librairie inclue à openprocessing. 
+Nous n'allons pas nous lancer dans l'écriture de code côté serveur mais nous allons nous concentrer sur l'utilisation de la bibliothèque inclue à openprocessing. 
 
 Si jamais vous souhaitez vous lancer dans l'écriture d'applications websocket plus avancées, il vous faudra écrire un serveur capable d'utiliser cette technologie.
 
@@ -1407,7 +1407,7 @@ Les exemples du cours seront disponnibles sur openprocessing sans avoir recours 
 
 Nous allons donc nous attacher à modifier nos programmes de dessin pour permettre l'interaction de plusieurs utilisateurs sur la même page.
 
-Tout d'abord il faut ajouter les librairies DOM et socketIO à notre programme openprocessing en cliquant sur le menu (les trois points verticaux) sous le bouton *save*. 
+Tout d'abord il faut ajouter les bibliothèques DOM et socketIO à notre programme openprocessing en cliquant sur le menu (les trois points verticaux) sous le bouton *save*. 
 
 ![openprocessing add libraries](assets/03_socket_openprocessing.png)
 
@@ -1631,7 +1631,7 @@ Pour faire résumer et faire fonctionner les exemples fournis, il faut :
 
 
 <a name="sound"/>
-## La librairie son
+## La bibliothèque son
 
 ## Mini-projet son websocket
 
