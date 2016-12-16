@@ -89,7 +89,7 @@ Généralement un bon éditeur de texte suffit. Parfois il pourra être utile d'
 ### des librairies
 
 P5js recense un bon nombre de librairies compatibles et revendiquant le même esprit : http://p5js.org/libraries/
-Mais il peut aussi être utilisé avec n'impote quelles autres librairies js.
+Mais il peut aussi être utilisé avec n'importe quelles autres librairies js.
 
 [^ home](#contenu)<br>
 
@@ -1664,13 +1664,22 @@ Pour faire résumer et faire fonctionner les exemples fournis, il faut :
 
 * Utilisation de p5js en mode instanciable - avoir plusieurs canvas dans une page : https://github.com/processing/p5.js/wiki/Instantiation-Cases
 
+* P5js et responsive design : http://gildasp.fr/exp/P5js-fullscreen/
+
+* p5.css3d : https://github.com/bitcraftlab/p5.css3d
+
+* p5.gui (créer des sliders, boutons etc.) : https://github.com/bitcraftlab/p5.gui
+
+* p5.canvascam (ajoute des fonction des zooms qui peuvent être pénibles à coder) https://github.com/bitcraftlab/p5.canvascam
+
+
 [^ home](#contenu)<br>
 
 
 
 
 <a name="references"/>
-## Ressources
+## Références
 
 Quelques projets liant le web à des espaces physiques :
 
@@ -1704,6 +1713,8 @@ Des projets exclusivement web :
 * Carp and seagull : http://thecarpandtheseagull.thecreatorsproject.com/#
 
 * Plink : musique collaborative : http://dinahmoelabs.com/#plink
+
+* Loops : projet de musique collaborative nantais : http://solam.co/loops/
 
 
 [^ home](#contenu)<br>
