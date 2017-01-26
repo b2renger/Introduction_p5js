@@ -40,7 +40,12 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
 	* [JSON = JavaScript Object Notation](#socket-json)<br>
 	* [Emettre et recevoir des données dans une page web](#socket-emit)<br>
 	* [NodeJs et serveur local](#socket-localhost)<br>
-* [Animation et objets](#animation)<br>
+* [Animation](#animation)<br>
+  * [Balle rebondissant contre les parois](#balle) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_01/index.html)<br>
+  * [Suivre la souris](#souris) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_02/index.html)<br>
+  * [Croissance de tentacules](#tentacules) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_03/index.html)<br>
+* [Objets](#objets)<br>
+* [La bibliothèque p5.sound](#son)<br>
 * [Ressources](#ressources)<br>
 * [Références](#references)<br>
 
@@ -88,13 +93,9 @@ Généralement un bon éditeur de texte suffit. Parfois il pourra être utile d'
 
 ### Des bibliothèques
 
-<<<<<<< HEAD
-P5js recense un bon nombre de librairies compatibles et revendiquant le même esprit : http://p5js.org/libraries/
-Mais il peut aussi être utilisé avec n'importe quelles autres librairies js.
-=======
 P5js recense un bon nombre de bibliothèques compatibles et revendiquant le même esprit : http://p5js.org/libraries/
 Mais il peut aussi être utilisé avec n'impote quelles autres bibliothèques js.
->>>>>>> origin/master
+
 
 [^ home](#contenu)<br>
 
@@ -1609,27 +1610,296 @@ Comme mentionné en intro vous pouvez vous référer à ce tutorial pour apprend
 
 Pour faire résumer et faire fonctionner les exemples fournis, il faut :
 
-- installer NodeJS
-- naviguer vers le dossier de l'exemple que vous souhaitez tester.
-- installer les dépendences, grace au node package manager, ligne de commande à taper dans une invite de commande nodejs ou un terminal.
+-installer NodeJS
+-naviguer vers le dossier de l'exemple que vous souhaitez tester.
+-installer les dépendences, grace au node package manager, ligne de commande à taper dans une invite de commande nodejs ou un terminal.
+
 		```
 		npm install socket.io
 		```
-- lancer le serveur local : 
-		```
+
+-lancer le serveur local : 
+		
+    ```
 		node servers.js
 		```
-- se rendre sur la page :
+
+-se rendre sur la page :
+
 		```
 		http://localhost:8080/
 		```
 
 [^ home](#contenu)<br>
 
+
 <a name="animation"/>
 ## Animer un déplacement
 
-## objets en js
+Il existe de nombreuses façons d'animer des déplacements d'objet, nous allons ici voir différentes modes de déplacements relativement simples. Pour réaliser des choses plus complexes il est souvent intéressant de se tourner vers de implémentations de lois physiques et donc de manipuler des vitesses, des accélérations, des forces etc. Vous trouverez des liens dans les ressources notamment avec le livre et les cours de Daniel Shiffman autour du thème [Nature of Code](http://natureofcode.com/book/chapter-2-forces/)
+
+<a name="balle"/>
+### Balle dans une boîte
+
+Nous allons maintenant à l'animation autonome d'un déplacement comme par exemple un disque qui se déplace seul et rebondit sur les bords de nôtre canvas.
+
+Pour cela nous allons avoir recours à l'utilisation de **variables**. Pour rappel les variables sont des emplacements en mémoire auxquels nous avons attribué une valeur (qui peut-être : un nombre, une chaîne de caractère, un tableau ...), le fait d'utiliser une variable nous permet, d'accèder à son contenu par son nom, mais aussi de modifier sa valeur.
+
+Par exemple ce petit bout de code permet de faire se déplacer un disque vers la droite. Il utilise deux variables *xpos* et *ypos* pour conserver en mémoire la position du disque. On peut alors incrémenter la position en abscisses dans le *draw()* de notre programme.
+
+```
+// on définit des variables pour stocker la position de notre disque
+var xpos 
+var ypos 
+
+function setup() {
+  createCanvas(windowWidth, windowHeight); 
+  background(100);  
+  // on initialise nos variables
+  xpos = 0
+  ypos = windowHeight/2
+  
+} 
+
+function draw() { 
+  // on dessine notre disque à la position définie par nos variable
+  ellipse(xpos, ypos, 20, 20);
+  // on augmente la position en abscisses d'une unité
+  xpos = xpos + 1
+}
+```
+
+Précédement nous écrivions *xpos = xpos + 1*, la valeur "1" correspond au nombre de pixels dont le disque va se déplacer à chaque image. Si nous voulons qu'il se déplace plus vite nous pouvons écrire *xpos = xpos + 5* et si nous voulons qu'il se déplace dans l'autre sens *xpos = xpos - 5*.
+
+Nous pouvons maintenant modifier un peu notre programme pour lui donner un déplacement en diagonal et en faisant en sorte que notre disque rebondisse sur les bords du canvas. Pour cela nous allons avoir besoin de déclarer deux autres variable qui nous permettrons de donner une "grandeur" à la vitesse de déplacement en abscisses et en ordonnées. Et nous pourrons écrire des conditions à l'aide de **if** pour gérer les rebonds.
+
+
+```
+// on définit des variables pour stocker la position de notre disque
+var xpos 
+var ypos 
+// on définit des variables pour stocker la vitesse de notre disque
+var xspeed
+var yspeed
+
+function setup() {
+  createCanvas(windowWidth, windowHeight); 
+  background(100);  
+  // on initialise nos variables
+  xpos = windowWidth/2
+  ypos = windowHeight/2
+  xspeed = 1
+  yspeed = 1
+  
+} 
+
+function draw() {
+  
+  // on dessine notre disque à la position définie par nos variable
+  ellipse(xpos, ypos, 20, 20);
+  // on augmente la position en abscisses de xspeed unités
+  xpos = xpos + xspeed
+  // on augmente la position en ordonnée d'yspeed unités
+  ypos = ypos + yspeed
+
+  // on vérifie que l'on ne tappe pas le bord gauche ou le bord droit
+  if (xpos < 0 || xpos > windowWidth){
+    xspeed = xspeed * (-1) // si c'est le cas on inverse le sens de déplacement en abscisses
+  }
+  // on vérifie que l'on ne tappe pas le haut ou le bas 
+  if (ypos < 0 || ypos > windowHeight){
+    yspeed = yspeed * (-1) // si c'est le cas on inverse le sens de déplacement en ordonnées
+  }
+}
+```
+
+Le seul problème qui nous reste est que notre balle part toujours dans le même sens à la même vitesse. Il pourrait être tentant d'utiliser la fonction **random()** ([doc](http://p5js.org/reference/#/p5/random)), mais cela nous condamne nécessairement à avoir des balles qui ne partent que dans un seul cadran (*random(1,5)*) ou risquer d'avoir une balle dont la vitesse est très (trop) proche de zéro (*random(-5,5)*). 
+
+Dans ce cas, généralement le plus simple et de passer par les coordonnées polaires pour initialiser la vitesse :
+
+```
+xspeed = random(2,10)*cos(random(TWO_PI))
+yspeed = random(2,10)*sin(random(TWO_PI))
+```
+*random(2,10)* va correspondre au rayon (la distance au centre) et donc à la magnitude du vecteur de vitesse que l'on va définir soit la quantité de mouvement : est-ce que mon objet se déplace vite ou lentement.
+*random(TWO_PI)* correspond naturellement à l'angle, et va nous donner l'orientation.
+
+![balle dans une boite](assets/04_animation_balle.png)
+
+https://b2renger.github.io/Introduction_p5js/04_animation_01/index.html
+
+https://www.openprocessing.org/sketch/401282
+
+[^ home](#contenu)<br>
+
+<a name="souris"/>
+### Suivre la souris
+
+Pour présenter quelquechose d'un peu plus interactif, nous allons maintenant essayer de poser les bases de ce que l'on appelle le **easing** ou aussi le **tweening**. Le principe est simple il consiste à créer une animation pour passer d'un état A à un état B.
+
+Dans notre cas nous voulons faire en sorte qu'un cercle suive la souris. Nous allons donc créer deux jeux de variables, un pour stocker la position cible et un pour stocker notre position actuelle.
+
+```
+var posX, posY
+var targetX, targetY
+```
+
+Pour effectuer notre animation nous allons nous baser sur la distance à parcourir pour atteindre notre cible. Ce qui est facilement calculable pour une coordonnée :
+
+```
+var distanceX = targetX - posX
+var distanceY = targetY - posY
+```
+
+Si à chaque image nous ajoutons à notre position une petite fraction de cette distance nous finirons par atteindre notre cible
+
+```
+posX = posX + distanceX * 0.05
+posX = posY + distanceY * 0.05
+```
+
+La valeur "0.05" par laquelle nous multiplions correspond à la petite fraction de distance que nous prenons, plus elle est grande plus l'animation sera rapide (voire même instantanée pour une valeur de 1).
+
+Voici l'intégralité du code :
+
+```
+var targetX, targetY;
+var posX, posY;
+
+function setup() {
+  createCanvas(windowWidth, windowHeight); 
+  background(100); 
+  
+  posX = windowWidth/2
+  targetX = windowWidth /2
+
+  posY = windowHeight/2
+  targetY = windowHeight /2
+} 
+
+function draw() {
+  
+  targetX = mouseX
+  targetY = mouseY
+  
+  posX += (targetX - posX) * 0.05
+  posY += (targetY- posY) * 0.05  
+
+  ellipse(posX, posY, 20, 20);
+}
+```
+
+![suivre la souris](assets/04_animation_souris.png)
+
+https://b2renger.github.io/Introduction_p5js/04_animation_02/index.html
+
+https://www.openprocessing.org/sketch/402030
+
+Le tweening et le easing sont des sujets relativement complexes, il existe des tas de façons d'interpoler les positions. Ici plus la distance est grande plus notre objet va vite et plus on se rapproche de la cible plus le mouvement en lent : on appelle ça une animation "ease out".
+
+Il existe de nombreuses bibliothèques d'animation, [tween.js] (https://github.com/tweenjs/tween.js/) semble en être une référence.
+
+Lors de la préparation de ce cours j'ai pu implémenter ce qui fait office de référence : les équations de [Robert Penner](http://robertpenner.com/easing/). Ces équations proposent différentes fonction (cubiques, sinusoidales...) de "easing" avec à chaque fois un easing en entrée ("ease in"), un easing en sortie ("ease out") et un easing en entrée et sortie ("ease in out").
+
+![suivre la souris](assets/04_animation_penner.png)
+
+https://b2renger.github.io/Introduction_p5js/04_animation_02_Penner/index.html
+
+Vous pourrez trouver ce sketch ici : https://www.openprocessing.org/sketch/401812
+
+
+[^ home](#contenu)<br>
+
+
+<a name="tentacules"/>
+### Croissance de Tentacules
+
+Notre dernier programme repose sur un algorithme de déplacement assez simple et va avoir recours à une fonction que l'on appele le bruit de [Perlin](https://fr.wikipedia.org/wiki/Ken_Perlin). Cette fonction une sorte de random() un peu particulier puisqu' elle permet de générer des suites de nombres très proches les uns des autres. Cela permet notament de créer des mouvement et des contours qui paraissent plus naturels.
+
+L'algorithme pour créer des tentacules est relativement simple :
+- on créer un cercle au milieu de notre fenêtre.
+- on s'éloigne du centre avec un angle qui évolue en fonction d'un bruit de Perlin.
+- tout en diminuant le diamètre de notre cercle.
+- lorsque le diamètre est quasi nul on recommence.
+
+La fonction **noise()** permet de générer un bruit de Perlin ([doc](http://p5js.org/reference/#/p5/noise))Son usage est un peu plus compliqué car il faut lui fournir un argument « évolutif », celle-ci renvoi des valeurs comprises entre 0 et 1. Il faut donc souvent adapter le résultat obtenu en fonction de nos besoins grâce à la fonction **map()** ([doc](http://p5js.org/reference/#/p5/map)) qui permet de transformer des valeurs comprises entre deux valeurs dans un autre intervalle.
+
+```
+var anchorX, anchorY // coordonées du point d'ancrage du dessin
+var distance, orientation // variable pour stocker les coordonées polaires de notre cercle
+var diam; // diametre du cercle
+var noiseF; // une variable que l'on va faire évoluer à chaque image pour notre bruit de Perlin
+
+function setup() {
+  createCanvas(windowWidth, windowHeight); 
+  background(100);  
+  
+  diam = random(20,50)
+  anchorX = windowWidth/2;
+  anchorY = windowHeight/2;
+  
+  distance = 0;
+  orientation = random(TWO_PI);
+  
+  noiseF = 5
+  
+} 
+
+function draw() {
+  
+  diam -= 0.1 // on diminue le diamètre
+  distance += 1; // on augmente la distance
+  orientation += map(noise(noiseF,10,20),0,1,-0.015,0.015) // on ajuste l'orientation avec un bruit de Perlin et la fonction map
+  // noise(noiseF,10,20) permet de générer un bruit compris entre 0 et 1
+  // ce résultat est directement utilisé dans la fonction map, pour convertir le résultat de l'intervalle [0,1] à l'intervalle [-0.015,0.015]
+  // qui peut être assimilable à un angle en radians soit des variations comprises entre + ou - 1 degrée par image
+  noiseF += 0.005 // on incrémente la variable évolutive pour générer notre bruit
+  
+  // on calcule la position en coordonnées cartésiennes à partir de nos coordonnées polaires
+  var xpos = anchorX + distance * cos(orientation)  
+  var ypos = anchorY + distance * sin(orientation)
+  
+  ellipse(xpos,ypos,diam,diam)
+  
+  // si le diamètre est suffisament petit on réinitialise un certain nombre de variables
+  if(diam<0.1){
+    noiseF = random(-1000,1000)
+    diam = random(20,50)
+    distance = 0;
+    orientation = random(TWO_PI);  
+  }
+  
+}
+
+function mousePressed(){
+  anchorX = mouseX
+  anchorY = mouseY
+  diam = random(20,50)
+}
+```
+![tentacules](assets/04_animation_tentacules.png)
+
+https://b2renger.github.io/Introduction_p5js/04_animation_03/index.html
+
+Vous pourrez trouver ce sketch ici : https://www.openprocessing.org/sketch/395964
+
+
+[^ home](#contenu)<br>
+
+
+
+<a name="objets"/>
+## Objets en js
+
+Les animations que nous avons réalisés ci-dessus sont très bien, mais en terme de code que se passe-t-il, si je veux avoir deux balles qui rebondissent ou même une centaine ? La quantité de code à reproduire et le nombre de variables à renommer est trop important pour pouvoir imaginer utilise ce même code. Nous allons avoir besoin de rendre un peu plus abstrait notre code pour qu'il soit plus souple à l'utilisation. Nous allons donc créer des objets. La notion d'objet en programmation (même si les objets dans différents langages ont différentes propriétés) correspond à notre capacité à décrire avec du code la façon dont un élément doit se comporter : ce qui signifie en programmation écrire une **classe**. Une fois cette classe écrite on peut créer des objets qui se comporteront comme décrits dans la classe, chaque objet créé est alors appelé une **instance** de la classe.
+
+Pour résumer et faire une analogie concrète une classe c'est la définition d'un objet : prenons par exemple une table (comme un table basse de salon). Une **table** c'est un objet composé :
+- d'un **plateau** qui peut être rectangulaire ou circulaire, d'une certaine **surface**.
+- d'un certain nombre de **pieds** (3 ou 4 généralement) qui peuvent être réglables en hauteur.
+- éventuellement de **roulettes**.
+L'utilisateur peut alors récupérer sa table en kit la monter, et l'utiliser : il peut alors poser des livres, ordinateurs, téléphones sur le plateau, régler la hauteur des pieds, et la déplacer en la faisant rouler. Définir ce à quoi la table ressemble et ce qu'on va pouvoir faire avec correspond à l'écriture d'une classe.
+
+Dans notre cas on va par exemple créer une classe **Balle**, une instance de cette classe se déplacera à une vitesse donnée aléatoirement lors de sa création, elle rebondira sur les bords de la fenêtre, et elle se dessinera avec une couleur définie 
 
 
 [^ home](#contenu)<br>
@@ -1638,7 +1908,7 @@ Pour faire résumer et faire fonctionner les exemples fournis, il faut :
 <a name="sound"/>
 ## La bibliothèque son
 
-## Mini-projet son websocket
+
 
 
 [^ home](#contenu)<br>
@@ -1698,6 +1968,8 @@ Quelques projets liant le web à des espaces physiques :
 
 
 Des projets exclusivement web :
+
+* Land lines : https://lines.chromeexperiments.com/
 
 * Aaron Koblin : 
 
