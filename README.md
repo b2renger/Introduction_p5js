@@ -6,7 +6,7 @@ P5js est un projet issu de processing qui est un langage de programmation basé 
 
 P5js propose l'intégration dans un canvas html5 d'un maximum de fonction pour le dessin et d'animation, des possibilités d'interaction à travers différentes interfaces homme machine (clavier, souris, webcam, micro ...), ou encore avec les composants d'une page web et un support partiel mais en développement de webgl.
 
-De nombreuses librairies viennent offrir de nouvelles possibilité, mais il p5js peut naturellement s'interfacer avec n'importe quelle librairies js.
+De nombreuses bibliothèques viennent offrir de nouvelles possibilité, mais il p5js peut naturellement s'interfacer avec n'importe quelle bibliothèques js.
 
 P5js est différent de processing.js par le fait que le langage de base est le js. Lorsqu'on utilise processing.js on a générallement développé un programme avec processing et on utilise processing.js pour traduire le programme en javascript qui devient alors exécutable dans une page web. Avec p5js on code directement en javascript un langage natif pour les navigateurs.
 
@@ -28,7 +28,7 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
 		*	[Coordonnées polaires](#polaire)<br>
 		*	[Boucles : "for"](#boucles)<br> 
 * [DOM](#dom)<br>
-	*	[Utilisation de la librairie](#utilisation) - [**DEMO 1**](https://b2renger.github.io/Introduction_p5js/02_dom_01/index.html) - [**DEMO 2**](https://b2renger.github.io/Introduction_p5js/02_dom_02/index.html)<br>
+	*	[Utilisation de la bibliothèque](#utilisation) - [**DEMO 1**](https://b2renger.github.io/Introduction_p5js/02_dom_01/index.html) - [**DEMO 2**](https://b2renger.github.io/Introduction_p5js/02_dom_02/index.html)<br>
 		*	[Créer des éléments HTML5](#html5)<br>
 		*	[Styliser avec du css](#css)<br>
 	*	[Utilisation de la vidéo](#video) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/02_dom_03/index.html)<br>
@@ -36,10 +36,16 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
 	*	[Mode instance de p5js](#instanciation) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/02_dom_05/index.html)<br>
 	*	[Exemple de site web](#siteweb)<br>
 * [SocketIO](#socket) - [**DEMO1**](https://www.openprocessing.org/sketch/390650) - [**DEMO2**](https://www.openprocessing.org/sketch/390497)<br>
-	* [Utilisation des librairies](#socket-libs)<br>
+	* [Utilisation des bibliothèques](#socket-libs)<br>
 	* [JSON = JavaScript Object Notation](#socket-json)<br>
 	* [Emettre et recevoir des données dans une page web](#socket-emit)<br>
-* [Animation et objets](#animation)<br>
+	* [NodeJs et serveur local](#socket-localhost)<br>
+* [Animation](#animation)<br>
+  * [Balle rebondissant contre les parois](#balle) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_01/index.html)<br>
+  * [Suivre la souris](#souris) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_02/index.html)<br>
+  * [Croissance de tentacules](#tentacules) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_03/index.html)<br>
+* [Objets](#objets)<br>
+* [La bibliothèque p5.sound](#son)<br>
 * [Ressources](#ressources)<br>
 * [Références](#references)<br>
 
@@ -48,26 +54,26 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
 <a name="p5js_tools"/>
 ## Comment travailler avec p5js
 
-Vous avez plusieurs choix : 
+Vous avez plusieurs possibilités : 
 
 
 ### openprocessing
 
-Openprocessing est une plateforme collaborative qui permet de coder avec p5js ou processing.js. Il suffit de créer un compte gratuit et de cliquer sur 'create a new sketch' et c'est partit ! Openprocessing permet d'uploader des images, des vidéos ou des sons et supporte plusieurs librairies y compris un librairie websocket qui permet à plusieurs utilisateur d'interagir à distance dans un même canvas.
+Openprocessing est une plateforme collaborative qui permet de coder avec p5js ou processing.js. Il suffit de créer un compte gratuit et de cliquer sur 'create a new sketch' et c'est partit ! Openprocessing permet d'uploader des images, des vidéos ou des sons et supporte plusieurs bibliothèques y compris un bibliothèque websocket qui permet à plusieurs utilisateur d'interagir à distance dans un même canvas.
 
 [Openprocessing](http://openprocessing.org)
 
 La plupart des exemples de ce cours seront probablement porté sur openprocessing à une date indéfinie. Mais vous pouvez copier l'intégralité du fichier "sketch.js" de n'importe quel dossier dans l'éditeur de code d'openprocessing, puis de cliquer sur "run".
 
-Il est aussi possible d'intégrer des librairies javascript externes voici un exemple pour faire cela : https://www.openprocessing.org/sketch/385808
+Il est aussi possible d'intégrer des bibliothèques javascript externes voici un exemple pour faire cela : https://www.openprocessing.org/sketch/385808
 
-Openprocessing est pratique car il permet de se passer de serveur local et permet de créer des portofolio d'applications interactives très facilement. Actuellement openprocessing connait malheureusement quelques soucis, l'intégration de la librairie DOM pose parfois problème, et le serveur websocket plante régulièrement (mais le nouveau site est récent, ces problèmes se dissiperont avec le temps)
+Openprocessing est pratique car il permet de se passer de serveur local et permet de créer des portofolio d'applications interactives très facilement. Actuellement openprocessing connait malheureusement quelques soucis, l'intégration de la bibliothèque DOM pose parfois problème, et le serveur websocket plante régulièrement (mais le nouveau site est récent, ces problèmes se dissiperont avec le temps)
 
 ![Openprocessing](assets/openprocessing.png)
 ![Openprocessing](assets/openprocessing-2.png)
 
 
-### editor
+### Editor
 
 Il existe une application windows, osx ou linux, faisant office d'éditeur et de serveur web. Il est disponnible sur la page de téléchargement de p5js
 
@@ -76,19 +82,20 @@ http://p5js.org/download/
 L'éditeur fait aussi office de serveur, et permet donc de travailler avec des images, vidéos et sons, sans avoir à lancer de serveur local.
 
 
-### developpeur web 
+### Développeur web 
 
-Le plus simple est probablement de [télécharger](http://p5js.org/download/) et d'ajouter la librairie js ou d'utiliser les liens cdn dans votre fichier index.html.
+Le plus simple est probablement de [télécharger](http://p5js.org/download/) et d'ajouter la bibliothèque js ou d'utiliser les liens cdn dans votre fichier index.html.
 
-Pour rappel CDN signifie Content Delivery Network et permet de lier son code à des librairies qui sont déjà hébergées en ligne.
+Pour rappel CDN signifie Content Delivery Network et permet de lier son code à des bibliothèques qui sont déjà hébergées en ligne.
 
 Généralement un bon éditeur de texte suffit. Parfois il pourra être utile d'utiliser un serveur local pour servir certaines pages demandant accès à des fonctions ou fichiers spécifiques (généralement des pages utilisant des images ou des sons sous formes de fichier doivent être ouvertes avec un serveur local). Il y a des nombreuses possibilités pour cela et beaucoup de documentation en ligne : personnellement j'utilise 'sinatra' un serveur en ruby, simplehttpserver pour python peut-être une alternative, ou d'autres encore via nodejs voire même des logiciels comme mamp.
 
 
-### des librairies
+### Des bibliothèques
 
-P5js recense un bon nombre de librairies compatibles et revendiquant le même esprit : http://p5js.org/libraries/
-Mais il peut aussi être utilisé avec n'impote quelles autres librairies js.
+P5js recense un bon nombre de bibliothèques compatibles et revendiquant le même esprit : http://p5js.org/libraries/
+Mais il peut aussi être utilisé avec n'impote quelles autres bibliothèques js.
+
 
 [^ home](#contenu)<br>
 
@@ -97,7 +104,7 @@ Mais il peut aussi être utilisé avec n'impote quelles autres librairies js.
 <a name="bases"/>
 ## Les principes de bases
 
-Un programme p5js est destiné à être utilisé dans une page web. Généralement en dispose d'un fichier *index.html* qui nous permet de définir notre page web et les fichiers ressources (liens vers les librairies) et d'un fichier *sketch.js* qui va être notre programme écrit en javascript.
+Un programme p5js est destiné à être utilisé dans une page web. Généralement en dispose d'un fichier *index.html* qui nous permet de définir notre page web et les fichiers ressources (liens vers les bibliothèques) et d'un fichier *sketch.js* qui va être notre programme écrit en javascript.
 
 ### HTML et JS
 
@@ -109,9 +116,9 @@ Le fichier *sketch.js* est lié au fichier *index.html* par une déclaration dan
 ```
 Lorsqu'on ouvre le fichier *index.html* celui-ci executera alors le fichier *sketch.js* dans la page web.
 
-Dans le cas de nos exemples nous trouverons les librairies javascripts dans un dossier **/librairies** dédié : on y trouve *p5.js*, *p5.dom.js*, *p5.sound.js*.
+Dans le cas de nos exemples nous trouverons les bibliothèques javascripts dans un dossier **/bibliothèques** dédié : on y trouve *p5.js*, *p5.dom.js*, *p5.sound.js*.
 
-Le fichier *index.html* ressemblera donc à ceci si on utilise toutes les librairies :
+Le fichier *index.html* ressemblera donc à ceci si on utilise toutes les bibliothèques :
 
 ```HTML
 <html>
@@ -262,7 +269,7 @@ function draw() {
 
 
 <a name="simuler"/>
-### utilisation de variables :"Simuler" un pinceau
+### Utilisation de variables :"Simuler" un pinceau
 
 Nous allons vouloir maintenant compléxifier notre programme. La première chose que nous allons faire est de rendre le dessin un peu plus sensible. L'idée serait de faire en sorte que lorsque notre geste est rapide les cercles soit gros et qu'ils soient petit quand notre geste est lent (une sorte de pinceau inversé).
 
@@ -615,7 +622,7 @@ Il ne nous reste plus qu'à informer notre utilisateur de son choix de couleur e
  [^ home](#contenu)<br>
 
 <a name="polaire"/>
-#### Coordonnées polaire
+#### Coordonnées polaires
 
 Les coordonnées polaire vont nous être très utiles ici. Elles permettent d'exprimer les position d'un objet en fonction d'une distance au centre et d'un angle - autrement dit en conservant un rayon constant et en faisant varier l'angle on dessine assez facilement un cercle.
 
@@ -791,16 +798,16 @@ https://b2renger.github.io/Introduction_p5js/01_dessiner_06/index.html
 ## DOM
 
 <a name="utilisation"/>
-### Utilisation de la librairie
+### Utilisation de la bibliothèque
 
-Nous allons maintenant nous intéresser à la librairie DOM, qui permet de manipuler des éléments HTML5 par du code p5js. Cela nous permettera de créer des sliders, des champs des textes etc. pour controller nos programmes.
+Nous allons maintenant nous intéresser à la bibliothèque DOM, qui permet de manipuler des éléments HTML5 par du code p5js. Cela nous permettera de créer des sliders, des champs des textes etc. pour controller nos programmes.
 
-La référence de la librairie est disponnible ici : http://p5js.org/reference/#/libraries/p5.dom
+La référence de la bibliothèque est disponnible ici : http://p5js.org/reference/#/libraries/p5.dom
 Elle n'est malheureusement pas forcément toujours simple à comprendre à mon sens il est préférable de regarder les exemples disponnibles à cette adresse, à la rubrique DOM : http://p5js.org/examples/
 
-A partir du programme de dessin précédent nous allons créer des sliders permettant de paramétrer la couleur ainsi que la taille de notre outil de dessin, à l'aide des fonctions **createSlider()** et **createP()** de la librairie DOM.
+A partir du programme de dessin précédent nous allons créer des sliders permettant de paramétrer la couleur ainsi que la taille de notre outil de dessin, à l'aide des fonctions **createSlider()** et **createP()** de la bibliothèque DOM.
 
-Tout d'abord, il faut ajouter la librairie à notre page en ajoutant la ligne suivante à l'habituel fichier *index.html*
+Tout d'abord, il faut ajouter la bibliothèque à notre page en ajoutant la ligne suivante à l'habituel fichier *index.html*
 
 ```html
 <script language="javascript" type="text/javascript" src="../libraries/p5.dom.js"></script>
@@ -838,7 +845,7 @@ fill(s_hue.value(),100,100,100)
 
 
 <a name="css"/>
-### Styliser avec  du css
+### Styliser avec du CSS
 
 Puisque ce sont des élements html, ils peuvent aussi être stylisés par css, il suffit pour cela de créer un fichier css dans le dossier de notre page, par exemple comme celui-ci :
 
@@ -1038,7 +1045,7 @@ https://www.openprocessing.org/sketch/390491
 <a name="video"/>-
 ### Accès vidéo
 
-La librairie DOM permet d'avoir accès au microphone et à la webcam à travers le navigateur via la fonction **createCapture()** : http://p5js.org/reference/#/p5/createCapture, et de lire des vidéos.
+La bibliothèque DOM permet d'avoir accès au microphone et à la webcam à travers le navigateur via la fonction **createCapture()** : http://p5js.org/reference/#/p5/createCapture, et de lire des vidéos.
 
 ```javascript
 var capture;
@@ -1176,7 +1183,7 @@ D'autres exemples peuvent être source d'inspiration pour créer de nouvelles fa
 Je vous conseille aussi l'excellent playlist de Daniel Shiffman sur le sujet : 
 	-	https://www.youtube.com/playlist?list=PLRqwX-V7Uu6aKKsDHZdDvN6oCJ2hRY_Ig
 
-et tout particulièrement le checkbox miror qui restitue un flux vidéo par une grille de boîtes à cocher html activées et désactivées programmatiquement grâce à la librairie dom : 
+et tout particulièrement le checkbox miror qui restitue un flux vidéo par une grille de boîtes à cocher html activées et désactivées programmatiquement grâce à la bibliothèque dom : 
 	-	https://www.youtube.com/watch?v=m1G6WBvrOBE&list=PLRqwX-V7Uu6aKKsDHZdDvN6oCJ2hRY_Ig&index=5
 
 
@@ -1373,7 +1380,7 @@ https://b2renger.github.io/Introduction_p5js/02_dom_05/index.html
 <a name="site"/>-
 ### Exemple de site web
 
-Mon site web personnel est constuit à l'aide de la librairie DOM de p5js. Le principe est d'utiliser un canvas pour la navigation dans les 'pages' plutôt qu'un menu classique.
+Mon site web personnel est constuit à l'aide de la bibliothèque DOM de p5js. Le principe est d'utiliser un canvas pour la navigation dans les 'pages' plutôt qu'un menu classique.
 
 http://b2renger.github.io
 
@@ -1389,16 +1396,16 @@ Un peu de documentation et un exemple simple sont disponnibles à cette adresse 
 
 
 <a name="socket"/>
-## websocket et SocketIO
+## Websocket et SocketIO
 
 Dans le cadre de cette découverte de p5js nous allons effleurer le sujet des websockets qui permet des informations entre plusieurs ordinateurs dans une même page web. Les utilisateurs peuvent alors collaborer.
 
 Un excellent exemple est l'application de musique collaborative **Plink** :  http://dinahmoelabs.com/#plink
 
 <a name="socket-libs"/>
-### Les librairies et leur utilisation
+### Les bibliothèques et leur utilisation
 
-Nous n'allons pas nous lancer dans l'écriture de code côté serveur mais nous allons nous concentrer sur l'utilisation de la librairie inclue à openprocessing. 
+Nous n'allons pas nous lancer dans l'écriture de code côté serveur mais nous allons nous concentrer sur l'utilisation de la bibliothèque inclue à openprocessing. 
 
 Si jamais vous souhaitez vous lancer dans l'écriture d'applications websocket plus avancées, il vous faudra écrire un serveur capable d'utiliser cette technologie.
 
@@ -1406,7 +1413,7 @@ Les exemples du cours seront disponnibles sur openprocessing sans avoir recours 
 
 Nous allons donc nous attacher à modifier nos programmes de dessin pour permettre l'interaction de plusieurs utilisateurs sur la même page.
 
-Tout d'abord il faut ajouter les librairies DOM et socketIO à notre programme openprocessing en cliquant sur le menu (les trois points verticaux) sous le bouton *save*. 
+Tout d'abord il faut ajouter les bibliothèques DOM et socketIO à notre programme openprocessing en cliquant sur le menu (les trois points verticaux) sous le bouton *save*. 
 
 ![openprocessing add libraries](assets/03_socket_openprocessing.png)
 
@@ -1482,7 +1489,7 @@ function setup() {
 
 
 <a name="socket-json"/>
-### format JSON : JavaScript Object Notation
+### Format JSON : JavaScript Object Notation
 
 Ensuite pour que chaque utilisateur puisse choisir son "crayon", il faut que les données relatives à chaque paramètre qu'il a choisit soient envoyés à la page web principale qui accepte toutes les connections des utilisateurs. Pour cela nous allons créer un objet javascript au format **JSON** qui est un format très utilisé en developpement. Le format json fonctionne avec un système de clé. Entre deux accolades, il suffit d'inscrire "maClé : maValeur".
 
@@ -1599,40 +1606,309 @@ Voici l'adaptation du sketch de "spray-paint" : https://www.openprocessing.org/s
 <a name="socket-localhost"/>
 ### Node et serveur local
 
-Comme mentionné en intro vous pouez vous référer à ce tutorial pour apprendre à coder un serveur wwebsocket avec nodeJS : https://github.com/processing/p5.js/wiki/p5.js,-node.js,-socket.io
+Comme mentionné en intro vous pouvez vous référer à ce tutorial pour apprendre à coder un serveur wwebsocket avec nodeJS : https://github.com/processing/p5.js/wiki/p5.js,-node.js,-socket.io
 
 Pour faire résumer et faire fonctionner les exemples fournis, il faut :
 
-	- installer NodeJS
-	- naviguer vers le dossier de l'exemple que vous souhaitez tester.
-	- installer les dépendences, grace au node package manager, ligne de commande à taper dans une invite de commande nodejs ou un terminal.
+-installer NodeJS
+-naviguer vers le dossier de l'exemple que vous souhaitez tester.
+-installer les dépendences, grace au node package manager, ligne de commande à taper dans une invite de commande nodejs ou un terminal.
+
 		```
 		npm install socket.io
 		```
-	- lancer le serveur local : 
-		```
+
+-lancer le serveur local : 
+		
+    ```
 		node servers.js
 		```
-	- se rendre sur la page :
+
+-se rendre sur la page :
+
 		```
 		http://localhost:8080/
 		```
 
 [^ home](#contenu)<br>
 
+
 <a name="animation"/>
 ## Animer un déplacement
 
-## objets en js
+Il existe de nombreuses façons d'animer des déplacements d'objet, nous allons ici voir différentes modes de déplacements relativement simples. Pour réaliser des choses plus complexes il est souvent intéressant de se tourner vers de implémentations de lois physiques et donc de manipuler des vitesses, des accélérations, des forces etc. Vous trouverez des liens dans les ressources notamment avec le livre et les cours de Daniel Shiffman autour du thème [Nature of Code](http://natureofcode.com/book/chapter-2-forces/)
+
+<a name="balle"/>
+### Balle dans une boîte
+
+Nous allons maintenant à l'animation autonome d'un déplacement comme par exemple un disque qui se déplace seul et rebondit sur les bords de nôtre canvas.
+
+Pour cela nous allons avoir recours à l'utilisation de **variables**. Pour rappel les variables sont des emplacements en mémoire auxquels nous avons attribué une valeur (qui peut-être : un nombre, une chaîne de caractère, un tableau ...), le fait d'utiliser une variable nous permet, d'accèder à son contenu par son nom, mais aussi de modifier sa valeur.
+
+Par exemple ce petit bout de code permet de faire se déplacer un disque vers la droite. Il utilise deux variables *xpos* et *ypos* pour conserver en mémoire la position du disque. On peut alors incrémenter la position en abscisses dans le *draw()* de notre programme.
+
+```
+// on définit des variables pour stocker la position de notre disque
+var xpos 
+var ypos 
+
+function setup() {
+  createCanvas(windowWidth, windowHeight); 
+  background(100);  
+  // on initialise nos variables
+  xpos = 0
+  ypos = windowHeight/2
+  
+} 
+
+function draw() { 
+  // on dessine notre disque à la position définie par nos variable
+  ellipse(xpos, ypos, 20, 20);
+  // on augmente la position en abscisses d'une unité
+  xpos = xpos + 1
+}
+```
+
+Précédement nous écrivions *xpos = xpos + 1*, la valeur "1" correspond au nombre de pixels dont le disque va se déplacer à chaque image. Si nous voulons qu'il se déplace plus vite nous pouvons écrire *xpos = xpos + 5* et si nous voulons qu'il se déplace dans l'autre sens *xpos = xpos - 5*.
+
+Nous pouvons maintenant modifier un peu notre programme pour lui donner un déplacement en diagonal et en faisant en sorte que notre disque rebondisse sur les bords du canvas. Pour cela nous allons avoir besoin de déclarer deux autres variable qui nous permettrons de donner une "grandeur" à la vitesse de déplacement en abscisses et en ordonnées. Et nous pourrons écrire des conditions à l'aide de **if** pour gérer les rebonds.
+
+
+```
+// on définit des variables pour stocker la position de notre disque
+var xpos 
+var ypos 
+// on définit des variables pour stocker la vitesse de notre disque
+var xspeed
+var yspeed
+
+function setup() {
+  createCanvas(windowWidth, windowHeight); 
+  background(100);  
+  // on initialise nos variables
+  xpos = windowWidth/2
+  ypos = windowHeight/2
+  xspeed = 1
+  yspeed = 1
+  
+} 
+
+function draw() {
+  
+  // on dessine notre disque à la position définie par nos variable
+  ellipse(xpos, ypos, 20, 20);
+  // on augmente la position en abscisses de xspeed unités
+  xpos = xpos + xspeed
+  // on augmente la position en ordonnée d'yspeed unités
+  ypos = ypos + yspeed
+
+  // on vérifie que l'on ne tappe pas le bord gauche ou le bord droit
+  if (xpos < 0 || xpos > windowWidth){
+    xspeed = xspeed * (-1) // si c'est le cas on inverse le sens de déplacement en abscisses
+  }
+  // on vérifie que l'on ne tappe pas le haut ou le bas 
+  if (ypos < 0 || ypos > windowHeight){
+    yspeed = yspeed * (-1) // si c'est le cas on inverse le sens de déplacement en ordonnées
+  }
+}
+```
+
+Le seul problème qui nous reste est que notre balle part toujours dans le même sens à la même vitesse. Il pourrait être tentant d'utiliser la fonction **random()** ([doc](http://p5js.org/reference/#/p5/random)), mais cela nous condamne nécessairement à avoir des balles qui ne partent que dans un seul cadran (*random(1,5)*) ou risquer d'avoir une balle dont la vitesse est très (trop) proche de zéro (*random(-5,5)*). 
+
+Dans ce cas, généralement le plus simple et de passer par les coordonnées polaires pour initialiser la vitesse :
+
+```
+xspeed = random(2,10)*cos(random(TWO_PI))
+yspeed = random(2,10)*sin(random(TWO_PI))
+```
+*random(2,10)* va correspondre au rayon (la distance au centre) et donc à la magnitude du vecteur de vitesse que l'on va définir soit la quantité de mouvement : est-ce que mon objet se déplace vite ou lentement.
+*random(TWO_PI)* correspond naturellement à l'angle, et va nous donner l'orientation.
+
+![balle dans une boite](assets/04_animation_balle.png)
+
+https://b2renger.github.io/Introduction_p5js/04_animation_01/index.html
+
+https://www.openprocessing.org/sketch/401282
+
+[^ home](#contenu)<br>
+
+<a name="souris"/>
+### Suivre la souris
+
+Pour présenter quelquechose d'un peu plus interactif, nous allons maintenant essayer de poser les bases de ce que l'on appelle le **easing** ou aussi le **tweening**. Le principe est simple il consiste à créer une animation pour passer d'un état A à un état B.
+
+Dans notre cas nous voulons faire en sorte qu'un cercle suive la souris. Nous allons donc créer deux jeux de variables, un pour stocker la position cible et un pour stocker notre position actuelle.
+
+```
+var posX, posY
+var targetX, targetY
+```
+
+Pour effectuer notre animation nous allons nous baser sur la distance à parcourir pour atteindre notre cible. Ce qui est facilement calculable pour une coordonnée :
+
+```
+var distanceX = targetX - posX
+var distanceY = targetY - posY
+```
+
+Si à chaque image nous ajoutons à notre position une petite fraction de cette distance nous finirons par atteindre notre cible
+
+```
+posX = posX + distanceX * 0.05
+posX = posY + distanceY * 0.05
+```
+
+La valeur "0.05" par laquelle nous multiplions correspond à la petite fraction de distance que nous prenons, plus elle est grande plus l'animation sera rapide (voire même instantanée pour une valeur de 1).
+
+Voici l'intégralité du code :
+
+```
+var targetX, targetY;
+var posX, posY;
+
+function setup() {
+  createCanvas(windowWidth, windowHeight); 
+  background(100); 
+  
+  posX = windowWidth/2
+  targetX = windowWidth /2
+
+  posY = windowHeight/2
+  targetY = windowHeight /2
+} 
+
+function draw() {
+  
+  targetX = mouseX
+  targetY = mouseY
+  
+  posX += (targetX - posX) * 0.05
+  posY += (targetY- posY) * 0.05  
+
+  ellipse(posX, posY, 20, 20);
+}
+```
+
+![suivre la souris](assets/04_animation_souris.png)
+
+https://b2renger.github.io/Introduction_p5js/04_animation_02/index.html
+
+https://www.openprocessing.org/sketch/402030
+
+Le tweening et le easing sont des sujets relativement complexes, il existe des tas de façons d'interpoler les positions. Ici plus la distance est grande plus notre objet va vite et plus on se rapproche de la cible plus le mouvement en lent : on appelle ça une animation "ease out".
+
+Il existe de nombreuses bibliothèques d'animation, [tween.js] (https://github.com/tweenjs/tween.js/) semble en être une référence.
+
+Lors de la préparation de ce cours j'ai pu implémenter ce qui fait office de référence : les équations de [Robert Penner](http://robertpenner.com/easing/). Ces équations proposent différentes fonction (cubiques, sinusoidales...) de "easing" avec à chaque fois un easing en entrée ("ease in"), un easing en sortie ("ease out") et un easing en entrée et sortie ("ease in out").
+
+![suivre la souris](assets/04_animation_penner.png)
+
+https://b2renger.github.io/Introduction_p5js/04_animation_02_Penner/index.html
+
+Vous pourrez trouver ce sketch ici : https://www.openprocessing.org/sketch/401812
+
+
+[^ home](#contenu)<br>
+
+
+<a name="tentacules"/>
+### Croissance de Tentacules
+
+Notre dernier programme repose sur un algorithme de déplacement assez simple et va avoir recours à une fonction que l'on appele le bruit de [Perlin](https://fr.wikipedia.org/wiki/Ken_Perlin). Cette fonction une sorte de random() un peu particulier puisqu' elle permet de générer des suites de nombres très proches les uns des autres. Cela permet notament de créer des mouvement et des contours qui paraissent plus naturels.
+
+L'algorithme pour créer des tentacules est relativement simple :
+- on créer un cercle au milieu de notre fenêtre.
+- on s'éloigne du centre avec un angle qui évolue en fonction d'un bruit de Perlin.
+- tout en diminuant le diamètre de notre cercle.
+- lorsque le diamètre est quasi nul on recommence.
+
+La fonction **noise()** permet de générer un bruit de Perlin ([doc](http://p5js.org/reference/#/p5/noise))Son usage est un peu plus compliqué car il faut lui fournir un argument « évolutif », celle-ci renvoi des valeurs comprises entre 0 et 1. Il faut donc souvent adapter le résultat obtenu en fonction de nos besoins grâce à la fonction **map()** ([doc](http://p5js.org/reference/#/p5/map)) qui permet de transformer des valeurs comprises entre deux valeurs dans un autre intervalle.
+
+```
+var anchorX, anchorY // coordonées du point d'ancrage du dessin
+var distance, orientation // variable pour stocker les coordonées polaires de notre cercle
+var diam; // diametre du cercle
+var noiseF; // une variable que l'on va faire évoluer à chaque image pour notre bruit de Perlin
+
+function setup() {
+  createCanvas(windowWidth, windowHeight); 
+  background(100);  
+  
+  diam = random(20,50)
+  anchorX = windowWidth/2;
+  anchorY = windowHeight/2;
+  
+  distance = 0;
+  orientation = random(TWO_PI);
+  
+  noiseF = 5
+  
+} 
+
+function draw() {
+  
+  diam -= 0.1 // on diminue le diamètre
+  distance += 1; // on augmente la distance
+  orientation += map(noise(noiseF,10,20),0,1,-0.015,0.015) // on ajuste l'orientation avec un bruit de Perlin et la fonction map
+  // noise(noiseF,10,20) permet de générer un bruit compris entre 0 et 1
+  // ce résultat est directement utilisé dans la fonction map, pour convertir le résultat de l'intervalle [0,1] à l'intervalle [-0.015,0.015]
+  // qui peut être assimilable à un angle en radians soit des variations comprises entre + ou - 1 degrée par image
+  noiseF += 0.005 // on incrémente la variable évolutive pour générer notre bruit
+  
+  // on calcule la position en coordonnées cartésiennes à partir de nos coordonnées polaires
+  var xpos = anchorX + distance * cos(orientation)  
+  var ypos = anchorY + distance * sin(orientation)
+  
+  ellipse(xpos,ypos,diam,diam)
+  
+  // si le diamètre est suffisament petit on réinitialise un certain nombre de variables
+  if(diam<0.1){
+    noiseF = random(-1000,1000)
+    diam = random(20,50)
+    distance = 0;
+    orientation = random(TWO_PI);  
+  }
+  
+}
+
+function mousePressed(){
+  anchorX = mouseX
+  anchorY = mouseY
+  diam = random(20,50)
+}
+```
+![tentacules](assets/04_animation_tentacules.png)
+
+https://b2renger.github.io/Introduction_p5js/04_animation_03/index.html
+
+Vous pourrez trouver ce sketch ici : https://www.openprocessing.org/sketch/395964
+
+
+[^ home](#contenu)<br>
+
+
+
+<a name="objets"/>
+## Objets en js
+
+Les animations que nous avons réalisés ci-dessus sont très bien, mais en terme de code que se passe-t-il, si je veux avoir deux balles qui rebondissent ou même une centaine ? La quantité de code à reproduire et le nombre de variables à renommer est trop important pour pouvoir imaginer utilise ce même code. Nous allons avoir besoin de rendre un peu plus abstrait notre code pour qu'il soit plus souple à l'utilisation. Nous allons donc créer des objets. La notion d'objet en programmation (même si les objets dans différents langages ont différentes propriétés) correspond à notre capacité à décrire avec du code la façon dont un élément doit se comporter : ce qui signifie en programmation écrire une **classe**. Une fois cette classe écrite on peut créer des objets qui se comporteront comme décrits dans la classe, chaque objet créé est alors appelé une **instance** de la classe.
+
+Pour résumer et faire une analogie concrète une classe c'est la définition d'un objet : prenons par exemple une table (comme un table basse de salon). Une **table** c'est un objet composé :
+- d'un **plateau** qui peut être rectangulaire ou circulaire, d'une certaine **surface**.
+- d'un certain nombre de **pieds** (3 ou 4 généralement) qui peuvent être réglables en hauteur.
+- éventuellement de **roulettes**.
+L'utilisateur peut alors récupérer sa table en kit la monter, et l'utiliser : il peut alors poser des livres, ordinateurs, téléphones sur le plateau, régler la hauteur des pieds, et la déplacer en la faisant rouler. Définir ce à quoi la table ressemble et ce qu'on va pouvoir faire avec correspond à l'écriture d'une classe.
+
+Dans notre cas on va par exemple créer une classe **Balle**, une instance de cette classe se déplacera à une vitesse donnée aléatoirement lors de sa création, elle rebondira sur les bords de la fenêtre, et elle se dessinera avec une couleur définie 
 
 
 [^ home](#contenu)<br>
 
 
 <a name="sound"/>
-## La librairie son
+## La bibliothèque son
 
-## Mini-projet son websocket
+
 
 
 [^ home](#contenu)<br>
@@ -1663,13 +1939,22 @@ Pour faire résumer et faire fonctionner les exemples fournis, il faut :
 
 * Utilisation de p5js en mode instanciable - avoir plusieurs canvas dans une page : https://github.com/processing/p5.js/wiki/Instantiation-Cases
 
+* P5js et responsive design : http://gildasp.fr/exp/P5js-fullscreen/
+
+* p5.css3d : https://github.com/bitcraftlab/p5.css3d
+
+* p5.gui (créer des sliders, boutons etc.) : https://github.com/bitcraftlab/p5.gui
+
+* p5.canvascam (ajoute des fonction des zooms qui peuvent être pénibles à coder) https://github.com/bitcraftlab/p5.canvascam
+
+
 [^ home](#contenu)<br>
 
 
 
 
 <a name="references"/>
-## Ressources
+## Références
 
 Quelques projets liant le web à des espaces physiques :
 
@@ -1683,6 +1968,8 @@ Quelques projets liant le web à des espaces physiques :
 
 
 Des projets exclusivement web :
+
+* Land lines : https://lines.chromeexperiments.com/
 
 * Aaron Koblin : 
 
@@ -1703,6 +1990,8 @@ Des projets exclusivement web :
 * Carp and seagull : http://thecarpandtheseagull.thecreatorsproject.com/#
 
 * Plink : musique collaborative : http://dinahmoelabs.com/#plink
+
+* Loops : projet de musique collaborative nantais : http://solam.co/loops/
 
 
 [^ home](#contenu)<br>
