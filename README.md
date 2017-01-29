@@ -43,8 +43,10 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
 * [Animation](#animation)<br>
   * [Balle rebondissant contre les parois](#balle) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_01/index.html)<br>
   * [Suivre la souris](#souris) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_02/index.html)<br>
+  * [Suivre la souris avec des forces](#sourisforces)
   * [Croissance de tentacules](#tentacules) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_03/index.html)<br>
 * [Objets](#objets)<br>
+* [Tableaux](#tableaux)<br>
 * [La bibliothèque p5.sound](#son)<br>
 * [Ressources](#ressources)<br>
 * [Références](#references)<br>
@@ -1636,7 +1638,7 @@ Pour faire résumer et faire fonctionner les exemples fournis, il faut :
 <a name="animation"/>
 ## Animer un déplacement
 
-Il existe de nombreuses façons d'animer des déplacements d'objet, nous allons ici voir différentes modes de déplacements relativement simples. Pour réaliser des choses plus complexes il est souvent intéressant de se tourner vers de implémentations de lois physiques et donc de manipuler des vitesses, des accélérations, des forces etc. Vous trouverez des liens dans les ressources notamment avec le livre et les cours de Daniel Shiffman autour du thème [Nature of Code](http://natureofcode.com/book/chapter-2-forces/)
+Il existe de nombreuses façons d'animer des déplacements d'objet, nous allons ici voir différentes modes de déplacements relativement simples. Pour réaliser des choses plus complexes il est souvent intéressant de se tourner vers de implémentations de lois physiques et donc de manipuler des vitesses, des accélérations, des forces etc. Vous trouverez des liens dans les ressources notamment avec le livre et les cours de Daniel Shiffman autour du thème [Nature of Code](http://natureofcode.com/book/chapter-2-forces/).
 
 <a name="balle"/>
 ### Balle dans une boîte
@@ -1797,15 +1799,264 @@ https://www.openprocessing.org/sketch/402030
 
 Le tweening et le easing sont des sujets relativement complexes, il existe des tas de façons d'interpoler les positions. Ici plus la distance est grande plus notre objet va vite et plus on se rapproche de la cible plus le mouvement en lent : on appelle ça une animation "ease out".
 
-Il existe de nombreuses bibliothèques d'animation, [tween.js] (https://github.com/tweenjs/tween.js/) semble en être une référence.
+Il existe de nombreuses bibliothèques d'animation, [tween.js](https://github.com/tweenjs/tween.js/) semble en être une référence.
 
 Lors de la préparation de ce cours j'ai pu implémenter ce qui fait office de référence : les équations de [Robert Penner](http://robertpenner.com/easing/). Ces équations proposent différentes fonction (cubiques, sinusoidales...) de "easing" avec à chaque fois un easing en entrée ("ease in"), un easing en sortie ("ease out") et un easing en entrée et sortie ("ease in out").
+
+Dans cet exemple, le déplacement s'effectue avec un clic de la souris et vous pouvez choisir les différents types d'interpolations, ainsi que leurs vitesses d'éxecution.
 
 ![suivre la souris](assets/04_animation_penner.png)
 
 https://b2renger.github.io/Introduction_p5js/04_animation_02_Penner/index.html
 
-Vous pourrez trouver ce sketch ici : https://www.openprocessing.org/sketch/401812
+https://www.openprocessing.org/sketch/401812
+
+
+[^ home](#contenu)<br>
+
+<a name="sourisforces"/>
+### Suivre la souris avec des forces
+
+Comme mentionné plus haut il est aussi possible d'avoir recourt à la modélisation physique et donc à l'utilisation de forces. En physique il existe une relation particulière entre la position, la vitesse et l'accélération. La vitesse est la dérivée de la position, et l'accélération est la dérivée de la vitesse. 
+
+En programmation, et à un instant t on peut calculer la vitesse et la position d'un objet en fonction de son accélération qui est une force que l'objet subit.
+En terme de code cela s'écrit comme cela :
+
+```
+vitesse = vitesse + accélération
+position = position + vitesse
+
+```
+L'accélération elle est calculée en fonction de forces en présence : généralement une force d'attraction ou de répulsion, mais aussi une force de friction qui s'oppose au déplacement. Cette force de friction permet notament d'arréter un objet progressivement si aucune force nouvelle ne s'applique à l'objet. C'est le calcul de cette accélération qui est l'étape la plus compliquée de ce genre de simulation.
+
+
+
+```
+var posX, posY // stocker la position de notre objet
+var speedX, speedY // stocker sa vitesse
+var friction = 0.05 // un force de friction pour faire ralentir les objets (résistance de l'air)
+var force = 10 // une force d'attraction ou de répulsion en fonction du mode choisi
+
+function setup() {
+    createCanvas(windowWidth, windowHeight); 
+    background(100); 
+    
+    posX = windowWidth/2
+    speedX = random(0.5,2)*cos(random(TWO_PI))
+    
+    posY = windowHeight/2
+    speedY = random(0.5,2)*sin(random(TWO_PI))
+} 
+
+function draw() {
+    // on utilise des vecteur pour stocker les positions, vitesses, cibles, cela facilite l'appel des fonctions de calcul
+    var vtarget = createVector(mouseX,mouseY)// un vecteur qui représente les coordonnées de notre cible.
+    var vpos = createVector(posX, posY) // un vecteur qui represente notre position
+    
+    // on ré-initialise l'accélération
+    var accX = 0
+    var accY = 0
+    // on calcule un force de friction : une résistance au mouvement, pour que notre objet s'arrête s'il n'est 
+    // plus soumis à aucune force. Cette force doit être inversement proportionnelle au déplacement et donc à 
+    // la vitesse pour ralentir l'objet en mouvement
+    var frict = createVector(speedX,speedY);
+    frict.normalize(); // cette opération ne permet de conserver que la direction du vecteur / l'orientation
+    frict.mult(-1) // on inverse le vecteur vitesse normalié pour qu'il soit opposé au déplacement
+    frict.mult(friction) // on multiplie par notre coefficient de friction
+    // on ajoute ce résultat à l'accélération que l'on va applique à notre objet
+    accX +=  frict.x;
+    accY +=  frict.y;
+
+    // déplacement : l'objet va être attiré par la souris 
+    var dir = pos.sub(target); // on obtient le vecteur de déplacement : différence entre la position et la cible
+    var d = dir.mag(); // on calcul sa magnitude : la distance  qui sépare les deux points du vecteur
+    dir.normalize();
+    dir.mult(-1);
+    dir.div(1/d*d) // on fait en sorte que la force appliquée dépende de l'inverse du carré de la distance
+    dir.div(force) // on multiplie par la force souhaitée
+    // on ajoute cela à l'accélération
+    accX = accX+ dir.x;
+    accY = accY+ dir.y;
+    
+    // on ajoute l'accélération à la vitesse
+    speedX = speedX + accX
+    speedY = speedY + accY
+    
+    // on ajoute la vitesse à la position
+    posX = posX + speedX
+    posY = posY + speedY
+    
+    // on vérifie les collisions
+    if (posX < 0 || posX > windowWidth) speedX = speedX * (-1) 
+    if (posY < 0 || posY > windowHeight) speedY = speedY * (-1)
+    
+    // on dessine notre cercle
+    ellipse(posX, posY, 20, 20);
+}
+```
+
+Pour implémenter un comportement de répulsion, il suffit de remplacer :
+```
+dir.mult(-1);
+```
+par :
+```
+dir.mult(1);
+```
+
+Après une petite remise en forme du code en utilisant une fonction pour l'attraction et une fonction pour la répulsion, ainsi qu'une légère interaction utilisateur pour passer d'un mode à l'autre on obtient le programme suivant :
+
+```
+
+var posX, posY // stocker la position de notre objet
+var speedX, speedY // stocker sa vitesse
+var friction = 0.05 // un force de friction pour faire ralentir les objets (résistance de l'air)
+var force = 10 // une force d'attraction ou de répulsion en fonction du mode choisi
+var attraction = true // choix du mode true => la souris attire la balle , false => la souris repousse la balle
+
+function setup() {
+    createCanvas(windowWidth, windowHeight); 
+    background(100); 
+    
+    posX = windowWidth/2
+    speedX = random(0.5,2)*cos(random(TWO_PI))
+    
+    posY = windowHeight/2
+    speedY = random(0.5,2)*sin(random(TWO_PI))
+    
+    textSize(14)
+    textAlign(CENTER, BOTTOM)
+} 
+
+function draw() {
+    text("press ' a ' to attract the ball and ' r ' to repulse it",windowWidth/2,windowHeight - 5)
+    
+    // on utilise des vecteur pour stocker les positions, vitesses, cibles, cela facilite l'appel des fonctions de calcul
+    var vtarget = createVector(mouseX,mouseY)// un vecteur qui représente les coordonnées de notre cible.
+    var vpos = createVector(posX, posY) // un vecteur qui represente notre position
+    
+    // en fonction du mode choisi on appelle la fonction de calcul physique souhaitée
+    // ces fonctions vont calculer les nouvelles accélération, vitesses et positions en fonction 
+    // des distances, de la force choisie ci-dessus et du coefficient de friction.
+    if (attraction) calculs_physiques_attraction(vpos, vtarget) 
+    else calculs_physiques_repulsion(vpos, vtarget)
+   
+    // on vérifie les collisions
+    if (posX < 0 || posX > windowWidth) speedX = speedX * (-1) 
+    if (posY < 0 || posY > windowHeight) speedY = speedY * (-1)
+    
+    // on dessine notre cercle
+    ellipse(posX, posY, 20, 20);
+}
+
+// en change le mode en fonction d'interaction clavier
+function keyPressed(){
+    if (key == 'a' || key == 'A') attraction = true;
+    if (key == 'r' || key == 'R') attraction = false;
+}
+
+// une fonction pour calculer la position
+function calculs_physiques_attraction(pos, target){
+    // on ré-initialise l'accélération
+    var accX = 0
+    var accY = 0
+    // on calcule un force de friction : une résistance au mouvement, pour que notre objet s'arrête s'il n'est 
+    // plus soumis à aucune force. Cette force doit être inversement proportionnelle au déplacement et donc à 
+    // la vitesse pour ralentir l'objet en mouvement
+    var frict = createVector(speedX,speedY);
+    frict.normalize(); // cette opération ne permet de conserver que la direction du vecteur / l'orientation
+    frict.mult(-1) // on inverse le vecteur vitesse normalié pour qu'il soit opposé au déplacement
+    frict.mult(friction) // on multiplie par notre coefficient de friction
+    // on ajoute ce résultat à l'accélération que l'on va applique à notre objet
+    accX +=  frict.x;
+    accY +=  frict.y;
+
+    // déplacement : l'objet va être attiré par la souris 
+    var dir = pos.sub(target); // on obtient le vecteur de déplacement : différence entre la position et la cible
+    var d = dir.mag(); // on calcul sa magnitude : la distance  qui sépare les deux points du vecteur
+    dir.normalize();
+    dir.mult(-1);
+    dir.div(1/d*d) // on fait en sorte que la force appliquée dépende de l'inverse du carré de la distance
+    dir.div(force) // on multiplie par la force souhaitée
+    // on ajoute cela à l'accélération
+    accX = accX+ dir.x;
+    accY = accY+ dir.y;
+    
+    // on ajoute l'accélération à la vitesse
+    speedX = speedX + accX
+    speedY = speedY + accY
+    
+    // on ajoute la vitesse à la position
+    posX = posX + speedX
+    posY = posY + speedY
+     
+}
+
+function calculs_physiques_repulsion(pos, target){
+    
+    var accX = 0
+    var accY = 0
+    // force de friction inversement proportionnelle au déplacement
+    var frict = createVector(speedX,speedY);
+    frict.normalize();
+    frict.mult(-1)
+    frict.mult(friction)
+    accX = accX + frict.x;
+    accY = accY + frict.y;
+
+    // déplacement   
+    var dir = pos.sub(target);
+    var d = dir.mag();
+    if(d < 100){
+        dir.normalize();
+        dir.mult(1);
+        dir.div(1/d*d)
+        dir.div(force)
+        accX = accX+ dir.x;
+        accY = accY+ dir.y;
+    }
+    
+    speedX = speedX + accX
+    speedY = speedY + accY
+    
+    posX = posX + speedX
+    posY = posY + speedY
+     
+}
+
+```
+
+![suivre la souris avec de la physique](assets/04_animation_forces.png)
+
+https://b2renger.github.io/Introduction_p5js/04_animation_03/index.html
+
+https://www.openprocessing.org/sketch/392249
+
+
+Notez dans ce code l'utilisation de quelques abréviations concernant l'incrémentation de variable :
+```
+a += 1
+```
+à la place de :
+```
+a = a + 1
+```
+
+Ou aussi dans l'utilisation des conditions :
+```
+if (attraction) calculs_physiques_attraction(vpos, vtarget) 
+else calculs_physiques_repulsion(vpos, vtarget)
+```
+à la place de la versions avec accolades :
+```
+if (attraction) {
+    calculs_physiques_attraction(vpos, vtarget) 
+}
+else {
+    calculs_physiques_repulsion(vpos, vtarget)
+}
+```
+ce dernier raccourcis est utile lorsque les conséquences de la conditions peuvent s'écrirent en une seule ligne, si ce n'est pas le cas, il faut utiliser des accolades.
 
 
 [^ home](#contenu)<br>
@@ -1879,9 +2130,16 @@ function mousePressed(){
 ```
 ![tentacules](assets/04_animation_tentacules.png)
 
-https://b2renger.github.io/Introduction_p5js/04_animation_03/index.html
+https://b2renger.github.io/Introduction_p5js/04_animation_04/index.html
 
-Vous pourrez trouver ce sketch ici : https://www.openprocessing.org/sketch/395964
+https://www.openprocessing.org/sketch/395964
+
+Pour plus d'information sur le fonctionnement de **noise()**, je vous recommande cette série de vidéos :
+http://funprogramming.org/36-Organic-random-animation-using-noise.html
+http://funprogramming.org/39-The-candy-space-Understanding-noise-with-1-parameter.html
+http://funprogramming.org/40-The-candy-space-Understanding-noise-with-2-and-3-parameters.html
+
+Les exemples sont codés à l'aide de [processing](https://processing.org/) qui a sensiblement la même syntaxe que p5js (p5js étant la petite soeur de processing) mais processing utilise le langage java qui est au demeurant très différents de javascript.
 
 
 [^ home](#contenu)<br>
