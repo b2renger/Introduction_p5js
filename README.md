@@ -46,15 +46,15 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
   * [Suivre la souris avec des forces](#sourisforces) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_03/index.html)<br>
   * [Croissance de tentacules](#tentacules) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_04/index.html)<br>
 * [Objets](#objets)<br>
-    * [Objets et Instances](#oop)<br> - [**DEMO**](https://b2renger.github.io/Introduction_p5js/05_objets_01/index.html)<br>
-    * [Tableaux](#tableaux)<br> - [**DEMO**](https://b2renger.github.io/Introduction_p5js/05_objets_02/index.html)<br>
-    * [Pour aller un peu plus loin](#tableaux)<br> - [**DEMO**](https://b2renger.github.io/Introduction_p5js/05_objets_03/index.html)<br>
+    * [Objets et Instances](#oop) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/05_objets_01/index.html)<br>
+    * [Tableaux](#tableaux) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/05_objets_02/index.html)<br>
+    * [Pour aller un peu plus loin](#tableaux) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/05_objets_03/index.html)<br>
 * [Webgl et 3D](#webgl)<br>
-    * [Caméra, lumière, la bibliothèque Quicksettings.js](#tentacules3D)<br> - [**DEMO**](https://b2renger.github.io/Introduction_p5js/06_webgl_01/index.html)<br>
-    * [Algorithme de "dla", appliquer des textures](#tentacules3D)<br> - [**DEMO**](https://b2renger.github.io/Introduction_p5js/06_webgl_02/index.html)<br>
-    * [Tentacules revisitées en 3D](#tentacules3D)<br> - [**DEMO**](https://b2renger.github.io/Introduction_p5js/06_webgl_03/index.html)<br>
-    * [Génération d'arbres](#tentacules3D)<br> - [**DEMO**](https://b2renger.github.io/Introduction_p5js/06_webgl_04/index.html)<br>
-    * [Algorithme de "flocking"](#tentacules3D)<br> - [**DEMO**](https://b2renger.github.io/Introduction_p5js/06_webgl_05/index.html)<br> 
+    * [Caméra, lumière, la bibliothèque Quicksettings.js](#3d) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/06_webgl_01/index.html)<br>
+    * [Algorithme de "dla", appliquer des textures](#dla) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/06_webgl_02/index.html)<br>
+    * [Tentacules revisitées en 3D](#tentacules3D) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/06_webgl_03/index.html)<br>
+    * [Génération d'arbres](#tree) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/06_webgl_04/index.html)<br>
+    * [Algorithme de "flocking"](#flock) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/06_webgl_05/index.html)<br> 
 * [La bibliothèque p5.sound](#son)<br>
 * [Ressources](#ressources)<br>
 * [Références](#references)<br>
@@ -2355,7 +2355,7 @@ var monTableauDeBalles = []
 monTableauDeBalles.push(new Balle(color(255,180,180))) // ajouter une balle rose à mon tableau
 monTableauDeBalles.push(new Balle(color(180,180,255))) // ajouter une balle bleu ciel à mon tableau
 ```
-*Note : pour retirer un élément d'un tableau il faut utiliser la fonction **.splice()** connaitre son index et il faut préciser le nombre d'éléments à retirer.*
+*Note : pour retirer un élément d'un tableau il faut utiliser la fonction* **.splice()** *connaitre son index et il faut préciser le nombre d'éléments à retirer.*
 ```
 monTableauDeBalles..splice(0,1); // on retire le premier élément du tableau
 ```
