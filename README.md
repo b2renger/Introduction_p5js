@@ -1634,7 +1634,7 @@ Pour faire résumer et faire fonctionner les exemples fournis, il faut :
 
 -lancer le serveur local : 
 		
-    ```
+        ```
 		node servers.js
 		```
 
@@ -1661,7 +1661,7 @@ Pour cela nous allons avoir recours à l'utilisation de **variables**. Pour rapp
 
 Par exemple ce petit bout de code permet de faire se déplacer un disque vers la droite. Il utilise deux variables *xpos* et *ypos* pour conserver en mémoire la position du disque. On peut alors incrémenter la position en abscisses dans le *draw()* de notre programme.
 
-```
+```javascript
 // on définit des variables pour stocker la position de notre disque
 var xpos 
 var ypos 
@@ -1688,7 +1688,7 @@ Précédement nous écrivions *xpos = xpos + 1*, la valeur "1" correspond au nom
 Nous pouvons maintenant modifier un peu notre programme pour lui donner un déplacement en diagonal et en faisant en sorte que notre disque rebondisse sur les bords du canvas. Pour cela nous allons avoir besoin de déclarer deux autres variable qui nous permettrons de donner une "grandeur" à la vitesse de déplacement en abscisses et en ordonnées. Et nous pourrons écrire des conditions à l'aide de **if** pour gérer les rebonds.
 
 
-```
+```javascript
 // on définit des variables pour stocker la position de notre disque
 var xpos 
 var ypos 
@@ -1731,7 +1731,7 @@ Le seul problème qui nous reste est que notre balle part toujours dans le même
 
 Dans ce cas, généralement le plus simple et de passer par les coordonnées polaires pour initialiser la vitesse :
 
-```
+```javascript
 xspeed = random(2,10)*cos(random(TWO_PI))
 yspeed = random(2,10)*sin(random(TWO_PI))
 ```
@@ -1753,21 +1753,21 @@ Pour présenter quelquechose d'un peu plus interactif, nous allons maintenant es
 
 Dans notre cas nous voulons faire en sorte qu'un cercle suive la souris. Nous allons donc créer deux jeux de variables, un pour stocker la position cible et un pour stocker notre position actuelle.
 
-```
+```javascript
 var posX, posY
 var targetX, targetY
 ```
 
 Pour effectuer notre animation nous allons nous baser sur la distance à parcourir pour atteindre notre cible. Ce qui est facilement calculable pour une coordonnée :
 
-```
+```javascript
 var distanceX = targetX - posX
 var distanceY = targetY - posY
 ```
 
 Si à chaque image nous ajoutons à notre position une petite fraction de cette distance nous finirons par atteindre notre cible
 
-```
+```javascriptjavascript
 posX = posX + distanceX * 0.05
 posX = posY + distanceY * 0.05
 ```
@@ -1776,7 +1776,7 @@ La valeur "0.05" par laquelle nous multiplions correspond à la petite fraction 
 
 Voici l'intégralité du code :
 
-```
+```javascript
 var targetX, targetY;
 var posX, posY;
 
@@ -1834,7 +1834,7 @@ Comme mentionné plus haut il est aussi possible d'avoir recourt à la modélisa
 En programmation, et à un instant t on peut calculer la vitesse et la position d'un objet en fonction de son accélération qui est une force que l'objet subit.
 En terme de code cela s'écrit comme cela :
 
-```
+```javascript
 vitesse = vitesse + accélération
 position = position + vitesse
 
@@ -1842,8 +1842,7 @@ position = position + vitesse
 L'accélération elle est calculée en fonction de forces en présence : généralement une force d'attraction ou de répulsion, mais aussi une force de friction qui s'oppose au déplacement. Cette force de friction permet notament d'arréter un objet progressivement si aucune force nouvelle ne s'applique à l'objet. C'est le calcul de cette accélération qui est l'étape la plus compliquée de ce genre de simulation.
 
 
-
-```
+```javascript
 var posX, posY // stocker la position de notre objet
 var speedX, speedY // stocker sa vitesse
 var friction = 0.05 // un force de friction pour faire ralentir les objets (résistance de l'air)
@@ -1908,17 +1907,17 @@ function draw() {
 ```
 
 Pour implémenter un comportement de répulsion, il suffit de remplacer :
-```
+```javascript
 dir.mult(-1);
 ```
 par :
-```
+```javascript
 dir.mult(1);
 ```
 
 Après une petite remise en forme du code en utilisant une fonction pour l'attraction et une fonction pour la répulsion, ainsi qu'une légère interaction utilisateur pour passer d'un mode à l'autre on obtient le programme suivant :
 
-```
+```javascript
 
 var posX, posY // stocker la position de notre objet
 var speedX, speedY // stocker sa vitesse
@@ -2046,21 +2045,21 @@ https://www.openprocessing.org/sketch/392249
 
 
 Notez dans ce code l'utilisation de quelques abréviations concernant l'incrémentation de variable :
-```
+```javascript
 a += 1
 ```
 à la place de :
-```
+```javascript
 a = a + 1
 ```
 
 Ou aussi dans l'utilisation des conditions :
-```
+```javascript
 if (attraction) calculs_physiques_attraction(vpos, vtarget) 
 else calculs_physiques_repulsion(vpos, vtarget)
 ```
 à la place de la versions avec accolades :
-```
+```javascript
 if (attraction) {
     calculs_physiques_attraction(vpos, vtarget) 
 }
@@ -2087,7 +2086,7 @@ L'algorithme pour créer des tentacules est relativement simple :
 
 La fonction **noise()** permet de générer un bruit de Perlin ([doc](http://p5js.org/reference/#/p5/noise))Son usage est un peu plus compliqué car il faut lui fournir un argument « évolutif », celle-ci renvoi des valeurs comprises entre 0 et 1. Il faut donc souvent adapter le résultat obtenu en fonction de nos besoins grâce à la fonction **map()** ([doc](http://p5js.org/reference/#/p5/map)) qui permet de transformer des valeurs comprises entre deux valeurs dans un autre intervalle.
 
-```
+```javascript
 var anchorX, anchorY // coordonées du point d'ancrage du dessin
 var distance, orientation // variable pour stocker les coordonées polaires de notre cercle
 var diam; // diametre du cercle
@@ -2105,7 +2104,6 @@ function setup() {
   orientation = random(TWO_PI);
   
   noiseF = 5
-  
 } 
 
 function draw() {
@@ -2175,7 +2173,7 @@ Dans notre cas on va par exemple créer une classe **Balle**, une instance de ce
 
 Pour définir un objet ou une classe en javascript, il s'agit en fait de définir une fonction :
 
-```
+```javascript
 // on définit un classe qui s'appelle "Balle"
 function Balle() {
     // code à implémenter
@@ -2184,19 +2182,19 @@ function Balle() {
 Notre objet "Balle", manipulera des variables et même chaque instance de cet objet manipulerie la même série de variables, pour qu'il n'y ait pas de conflits entre tout ces différents noms de variable lorsque l'on écrit une classe on fait précéder le nom d'une variable de **this.**
 
 Ainsi d'habitude nous pouvons écrire 
-``` 
+```javascript
 var posX = 0;
 ```
 
 Dans un objet nous devons écrire :
 
-```
+```javascript
 this.posX = 0
 ```
 
 Ainsi si nous reprenons le code de l'exemple *04_Animation_01*, nous pouvons définir l'ensemble des variables dont nous aurons besoin pour notre classe :
 
-``` 
+```javascript
 // on définit un classe qui s'appelle "Balle"
 function Balle() {
     // on définit et on initialise des variables pour stocker la position et 
@@ -2210,7 +2208,7 @@ function Balle() {
 
 Nous pouvons maintenant ajouter des actions que pourra exécuter notre objet sous forme de fonctions. Nous allons séparer les différentes actions : se dessiner à l'écran, calculer sa prochaine position, et rebondir sur les côtés, chacune en une fonction. Dans une classe pour créer une fonction qui s'appelera *dessiner*, il faut encore une fois utiliser **this**.
 
-```
+```javascript
 // on définit un classe qui s'appelle "Balle"
 function Balle() {
     // on définit et on initialise des variables pour stocker la position et 
@@ -2229,7 +2227,7 @@ function Balle() {
 ```
 En prenant exemple sur le programmae d'animation *04_Animation_01*, on peut maintenant ajouter les autres actions prévues : calculer sa position et rebondir. Et voici notre objet javascript complet, inséré dans un sketch p5js.
 
-```
+```javascript
 function setup(){
     createCanvas(windowWidth, windowHeight); 
 }
@@ -2269,7 +2267,7 @@ Si vous ouvrez la page contenant ce sketch, rien ne se passe; et pour cause nous
 
 Pour cela il faut créer une variable, préciser au code que cette variable est un objet et de quel type il est, puis utiliser ses fonctions d'objet :
 
-``` 
+``` javascript
 var bal // on crée une variable nommée 'bal' qui va stocker notre objet
 
 function setup() {
@@ -2290,19 +2288,19 @@ Si vous ajoutez ces quelques lignes au code précédent, vous vous retrouvez ave
 
 Mais pour l'instant en début de paragraphe, nous évoquions la possibilité d'attribuer une couleur à chaque balle : il est en effet possible de "passer" des arguments au moment ou nous créeons chaque instance, soit dans le code précédent à cette ligne :
 
-```     
+```javascript   
   bal = new Balle() // on définit la variable 'bal' comme un objet de type "Balle" 
 ```
 
 Comme pour n'importe quelle fonction, il suffit de le "passer" entre les parenthèses :
 
-```     
+```javascript   
   var col = color(255,180,180)
   bal = new Balle(c) // on définit la variable 'bal' comme un objet de type "Balle" et on passe une couleur !
 ```
 Dans notre classe Balle il suffit de stocker cette valeur dans une variable propre à la classe (avec **this.**) et de l'utiliser au moment de dessiner :
 
-```
+```javascript
 // on définit un classe qui s'appelle "Balle" et on passe un argument au moment de la création
 // de chacune de ses instances
 function Balle(c) {
@@ -2346,24 +2344,24 @@ Nous allons en réalité, créer un tableau pour dans chaque case y stocker une 
 
 Créer un tableau est assez simple, comme d'habitude il suffit de créer une variable, mais on va l'initialiser d'une manière spécifique :
 
-```
+```javascript
 var monTableauDeBalles = []
 ```
 "monTableauDeBalles" est le nom de ma variable et les deux crochets "[]" précise que cette variable est un tableau. Pour ajouter des objet à ce tableau on utilise la fonction **.push()** comme ceci :
 
-```
+```javascript
 monTableauDeBalles.push(new Balle(color(255,180,180))) // ajouter une balle rose à mon tableau
 monTableauDeBalles.push(new Balle(color(180,180,255))) // ajouter une balle bleu ciel à mon tableau
 ```
 *Note : pour retirer un élément d'un tableau il faut utiliser la fonction* **.splice()** *connaitre son index et il faut préciser le nombre d'éléments à retirer.*
-```
+```javascript
 monTableauDeBalles..splice(0,1); // on retire le premier élément du tableau
 ```
 
 Maintenant mon tableau contient deux **instances** de la classe balle : une dont la couleur de dessin est le rose, et une autre dont la couleur de dessin et le bleu ciel.
 Il faut maintenant pouvoir accéder au différentes instances pour pourvoir appeler les fonctions souhaitées. Dans un tableau les objets sont rangés dans l'ordre dans lequel ils ont été ajoutés. On utilise "[]" pour accéder à un élément précis du tableau. Ainsi si je veux dessiner la balle bleue, je dois écrire :
 
-```
+```javascript
 monTableauDeBalles[1].draw()
 ```
 "monTableauDeBalles[1]" correspond à l'instance de la classe Balle stockée à l'index 1 du tableau "monTableauDeBalles" on peut donc appeler directement sa fonction **.draw()**.
@@ -2371,7 +2369,7 @@ monTableauDeBalles[1].draw()
 Bien sûr si nous utilisons un tableau le but est de pouvoir automatiser l'appel de fonction à l'ensemble des instances créees à l'aide d'une boucle **for()**.
 Il est alors relativement simple de créer 100 objet et de les animer.
 
-```
+```javascript
 var balles =[] // créer un tableau de balles
 
 function setup() {
@@ -2441,7 +2439,7 @@ Il pourrait être d'ailleurs assez intéressant comme exercice pratique d'essaye
 En continuant avec l'exemple développé précédement, nous allons essayer de faire en sorte que si deux balles sont à une distance inférieure à une certaine valeur, nous dessinions une ligne reliant leurs centres respectifs.
 
 A priori il est relativement simple de calculer la distance entre deux balles et de dessiner une ligne entre leur deux centres, disons pour une balle stockée à l'index *i* de notre tableau et une autre balle stockée à l'index *j* : il nous faut d'abord définir une distance en dessous de laquelle nous dessinerons une ligne puis d'utiliser la fonction **dist()** qui permet de calculer la distance entre deux jeux de coordonées :
-```
+```javascript
 var threshold = map(mouseX,0,windowWidth,50,250) // on définit la distance grace à la souris
 if (dist(balles[i].xpos, balles[i].ypos, balles[j].xpos, balles[j].ypos) < threshold){ // on vérifie la distance entre les centres par rapport à "threshold"
     line(balles[i].xpos, balles[i].ypos, balles[j].xpos, balles[j].ypos) // on dessine une ligne entre les centres
@@ -2451,7 +2449,7 @@ Pour rappel, la fonction *map(mouseX,0,windowWidth,50,250)* nous permet de calcu
 
 Maintenant il faut trouver un moyen pour pouvoir comparer n'importe quelle balle à n'importe qu'elle autre dans nôtre tableau de balles. Pour cela nous allons devoir parcourir deux fois le tableau de balles avec deux boucles **for()** imbriquées :
 
-```
+```javascript
 for (var i = 0 ; i < balles.length ; i++){  // on parcourt notre tableau une première fois
     for (var j = 0 ; j < balles.length ; j++){ // on parcourt notre tableau une seconde fois
         var threshold = map(mouseX,0,windowWidth,50,250)
@@ -2464,7 +2462,7 @@ for (var i = 0 ; i < balles.length ; i++){  // on parcourt notre tableau une pre
 Remarquez que ce code bien qu'il fonctionne n'est pas très optimisé car il réalise plusieurs fois les mêmes calculs. Par exemple quand i vaut 0 et que j vaut 1 c'est sont les mêmes instances que l'on compare que si j vaut 0 et que i vaut 1 ! Cela signifie que plusieurs lignes sont déssinées les unes par dessus les autres. Dans l'absolu ce n'est pas très grave : avec un nombre réduit d'objet cela n'impacte pas trop la performance de notre programme, mais si l'on souhaite ajouter encore plus de balles cela peut commencer à perturber les performances.
 
 Pour "optimiser" un peu notre programme, nous pouvons commencer la seconde boucle pour une valeur de *j* égale à *i+1* :
-```
+```javascript
 var balles =[] 
 
 function setup() {
