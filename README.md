@@ -42,11 +42,19 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
 	* [NodeJs et serveur local](#socket-localhost)<br>
 * [Animation](#animation)<br>
   * [Balle rebondissant contre les parois](#balle) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_01/index.html)<br>
-  * [Suivre la souris](#souris) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_02/index.html)<br>
-  * [Suivre la souris avec des forces](#sourisforces)
-  * [Croissance de tentacules](#tentacules) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_03/index.html)<br>
+  * [Suivre la souris](#souris) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_02/index.html)<br> - [**DEMO2**](https://b2renger.github.io/Introduction_p5js/04_animation_02_penner/index.html)<br>
+  * [Suivre la souris avec des forces](#sourisforces) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_03/index.html)<br>
+  * [Croissance de tentacules](#tentacules) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_04/index.html)<br>
 * [Objets](#objets)<br>
-* [Tableaux](#tableaux)<br>
+    * [Objets et Instances](#oop)<br> - [**DEMO**](https://b2renger.github.io/Introduction_p5js/05_objets_01/index.html)<br>
+    * [Tableaux](#tableaux)<br> - [**DEMO**](https://b2renger.github.io/Introduction_p5js/05_objets_02/index.html)<br>
+    * [Pour aller un peu plus loin](#tableaux)<br> - [**DEMO**](https://b2renger.github.io/Introduction_p5js/05_objets_03/index.html)<br>
+* [Webgl et 3D](#webgl)<br>
+    * [Caméra, lumière, la bibliothèque Quicksettings.js](#tentacules3D)<br> - [**DEMO**](https://b2renger.github.io/Introduction_p5js/06_webgl_01/index.html)<br>
+    * [Algorithme de "dla", appliquer des textures](#tentacules3D)<br> - [**DEMO**](https://b2renger.github.io/Introduction_p5js/06_webgl_02/index.html)<br>
+    * [Tentacules revisitées en 3D](#tentacules3D)<br> - [**DEMO**](https://b2renger.github.io/Introduction_p5js/06_webgl_03/index.html)<br>
+    * [Génération d'arbres](#tentacules3D)<br> - [**DEMO**](https://b2renger.github.io/Introduction_p5js/06_webgl_04/index.html)<br>
+    * [Algorithme de "flocking"](#tentacules3D)<br> - [**DEMO**](https://b2renger.github.io/Introduction_p5js/06_webgl_05/index.html)<br> 
 * [La bibliothèque p5.sound](#son)<br>
 * [Ressources](#ressources)<br>
 * [Références](#references)<br>
@@ -1379,7 +1387,7 @@ https://b2renger.github.io/Introduction_p5js/02_dom_05/index.html
 
 
 
-<a name="site"/>-
+<a name="siteweb"/>
 ### Exemple de site web
 
 Mon site web personnel est constuit à l'aide de la bibliothèque DOM de p5js. Le principe est d'utiliser un canvas pour la navigation dans les 'pages' plutôt qu'un menu classique.
@@ -1391,6 +1399,10 @@ http://b2renger.github.io
 La partie de gauche de la page web est donc un canvas faisant fonctionner un sketch p5js. A ce niveau du cours certains aspects du code seront une peu compliqués à comprendre, mais le principe de base est simple : chaque forme géométrique représente un page, lorsque l'on passe au dessus avec la souris, les éléments html de la partie de droite sont détruits, et recrées en fonction d'un fichier csv (qui représente l'article). Le fichier csv est alors analysé et chaque ligne correspond à la création d'un élément html : paragraphe, balise vidéo, lien hypertexte, balise image ou audio etc.
 
 Un peu de documentation et un exemple simple sont disponnibles à cette adresse : http://b2renger.github.io/p5js_algae_dom/index.html
+
+Pour entrer un peu dans le code, il sera nécessaire d'avoir quelques bases sur l'utilisation des objets et des tableaux en javascript.
+
+Attention le code n'est pas exemplaire : il s'agit ici plus d'une expérimentation. A priori le choix d'utiliser le csv n'est pas idéal, car il empêche d'utiliser des virgules dans le texte des paragraphes (la virgule étant le séparateur du format CSV), il serait préférable d'utiliser le format JSON. Un autre défaut est que le site n'est pas très réactif : les éléments sont parsés du format json et disposé selon un grille fixe, il serait mieux de mapper les éléments vers des div qui pourraient alors être stylisées, déplacées en fonction de la taille de la fenêtre du client etc.
 
 
 [^ home](#contenu)<br>
@@ -2141,7 +2153,6 @@ http://funprogramming.org/40-The-candy-space-Understanding-noise-with-2-and-3-pa
 
 Les exemples sont codés à l'aide de [processing](https://processing.org/) qui a sensiblement la même syntaxe que p5js (p5js étant la petite soeur de processing) mais processing utilise le langage java qui est au demeurant très différents de javascript.
 
-
 [^ home](#contenu)<br>
 
 
@@ -2157,7 +2168,344 @@ Pour résumer et faire une analogie concrète une classe c'est la définition d'
 - éventuellement de **roulettes**.
 L'utilisateur peut alors récupérer sa table en kit la monter, et l'utiliser : il peut alors poser des livres, ordinateurs, téléphones sur le plateau, régler la hauteur des pieds, et la déplacer en la faisant rouler. Définir ce à quoi la table ressemble et ce qu'on va pouvoir faire avec correspond à l'écriture d'une classe.
 
-Dans notre cas on va par exemple créer une classe **Balle**, une instance de cette classe se déplacera à une vitesse donnée aléatoirement lors de sa création, elle rebondira sur les bords de la fenêtre, et elle se dessinera avec une couleur définie 
+<a name="oop"/>
+### Objets et Instances
+
+Dans notre cas on va par exemple créer une classe **Balle**, une instance de cette classe se déplacera à une vitesse donnée aléatoirement lors de sa création, elle rebondira sur les bords de la fenêtre, et elle se dessinera avec une couleur définie.
+
+Pour définir un objet ou une classe en javascript, il s'agit en fait de définir une fonction :
+
+```
+// on définit un classe qui s'appelle "Balle"
+function Balle() {
+    // code à implémenter
+}
+```
+Notre objet "Balle", manipulera des variables et même chaque instance de cet objet manipulerie la même série de variables, pour qu'il n'y ait pas de conflits entre tout ces différents noms de variable lorsque l'on écrit une classe on fait précéder le nom d'une variable de **this.**
+
+Ainsi d'habitude nous pouvons écrire 
+``` 
+var posX = 0;
+```
+
+Dans un objet nous devons écrire :
+
+```
+this.posX = 0
+```
+
+Ainsi si nous reprenons le code de l'exemple *04_Animation_01*, nous pouvons définir l'ensemble des variables dont nous aurons besoin pour notre classe :
+
+``` 
+// on définit un classe qui s'appelle "Balle"
+function Balle() {
+    // on définit et on initialise des variables pour stocker la position et 
+    // la vitesse de notre disque précédées de "this."
+    this.xpos  = windowWidth/2
+    this.ypos  = windowHeight/2
+    this.xspeed = random(2,10)*cos(random(TWO_PI))
+    this.yspeed = random(2,10)*sin(random(TWO_PI))
+}
+```
+
+Nous pouvons maintenant ajouter des actions que pourra exécuter notre objet sous forme de fonctions. Nous allons séparer les différentes actions : se dessiner à l'écran, calculer sa prochaine position, et rebondir sur les côtés, chacune en une fonction. Dans une classe pour créer une fonction qui s'appelera *dessiner*, il faut encore une fois utiliser **this**.
+
+```
+// on définit un classe qui s'appelle "Balle"
+function Balle() {
+    // on définit et on initialise des variables pour stocker la position et 
+    // la vitesse de notre disque précédées de "this."
+    this.xpos  = windowWidth/2
+    this.ypos  = windowHeight/2
+    this.xspeed = random(2,10)*cos(random(TWO_PI))
+    this.yspeed = random(2,10)*sin(random(TWO_PI))
+    
+    // on définit une fonction qui va dessiner notre objet à l'endroit prévu
+    this.dessiner = function(){
+        // code à éxecuter
+        ellipse(this.xpos, this.ypos,20,20)
+    }
+}
+```
+En prenant exemple sur le programmae d'animation *04_Animation_01*, on peut maintenant ajouter les autres actions prévues : calculer sa position et rebondir. Et voici notre objet javascript complet, inséré dans un sketch p5js.
+
+```
+function setup(){
+    createCanvas(windowWidth, windowHeight); 
+}
+
+function draw(){
+
+}
+
+// on définit un classe qui s'appelle "Balle"
+function Balle() {
+    // on définit et on initialise des variables pour stocker la position et 
+    // la vitesse de notre disque précédées de "this."
+    this.xpos  = windowWidth/2
+    this.ypos  = windowHeight/2
+    this.xspeed = random(2,10)*cos(random(TWO_PI))
+    this.yspeed = random(2,10)*sin(random(TWO_PI))
+    
+    // on définit une fonction pour dessiner notre disque
+    this.draw = function(){  
+        ellipse(this.xpos, this.ypos, 20, 20); // on utilise les variables précédées de "this."
+    }
+    
+    // on définit une fonction pour calculer la prochaine position de notre disque
+    this.update = function(){ 
+        this.xpos = this.xpos + this.xspeed  
+        this.ypos = this.ypos + this.yspeed   
+    }
+    
+    // on définit une fonction pour vérifier les collisions
+    this.check = function(){ 
+        if (this.xpos < 0 || this.xpos > windowWidth) this.xspeed = this.xspeed * (-1) 
+        if (this.ypos < 0 || this.ypos > windowHeight) this.yspeed = this.yspeed * (-1) 
+    }  
+}
+```
+Si vous ouvrez la page contenant ce sketch, rien ne se passe; et pour cause nous avons juste écrit la classe : la définition de notre objet (les différentes variables et la façon dont elles interagissent entre elles ou dont on va les utiliser à l'aide de fonctions), mais à aucun moment nous n'avons créee une **instance** de cet objet. 
+
+Pour cela il faut créer une variable, préciser au code que cette variable est un objet et de quel type il est, puis utiliser ses fonctions d'objet :
+
+``` 
+var bal // on crée une variable nommée 'bal' qui va stocker notre objet
+
+function setup() {
+  createCanvas(windowWidth, windowHeight); 
+  background(100);   
+    
+  bal = new Balle() // on définit la variable 'bal' comme un objet de type "Balle" 
+} 
+
+function draw() { 
+    // on appelle les fonctions de l'objet 'bal' qui est une instance de la classe "Balle"
+    bal.draw();
+    bal.update();
+    bal.check();
+}
+```
+Si vous ajoutez ces quelques lignes au code précédent, vous vous retrouvez avec exactement le même programme que *04_Animation_01* sauf que cette fois-ci vous disposez d'une classe et il vous sera beaucoup plus facile de créer plusieurs centaines d'instances de ce comportement que vous avez définit dans la classe Balle. De plus le code est plus facile à maintenir, et plus facilement modifiables, nous nous attacherons à ajouter de nouveaux comportements un peu plus tard.
+
+Mais pour l'instant en début de paragraphe, nous évoquions la possibilité d'attribuer une couleur à chaque balle : il est en effet possible de "passer" des arguments au moment ou nous créeons chaque instance, soit dans le code précédent à cette ligne :
+
+```     
+  bal = new Balle() // on définit la variable 'bal' comme un objet de type "Balle" 
+```
+
+Comme pour n'importe quelle fonction, il suffit de le "passer" entre les parenthèses :
+
+```     
+  var col = color(255,180,180)
+  bal = new Balle(c) // on définit la variable 'bal' comme un objet de type "Balle" et on passe une couleur !
+```
+Dans notre classe Balle il suffit de stocker cette valeur dans une variable propre à la classe (avec **this.**) et de l'utiliser au moment de dessiner :
+
+```
+// on définit un classe qui s'appelle "Balle" et on passe un argument au moment de la création
+// de chacune de ses instances
+function Balle(c) {
+   
+    this.xpos  = windowWidth/2
+    this.ypos  = windowHeight/2
+    this.xspeed = random(2,10)*cos(random(TWO_PI))
+    this.yspeed = random(2,10)*sin(random(TWO_PI))
+    
+    this.c = c // on récupère la valeur passée "c" et on la stocke dans une variable propre à la classe "this.c"
+    
+    // on définit une fonction pour dessiner notre disque
+    this.draw = function(){  
+        fill(this.c) // on utilise la variable "this.c" qui stocke la couleur passée à la création de l'instance
+        ellipse(this.xpos, this.ypos, 20, 20); // on utilise les variables précédées de "this."
+    }
+    
+    // etc
+}
+```
+
+![balle dans une boite](assets/05_objets_01.png)
+
+https://b2renger.github.io/Introduction_p5js/05_objets_01/index.html
+
+https://www.openprocessing.org/sketch/401282
+
+Notez que dans l'exemple de code fournit, nous initialisons la vitesse par une valeur aléatoire sans passer d'arguments à notre futur objet, alors que pour la couleur nous créons une couleur aléatoire en dehors de la classe puis nous lui passons cette couleur. Dans notre cas ces deux pratiques sont équivalentes, mais dans certains cas on veut initialiser certains objets à certaines valeurs.
+
+Dans ces [exemples sur le théme de la typographie](https://b2renger.github.io/p5js_typo/) on passe généralement un point d'ancrage comme argument à chaque instance d'objet, c'est à dire les coordonnées où doit être dessinée une forme si rien ne vient perturber cela. (note ces exemples sont encore un peu trop avancés à ce stade. Avant des les aborder je vous conseille de finir le prochain paragraphe).
+
+[^ home](#contenu)<br>
+
+
+<a name="tableaux"/>
+### Des tableaux d'objets
+
+Le but de créer une classe était de pouvoir créer plusieurs centaines d'instances d'un comportement, comme une balle qui rebondit contre les bords de la fenêtre. Pour cela nous allons avoir recours une fois n'est pas coutume à des boucles **for** mais aussi à des tableaux.
+
+Nous allons en réalité, créer un tableau pour dans chaque case y stocker une instance d'un objet : cela correspond à un emplacement mémoire ou seront stockées toutes les variables qui font notre objet.
+
+Créer un tableau est assez simple, comme d'habitude il suffit de créer une variable, mais on va l'initialiser d'une manière spécifique :
+
+```
+var monTableauDeBalles = []
+```
+"monTableauDeBalles" est le nom de ma variable et les deux crochets "[]" précise que cette variable est un tableau. Pour ajouter des objet à ce tableau on utilise la fonction **.push()** comme ceci :
+
+```
+monTableauDeBalles.push(new Balle(color(255,180,180))) // ajouter une balle rose à mon tableau
+monTableauDeBalles.push(new Balle(color(180,180,255))) // ajouter une balle bleu ciel à mon tableau
+```
+*Note : pour retirer un élément d'un tableau il faut utiliser la fonction **.splice()** connaitre son index et il faut préciser le nombre d'éléments à retirer.*
+```
+monTableauDeBalles..splice(0,1); // on retire le premier élément du tableau
+```
+
+Maintenant mon tableau contient deux **instances** de la classe balle : une dont la couleur de dessin est le rose, et une autre dont la couleur de dessin et le bleu ciel.
+Il faut maintenant pouvoir accéder au différentes instances pour pourvoir appeler les fonctions souhaitées. Dans un tableau les objets sont rangés dans l'ordre dans lequel ils ont été ajoutés. On utilise "[]" pour accéder à un élément précis du tableau. Ainsi si je veux dessiner la balle bleue, je dois écrire :
+
+```
+monTableauDeBalles[1].draw()
+```
+"monTableauDeBalles[1]" correspond à l'instance de la classe Balle stockée à l'index 1 du tableau "monTableauDeBalles" on peut donc appeler directement sa fonction **.draw()**.
+
+Bien sûr si nous utilisons un tableau le but est de pouvoir automatiser l'appel de fonction à l'ensemble des instances créees à l'aide d'une boucle **for()**.
+Il est alors relativement simple de créer 100 objet et de les animer.
+
+```
+var balles =[] // créer un tableau de balles
+
+function setup() {
+    createCanvas(windowWidth, windowHeight); 
+    background(100);   
+    colorMode(HSB,360,100,100)
+    // on utilise une boucle for pour créer 100 instances de la classe Balle
+    // qui vont être stockées dans notre tableau appelé "balles/
+    for (var i = 0 ; i < 100 ; i++){
+        balles.push(new Balle(color(random(360),100,100))) // on ajoute chaque instance au tableau en "passant" une couleur aléatoire.
+    }
+} 
+
+function draw() { 
+    background(100);  
+    // on parcourt notre tableau
+    for (var i = 0 ; i < balles.length ; i++){ // la condition d'arrêt est la longueur du tableau "balles.length"
+        // l'instance stockée à l'index "i" on appelle les différentes fonctions implémentées.
+        balles[i].draw();
+        balles[i].update();
+        balles[i].check();
+    }
+}
+
+// on définit un classe qui s'appelle "Balle"
+function Balle(c) {
+    this.xpos  = windowWidth/2
+    this.ypos  = windowHeight/2
+    this.xspeed = random(2,10)*cos(random(TWO_PI))
+    this.yspeed = random(2,10)*sin(random(TWO_PI))
+    this.c = c
+    
+    this.draw = function(){  
+        fill(this.c);
+        ellipse(this.xpos, this.ypos, 20, 20); // on utilise les variables précédées de "this."
+    }
+    
+    this.update = function(){ 
+        this.xpos = this.xpos + this.xspeed  
+        this.ypos = this.ypos + this.yspeed   
+    }
+    
+    this.check = function(){ 
+        if (this.xpos < 0 || this.xpos > windowWidth) this.xspeed = this.xspeed * (-1) 
+        if (this.ypos < 0 || this.ypos > windowHeight) this.yspeed = this.yspeed * (-1) 
+    }  
+}
+```
+
+![balle dans une boite](assets/05_objets_02.png)
+
+https://b2renger.github.io/Introduction_p5js/05_objets_02/index.html
+
+https://www.openprocessing.org/sketch/402750
+
+Et voilà ! si vous avez tout lu depuis le début vous savez maintenant à peu près tout ce qu'il y a à savoir en terme de programmation. Bien sûr il y a une montagne de choses spécifiques, de bonnes pratiques à apprendre pour pouvoir programmer ce que l'on souhaite, mais ces éléments de bases sont communs à la pluspart des grandes familles de languages de programmation. Ces bases vous permettront de lire du code dans a peu près n'importe quel language et d'écrire un bon nombre d'applications.
+
+Il ne vous reste plus qu'à pratiquer, expérimenter pour gagner de l'expérience ... c'est certainement la plus grosse partie du travail de développeur. A partir de ce point nous verrons des choses plus spécifiques.
+
+Il pourrait être d'ailleurs assez intéressant comme exercice pratique d'essayer d'adapter quelques uns des exemples vus dans le chapitre d'animation en classes (et probablement celui utilisant des forces...)
+
+[^ home](#contenu)<br>
+
+<a name="fonctions"/>
+### Pour aller un peu plus loin
+
+En continuant avec l'exemple développé précédement, nous allons essayer de faire en sorte que si deux balles sont à une distance inférieure à une certaine valeur, nous dessinions une ligne reliant leurs centres respectifs.
+
+A priori il est relativement simple de calculer la distance entre deux balles et de dessiner une ligne entre leur deux centres, disons pour une balle stockée à l'index *i* de notre tableau et une autre balle stockée à l'index *j* : il nous faut d'abord définir une distance en dessous de laquelle nous dessinerons une ligne puis d'utiliser la fonction **dist()** qui permet de calculer la distance entre deux jeux de coordonées :
+```
+var threshold = map(mouseX,0,windowWidth,50,250) // on définit la distance grace à la souris
+if (dist(balles[i].xpos, balles[i].ypos, balles[j].xpos, balles[j].ypos) < threshold){ // on vérifie la distance entre les centres par rapport à "threshold"
+    line(balles[i].xpos, balles[i].ypos, balles[j].xpos, balles[j].ypos) // on dessine une ligne entre les centres
+}    
+```
+Pour rappel, la fonction *map(mouseX,0,windowWidth,50,250)* nous permet de calculer une valeur qui dépend de *mouseX* : *mouseX* est compris entre "0" et "windowWidth" (puisqu'il est forcément dans le fenêtre de dessin) et on veut que lorsque *mouseX* vaut "0" alors notre valeur *threshold* vaille "50", et que lorsque *mouseX* vaut "windowWidth" alors notre valeur *threshold* vaille "250".
+
+Maintenant il faut trouver un moyen pour pouvoir comparer n'importe quelle balle à n'importe qu'elle autre dans nôtre tableau de balles. Pour cela nous allons devoir parcourir deux fois le tableau de balles avec deux boucles **for()** imbriquées :
+
+```
+for (var i = 0 ; i < balles.length ; i++){  // on parcourt notre tableau une première fois
+    for (var j = 0 ; j < balles.length ; j++){ // on parcourt notre tableau une seconde fois
+        var threshold = map(mouseX,0,windowWidth,50,250)
+        if (dist(balles[i].xpos, balles[i].ypos, balles[j].xpos, balles[j].ypos) < threshold){
+            line(balles[i].xpos, balles[i].ypos, balles[j].xpos, balles[j].ypos)
+        }    
+    }   
+}
+```
+Remarquez que ce code bien qu'il fonctionne n'est pas très optimisé car il réalise plusieurs fois les mêmes calculs. Par exemple quand i vaut 0 et que j vaut 1 c'est sont les mêmes instances que l'on compare que si j vaut 0 et que i vaut 1 ! Cela signifie que plusieurs lignes sont déssinées les unes par dessus les autres. Dans l'absolu ce n'est pas très grave : avec un nombre réduit d'objet cela n'impacte pas trop la performance de notre programme, mais si l'on souhaite ajouter encore plus de balles cela peut commencer à perturber les performances.
+
+Pour "optimiser" un peu notre programme, nous pouvons commencer la seconde boucle pour une valeur de *j* égale à *i+1* :
+```
+var balles =[] 
+
+function setup() {
+    createCanvas(windowWidth, windowHeight); 
+    background(100);   
+    colorMode(HSB,360,100,100)
+    for (var i = 0 ; i < 100 ; i++){
+        balles.push(new Balle(color(random(360),100,100))) 
+    }
+} 
+
+function draw() { 
+    background(100);  
+    // on parcourt notre tableau une première fois
+    for (var i = 0 ; i < balles.length ; i++){ 
+        // l'instance stockée à l'index "i" on appelle les différentes fonctions implémentées.
+        balles[i].draw();
+        balles[i].update();
+        balles[i].check();
+        // on parcourt notre tableau une seconde fois
+        for (var j = i+1 ; j < balles.length ; j++){
+            var threshold = map(mouseX,0,windowWidth,50,250)
+            if (dist(balles[i].xpos, balles[i].ypos, balles[j].xpos, balles[j].ypos) < threshold){
+                line(balles[i].xpos, balles[i].ypos, balles[j].xpos, balles[j].ypos)
+            }    
+        }     
+    }
+}
+```
+![balle dans une boite](assets/05_objets_03.png)
+
+https://b2renger.github.io/Introduction_p5js/05_objets_03/index.html
+
+https://www.openprocessing.org/sketch/402758
+
+[^ home](#contenu)<br>
+
+<a name="webgl"/>
+## Webgl et 3D
+
+
 
 
 [^ home](#contenu)<br>
