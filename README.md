@@ -49,6 +49,7 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
     * [Objets et Instances](#oop) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/05_objets_01/index.html)<br>
     * [Tableaux](#tableaux) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/05_objets_02/index.html)<br>
     * [Pour aller un peu plus loin](#tableaux) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/05_objets_03/index.html)<br>
+* [La bibliothèque Quicksettings](#quicksettings)<br>
 * [Webgl et 3D](#webgl)<br>
     * [Caméra, lumière, la bibliothèque Quicksettings.js](#3d) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/06_webgl_01/index.html)<br>
     * [Algorithme de "dla", appliquer des textures](#dla) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/06_webgl_02/index.html)<br>
@@ -2353,7 +2354,7 @@ var monTableauDeBalles = []
 monTableauDeBalles.push(new Balle(color(255,180,180))) // ajouter une balle rose à mon tableau
 monTableauDeBalles.push(new Balle(color(180,180,255))) // ajouter une balle bleu ciel à mon tableau
 ```
-*Note : pour retirer un élément d'un tableau il faut utiliser la fonction* **.splice()** *connaitre son index et il faut préciser le nombre d'éléments à retirer.*
+***Note** : pour retirer un élément d'un tableau il faut utiliser la fonction* **.splice()** *connaitre son index et il faut préciser le nombre d'éléments à retirer. Vous pourrez trouver un exemple d'utilisation dans les deux derniers exemples du chapitre suivant concernant webgl.*
 ```javascript
 monTableauDeBalles..splice(0,1); // on retire le premier élément du tableau
 ```
@@ -2498,6 +2499,42 @@ https://b2renger.github.io/Introduction_p5js/05_objets_03/index.html
 
 https://www.openprocessing.org/sketch/402758
 
+Les "doubles boucles for()" peuvent aussi être très utiles lorsqu'il s'agit de créer des patterns / grilles de motifs. Je vous invite à regarder ce lien :
+
+https://github.com/b2renger/p5js_patterns
+
+
+![balle dans une boite](assets/05_objets_patterns.png)
+
+Dont les exemples sont en ligne :
+
+https://www.openprocessing.org/sketch/387519
+
+https://www.openprocessing.org/sketch/387534
+
+https://www.openprocessing.org/sketch/387567
+
+https://www.openprocessing.org/sketch/387602
+
+
+[^ home](#contenu)<br>
+
+<a name="quicksettings"/>
+## La bibliothèque quicksettings.js et les fonctions de callback
+
+La bibliothèque quicksettings.js est une bibliothèque de GUI (General User Interface), elle permet de créer des éléments graphiques avec lequel l'utilisateur peut intéragir. Cela ressemble étrangement à ce que permet de faire la bibliothèque DOM, sauf que la bibliothèque DOM permet de faire beaucoup, plus comme modifier l'emplacement, l'apparence de n'importe quel élément d'une page web. Ici il s'agit surtout de pouvoir permettre à l'utilisateur de choisir une couleur, d'entrer du texte ou de cliquer sur un bouton pour activer / désactiver une fonctionnalité. 
+
+Elle possède l'avantage de placer tous les éléments qu'elle crée dans un ou plusieurs "tiroirs" qui sont déplaçables et qui peuvent être ouverts ou fermés. 
+La documentation sur la page github est simple à comprendre, nous nous contenterons donc des commentaires dans les exemples suivants concernant webgl, nous nous en servirons principalement pour déplacer notre caméra.
+
+Vous pourrez trouver un apperçu de ses fonctionnalités via cet exemple : http://bit101.github.io/quicksettings/demos/styles_demo.html
+
+Cette bibliothèque ainsi que sa documentation sont hébergées ici : https://github.com/bit101/quicksettings
+
+Et elle est présente dans le dossier */libraries* des exemples de code, et elle est disponible via CDN (Content Delivery Network) : https://cdn.jsdelivr.net/quicksettings/latest/quicksettings.min.js
+
+D'ailleurs l'intégration dans openprocessing d'une bibliothèque externe nécessite que celle-ci soit disponnible via CDN.
+
 [^ home](#contenu)<br>
 
 <a name="webgl"/>
@@ -2512,6 +2549,8 @@ https://www.openprocessing.org/sketch/402758
 <a name="sound"/>
 ## La bibliothèque son
 
+En attendant la complétion de ce chapitre : je vous invite à visiter cette ressource (écrite en anglais) : https://github.com/b2renger/p5js_sound_examples
+Les deux exemples Sping et Flock peuvent être intéressant et abordent le thème de la sonification de processus physiques à partir de générateurs (oscillateurs, bruits blancs, filtres et enveloppes connectés ensemble). Ces exemples nécessitent la commpréhension des concepts sous-jacents aux objets en javascript.
 
 
 
