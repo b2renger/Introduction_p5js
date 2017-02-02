@@ -40,6 +40,7 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
 	* [JSON = JavaScript Object Notation](#socket-json)<br>
 	* [Emettre et recevoir des données dans une page web](#socket-emit)<br>
 	* [NodeJs et serveur local](#socket-localhost)<br>
+* [L'utilisation de bibliothèques : quicksettingsjs - gui](#quicksettings)<br>
 * [Animation](#animation)<br>
   * [Balle rebondissant contre les parois](#balle) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_01/index.html)<br>
   * [Suivre la souris](#souris) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_02/index.html)<br> - [**DEMO2**](https://b2renger.github.io/Introduction_p5js/04_animation_02_penner_position/index.html)<br>
@@ -49,7 +50,6 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
     * [Objets et Instances](#oop) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/05_objets_01/index.html)<br>
     * [Tableaux](#tableaux) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/05_objets_02/index.html)<br>
     * [Pour aller un peu plus loin](#tableaux) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/05_objets_03/index.html)<br>
-* [La bibliothèque Quicksettings](#quicksettings)<br>
 * [Webgl et 3D](#webgl)<br>
     * [Caméra, lumière, la bibliothèque Quicksettings.js](#3d) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/06_webgl_01/index.html)<br>
     * [Algorithme de "dla", appliquer des textures](#dla) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/06_webgl_02/index.html)<br>
@@ -1650,6 +1650,118 @@ Pour faire résumer et faire fonctionner les exemples fournis, il faut :
 
 [^ home](#contenu)<br>
 
+<a name="quicksettings"/>
+## La bibliothèque quicksettings.js, les fonctions de callback, les bibliothèques dans openProcessing
+
+La bibliothèque quicksettings.js est une bibliothèque de GUI (General User Interface), elle permet de créer des éléments graphiques avec lequel l'utilisateur peut intéragir. Cela ressemble étrangement à ce que permet de faire la bibliothèque DOM, sauf que la bibliothèque DOM permet de faire beaucoup, plus comme modifier l'emplacement, l'apparence de n'importe quel élément d'une page web. Ici il s'agit surtout de pouvoir permettre à l'utilisateur de choisir une couleur, d'entrer du texte ou de cliquer sur un bouton pour activer / désactiver une fonctionnalité. 
+
+Elle possède l'avantage de placer tous les éléments qu'elle crée dans un ou plusieurs "tiroirs" qui sont déplaçables et qui peuvent être ouverts ou fermés. 
+
+La documentation sur la page github est simple à comprendre, elle présente les différentes fonction que l'on peut appeler pour créer des éléments gui.
+
+Vous pourrez trouver un apperçu de ses fonctionnalités via cet exemple : http://bit101.github.io/quicksettings/demos/styles_demo.html
+
+Cette bibliothèque ainsi que sa documentation sont hébergées ici : https://github.com/bit101/quicksettings
+
+Et elle est présente dans le dossier */libraries* des exemples de code, et elle est disponible via CDN (Content Delivery Network) : https://cdn.jsdelivr.net/quicksettings/latest/quicksettings.min.js
+
+D'ailleurs l'intégration dans openprocessing d'une bibliothèque externe nécessite que celle-ci soit disponnible via CDN.
+
+Il est cependant important de comprendre ce que sont et comment fonctionne **les fonctions de callback** ou ** fonctions de rappel**: ce sont des fonctions qui sont passées en arguments à d'autres fonctions et dont le code ne s'exécute dans certains cas et en fonction de certains évenements.
+
+Par exemple lorsqu'on appuit sur un bouton, on peut faire en sorte de créer une fonction de rappel propre au bouton et dont le code s'éxecute lorsqu'on clique sur ce bouton.
+
+Dans le cas de quicksettings, il faut : créer un panneau, lui ajouter des éléments et définir des fonctions de rappel pour modfier certaines variables en fonction de l'élément modifié :
+
+```javascript
+var settings // une variable pour stocker le panneau de controle
+var flicker = false // une valeur à modifier
+function setup() {
+    createCanvas(windowWidth, windowHeight);
+    background(0)
+    // On initialise notre variable, on passe en argument la position du widget dans le canvas
+    // et le nom du groupe d'éléments gui que l'on veut créer.
+    settings = QuickSettings.create(5, 5, "GUI");
+    // On ajoute un élément à ce widget qui est une boîte à cocher, on passe en argument, le nom
+    // de l'élément, sa valeur initiale, et le nom de la fonction de rappel, qu'il faut définir
+    settings.addBoolean("Check Me", flicker, eltChecked);
+}
+// définition de la fonction de rappel
+function eltChecked(val) { // val correspond à la valeur de l'élément
+    flicker = val; // on change notre variable "flicker" pour la remplacer par la valeur de notre gui
+    console.log(val)
+}
+
+function draw() {
+    // on utilise notre variable
+    if (!flicker) {
+        background(0)
+    }
+    else {
+        background(random(255))
+    }
+}
+```
+
+https://b2renger.github.io/Introduction_p5js/99_quicksettings/index.html
+
+Notez qu'au lieu de donner le nom de la fonction de rappel et la définir plus bas, on peut définir une fonction **anonyme** 
+
+Ainsi les lignes:
+```javascript
+ settings.addBoolean("Check Me", flicker, eltChecked);
+```
+ et :
+```javascript
+function eltChecked(val) { // val correspond à la valeur de l'élément
+    flicker = val; // on change notre variable "flicker" pour la remplacer par la valeur de notre gui
+    console.log(val)
+}
+```
+Peuven-être remplacées par une seul ligne : 
+```javascript
+settings.addBoolean("Check Me", flicker, function(val){flicker=val});
+```
+
+On écrit directement une fonction sans lui donner de nom, et on précise le code à éxecuter entre les accolades. C'est souvent moins fastidieu à écrire, mais plus pénible à débugger puisque généralement notre console se plaindra d'avoir eu une erreur dans une fonction anonyme sans réellement pouvoir nous dire laquelle et où exactement dans notre code...
+
+L'intégration de cette librairie externe est disponnible ici et peut-être généralisée à n'importe qu'elle librairie js pour peu qu'elle soit disponnible via CDN :
+
+https://www.openprocessing.org/sketch/403496
+
+Cette intégration nécessite l'usage de la fonction **preload()** qui s'éxécute avant le setup(). Le principe est de créer un élément html et de définir une source et une fonction de rappel lorsque notre source est chargée. (merci @makio135 pour l'exemple !)
+
+```javascript
+var settings // une variable pour stocker le panneau de controle
+
+// la fonction preload est executée avant le chargement de la page et donc avant le setup
+// ici on va l'utiliser pour charger la librairie quicksettings disponnible via CDN
+// et initialiser notre gui
+function preload(){
+	var script = document.createElement( 'script' ); // on crée un nouvel 'élément script'
+  	script.src = 'https://cdn.jsdelivr.net/quicksettings/latest/quicksettings.min.js'; // on ajoute en source la lib (lien cdn)
+  	// on définit ce qu'on doit faire au chargement de la page via une fonction de rappel
+  	script.onload = function(){
+      	// On initialise notre variable, on passe en argument la position du widget dans le canvas
+        // et le nom du groupe d'éléments gui que l'on veut créer.
+    	settings = QuickSettings.create(5, 50, "GUI");
+    	// On ajoute un élément à ce widget qui est une boîte à cocher, on passe en argument, le nom
+    	// de l'élément, sa valeur initiale, et le nom de la fonction de rappel, qu'il faut définir
+    	settings.addBoolean("Check Me", flicker, eltChecked);
+      	
+    }
+    document.body.appendChild( script );
+}
+
+// définition de la fonction de rappel pour l'élément gui intitulé "check me"
+function eltChecked(val) { // val correspond à la valeur de l'élément
+    flicker = val; // on change notre variable "flicker" pour la remplacer par la valeur de notre gui
+    console.log(val)
+}
+```
+
+[^ home](#contenu)<br>
+
 
 <a name="animation"/>
 ## Animer un déplacement
@@ -2529,117 +2641,6 @@ https://www.openprocessing.org/sketch/387602
 
 [^ home](#contenu)<br>
 
-<a name="quicksettings"/>
-## La bibliothèque quicksettings.js et les fonctions de callback
-
-La bibliothèque quicksettings.js est une bibliothèque de GUI (General User Interface), elle permet de créer des éléments graphiques avec lequel l'utilisateur peut intéragir. Cela ressemble étrangement à ce que permet de faire la bibliothèque DOM, sauf que la bibliothèque DOM permet de faire beaucoup, plus comme modifier l'emplacement, l'apparence de n'importe quel élément d'une page web. Ici il s'agit surtout de pouvoir permettre à l'utilisateur de choisir une couleur, d'entrer du texte ou de cliquer sur un bouton pour activer / désactiver une fonctionnalité. 
-
-Elle possède l'avantage de placer tous les éléments qu'elle crée dans un ou plusieurs "tiroirs" qui sont déplaçables et qui peuvent être ouverts ou fermés. 
-
-La documentation sur la page github est simple à comprendre, elle présente les différentes fonction que l'on peut appeler pour créer des éléments gui.
-
-Vous pourrez trouver un apperçu de ses fonctionnalités via cet exemple : http://bit101.github.io/quicksettings/demos/styles_demo.html
-
-Cette bibliothèque ainsi que sa documentation sont hébergées ici : https://github.com/bit101/quicksettings
-
-Et elle est présente dans le dossier */libraries* des exemples de code, et elle est disponible via CDN (Content Delivery Network) : https://cdn.jsdelivr.net/quicksettings/latest/quicksettings.min.js
-
-D'ailleurs l'intégration dans openprocessing d'une bibliothèque externe nécessite que celle-ci soit disponnible via CDN.
-
-Il est cependant important de comprendre ce que sont et comment fonctionne **les fonctions de callback** ou ** fonctions de rappel**: ce sont des fonctions qui sont passées en arguments à d'autres fonctions et dont le code ne s'exécute dans certains cas et en fonction de certains évenements.
-
-Par exemple lorsqu'on appuit sur un bouton, on peut faire en sorte de créer une fonction de rappel propre au bouton et dont le code s'éxecute lorsqu'on clique sur ce bouton.
-
-Dans le cas de quicksettings, il faut : créer un panneau, lui ajouter des éléments et définir des fonctions de rappel pour modfier certaines variables en fonction de l'élément modifié :
-
-```javascript
-var settings // une variable pour stocker le panneau de controle
-var flicker = false // une valeur à modifier
-function setup() {
-    createCanvas(windowWidth, windowHeight);
-    background(0)
-    // On initialise notre variable, on passe en argument la position du widget dans le canvas
-    // et le nom du groupe d'éléments gui que l'on veut créer.
-    settings = QuickSettings.create(5, 5, "GUI");
-    // On ajoute un élément à ce widget qui est une boîte à cocher, on passe en argument, le nom
-    // de l'élément, sa valeur initiale, et le nom de la fonction de rappel, qu'il faut définir
-    settings.addBoolean("Check Me", flicker, eltChecked);
-}
-// définition de la fonction de rappel
-function eltChecked(val) { // val correspond à la valeur de l'élément
-    flicker = val; // on change notre variable "flicker" pour la remplacer par la valeur de notre gui
-    console.log(val)
-}
-
-function draw() {
-    // on utilise notre variable
-    if (!flicker) {
-        background(0)
-    }
-    else {
-        background(random(255))
-    }
-}
-```
-
-https://b2renger.github.io/Introduction_p5js/99_quicksettings/index.html
-
-Notez qu'au lieu de donner le nom de la fonction de rappel et la définir plus bas, on peut définir une fonction **anonyme** 
-
-Ainsi les lignes:
-```javascript
- settings.addBoolean("Check Me", flicker, eltChecked);
-```
- et :
-```javascript
-function eltChecked(val) { // val correspond à la valeur de l'élément
-    flicker = val; // on change notre variable "flicker" pour la remplacer par la valeur de notre gui
-    console.log(val)
-}
-```
-Peuven-être remplacées par une seul ligne : 
-```javascript
-settings.addBoolean("Check Me", flicker, function(val){flicker=val});
-```
-
-On écrit directement une fonction sans lui donner de nom, et on précise le code à éxecuter entre les accolades. C'est souvent moins fastidieu à écrire, mais plus pénible à débugger puisque généralement notre console se plaindra d'avoir eu une erreur dans une fonction anonyme sans réellement pouvoir nous dire laquelle et où exactement dans notre code...
-
-L'intégration de cette librairie externe est disponnible ici et peut-être généralisée à n'importe qu'elle librairie js pour peu qu'elle soit disponnible via CDN :
-
-https://www.openprocessing.org/sketch/403496
-
-Cette intégration nécessite l'usage de la fonction **preload()** qui s'éxécute avant le setup(). Le principe est de créer un élément html et de définir une source et une fonction de rappel lorsque notre source est chargée.
-
-```javascript
-var settings // une variable pour stocker le panneau de controle
-
-// la fonction preload est executée avant le chargement de la page et donc avant le setup
-// ici on va l'utiliser pour charger la librairie quicksettings disponnible via CDN
-// et initialiser notre gui
-function preload(){
-	var script = document.createElement( 'script' ); // on crée un nouvel 'élément script'
-  	script.src = 'https://cdn.jsdelivr.net/quicksettings/latest/quicksettings.min.js'; // on ajoute en source la lib (lien cdn)
-  	// on définit ce qu'on doit faire au chargement de la page via une fonction de rappel
-  	script.onload = function(){
-      	// On initialise notre variable, on passe en argument la position du widget dans le canvas
-        // et le nom du groupe d'éléments gui que l'on veut créer.
-    	settings = QuickSettings.create(5, 50, "GUI");
-    	// On ajoute un élément à ce widget qui est une boîte à cocher, on passe en argument, le nom
-    	// de l'élément, sa valeur initiale, et le nom de la fonction de rappel, qu'il faut définir
-    	settings.addBoolean("Check Me", flicker, eltChecked);
-      	
-    }
-    document.body.appendChild( script );
-}
-
-// définition de la fonction de rappel pour l'élément gui intitulé "check me"
-function eltChecked(val) { // val correspond à la valeur de l'élément
-    flicker = val; // on change notre variable "flicker" pour la remplacer par la valeur de notre gui
-    console.log(val)
-}
-```
-
-[^ home](#contenu)<br>
 
 <a name="webgl"/>
 ## Webgl et 3D
