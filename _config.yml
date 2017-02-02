@@ -1,0 +1,8 @@
+title: Introduction p5js
+description: This is a french introduction to p5*js
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-hacker
+
+gems:
+  - jekyll-mentions
