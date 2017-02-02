@@ -42,7 +42,7 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
 	* [NodeJs et serveur local](#socket-localhost)<br>
 * [Animation](#animation)<br>
   * [Balle rebondissant contre les parois](#balle) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_01/index.html)<br>
-  * [Suivre la souris](#souris) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_02/index.html)<br> - [**DEMO2**](https://b2renger.github.io/Introduction_p5js/04_animation_02_penner/index.html)<br>
+  * [Suivre la souris](#souris) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_02/index.html)<br> - [**DEMO2**](https://b2renger.github.io/Introduction_p5js/04_animation_02_penner_position/index.html)<br>
   * [Suivre la souris avec des forces](#sourisforces) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_03/index.html)<br>
   * [Croissance de tentacules](#tentacules) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_04/index.html)<br>
 * [Objets](#objets)<br>
@@ -100,6 +100,9 @@ Le plus simple est probablement de [télécharger](http://p5js.org/download/) et
 Pour rappel CDN signifie Content Delivery Network et permet de lier son code à des bibliothèques qui sont déjà hébergées en ligne.
 
 Généralement un bon éditeur de texte suffit. Parfois il pourra être utile d'utiliser un serveur local pour servir certaines pages demandant accès à des fonctions ou fichiers spécifiques (généralement des pages utilisant des images ou des sons sous formes de fichier doivent être ouvertes avec un serveur local). Il y a des nombreuses possibilités pour cela et beaucoup de documentation en ligne : personnellement j'utilise 'sinatra' un serveur en ruby, simplehttpserver pour python peut-être une alternative, ou d'autres encore via nodejs voire même des logiciels comme mamp.
+
+Une solution intéressante peut-être Brackets : http://brackets.io/
+Cet éditeur de texte est fait pour le développement web, il dispose d'une bonne ergonomie, il permet d'ouvrir des dossiers entiers et de naviguer à l'intérieur tout en éditant des fichiers, un serveur web est intégré (il suffit de cliquer sur le petit éclair en haut à droite pour ouvrir le fichier édité dans une page web) et il dispose aussi d'une intégration github.
 
 
 ### Des bibliothèques
@@ -1810,20 +1813,27 @@ https://b2renger.github.io/Introduction_p5js/04_animation_02/index.html
 
 https://www.openprocessing.org/sketch/402030
 
-Le tweening et le easing sont des sujets relativement complexes, il existe des tas de façons d'interpoler les positions. Ici plus la distance est grande plus notre objet va vite et plus on se rapproche de la cible plus le mouvement en lent : on appelle ça une animation "ease out".
+Le tweening et le easing sont des sujets relativement complexes, il existe des tas de façons d'interpoler les positions, couleurs etc. Ici plus la distance est grande plus notre objet va vite et plus on se rapproche de la cible plus le mouvement en lent : on appelle ça une animation "ease out".
 
-Il existe de nombreuses bibliothèques d'animation, [tween.js](https://github.com/tweenjs/tween.js/) semble en être une référence.
 
-Lors de la préparation de ce cours j'ai pu implémenter ce qui fait office de référence : les équations de [Robert Penner](http://robertpenner.com/easing/). Ces équations proposent différentes fonction (cubiques, sinusoidales...) de "easing" avec à chaque fois un easing en entrée ("ease in"), un easing en sortie ("ease out") et un easing en entrée et sortie ("ease in out").
+Lors de la préparation de ce cours j'ai pu implémenter ce qui fait office de référence : les équations de [Robert Penner](http://robertpenner.com/easing/). Ces équations proposent différentes fonctions (cubiques, sinusoidales...) de "easing" avec à chaque fois un easing en entrée ("ease in"), un easing en sortie ("ease out") et un easing en entrée et sortie ("ease in out").
 
 Dans cet exemple, le déplacement s'effectue avec un clic de la souris et vous pouvez choisir les différents types d'interpolations, ainsi que leurs vitesses d'éxecution.
 
 ![suivre la souris](assets/04_animation_penner.png)
 
-https://b2renger.github.io/Introduction_p5js/04_animation_02_Penner/index.html
+https://b2renger.github.io/Introduction_p5js/04_animation_02_penner_position/index.html
 
 https://www.openprocessing.org/sketch/401812
 
+Un second exemple applique ces interpolation au rayon et à la couleur d'un cercle : 
+
+https://b2renger.github.io/Introduction_p5js/04_animation_02_penner_radius_color/index.html
+
+
+Il existe de nombreuses bibliothèques d'animation, [tween.js](https://github.com/tweenjs/tween.js/) semble en être une référence.
+
+Le sujet peut aussi être codé en css et s'appliquer à des éléments html : https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Animations/Using_CSS_animations
 
 [^ home](#contenu)<br>
 
@@ -2525,7 +2535,8 @@ https://www.openprocessing.org/sketch/387602
 La bibliothèque quicksettings.js est une bibliothèque de GUI (General User Interface), elle permet de créer des éléments graphiques avec lequel l'utilisateur peut intéragir. Cela ressemble étrangement à ce que permet de faire la bibliothèque DOM, sauf que la bibliothèque DOM permet de faire beaucoup, plus comme modifier l'emplacement, l'apparence de n'importe quel élément d'une page web. Ici il s'agit surtout de pouvoir permettre à l'utilisateur de choisir une couleur, d'entrer du texte ou de cliquer sur un bouton pour activer / désactiver une fonctionnalité. 
 
 Elle possède l'avantage de placer tous les éléments qu'elle crée dans un ou plusieurs "tiroirs" qui sont déplaçables et qui peuvent être ouverts ou fermés. 
-La documentation sur la page github est simple à comprendre, nous nous contenterons donc des commentaires dans les exemples suivants concernant webgl, nous nous en servirons principalement pour déplacer notre caméra.
+
+La documentation sur la page github est simple à comprendre, elle présente les différentes fonction que l'on peut appeler pour créer des éléments gui.
 
 Vous pourrez trouver un apperçu de ses fonctionnalités via cet exemple : http://bit101.github.io/quicksettings/demos/styles_demo.html
 
@@ -2534,6 +2545,99 @@ Cette bibliothèque ainsi que sa documentation sont hébergées ici : https://gi
 Et elle est présente dans le dossier */libraries* des exemples de code, et elle est disponible via CDN (Content Delivery Network) : https://cdn.jsdelivr.net/quicksettings/latest/quicksettings.min.js
 
 D'ailleurs l'intégration dans openprocessing d'une bibliothèque externe nécessite que celle-ci soit disponnible via CDN.
+
+Il est cependant important de comprendre ce que sont et comment fonctionne **les fonctions de callback** ou ** fonctions de rappel**: ce sont des fonctions qui sont passées en arguments à d'autres fonctions et dont le code ne s'exécute dans certains cas et en fonction de certains évenements.
+
+Par exemple lorsqu'on appuit sur un bouton, on peut faire en sorte de créer une fonction de rappel propre au bouton et dont le code s'éxecute lorsqu'on clique sur ce bouton.
+
+Dans le cas de quicksettings, il faut : créer un panneau, lui ajouter des éléments et définir des fonctions de rappel pour modfier certaines variables en fonction de l'élément modifié :
+
+```javascript
+var settings // une variable pour stocker le panneau de controle
+var flicker = false // une valeur à modifier
+function setup() {
+    createCanvas(windowWidth, windowHeight);
+    background(0)
+    // On initialise notre variable, on passe en argument la position du widget dans le canvas
+    // et le nom du groupe d'éléments gui que l'on veut créer.
+    settings = QuickSettings.create(5, 5, "GUI");
+    // On ajoute un élément à ce widget qui est une boîte à cocher, on passe en argument, le nom
+    // de l'élément, sa valeur initiale, et le nom de la fonction de rappel, qu'il faut définir
+    settings.addBoolean("Check Me", flicker, eltChecked);
+}
+// définition de la fonction de rappel
+function eltChecked(val) { // val correspond à la valeur de l'élément
+    flicker = val; // on change notre variable "flicker" pour la remplacer par la valeur de notre gui
+    console.log(val)
+}
+
+function draw() {
+    // on utilise notre variable
+    if (!flicker) {
+        background(0)
+    }
+    else {
+        background(random(255))
+    }
+}
+```
+
+https://b2renger.github.io/Introduction_p5js/99_quicksettings/index.html
+
+Notez qu'au lieu de donner le nom de la fonction de rappel et la définir plus bas, on peut définir une fonction **anonyme** 
+
+Ainsi les lignes:
+```javascript
+ settings.addBoolean("Check Me", flicker, eltChecked);
+```
+ et :
+```javascript
+function eltChecked(val) { // val correspond à la valeur de l'élément
+    flicker = val; // on change notre variable "flicker" pour la remplacer par la valeur de notre gui
+    console.log(val)
+}
+```
+Peuven-être remplacées par une seul ligne : 
+```javascript
+settings.addBoolean("Check Me", flicker, function(val){flicker=val});
+```
+
+On écrit directement une fonction sans lui donner de nom, et on précise le code à éxecuter entre les accolades. C'est souvent moins fastidieu à écrire, mais plus pénible à débugger puisque généralement notre console se plaindra d'avoir eu une erreur dans une fonction anonyme sans réellement pouvoir nous dire laquelle et où exactement dans notre code...
+
+L'intégration de cette librairie externe est disponnible ici et peut-être généralisée à n'importe qu'elle librairie js pour peu qu'elle soit disponnible via CDN :
+
+https://www.openprocessing.org/sketch/403496
+
+Cette intégration nécessite l'usage de la fonction **preload()** qui s'éxécute avant le setup(). Le principe est de créer un élément html et de définir une source et une fonction de rappel lorsque notre source est chargée.
+
+```javascript
+var settings // une variable pour stocker le panneau de controle
+
+// la fonction preload est executée avant le chargement de la page et donc avant le setup
+// ici on va l'utiliser pour charger la librairie quicksettings disponnible via CDN
+// et initialiser notre gui
+function preload(){
+	var script = document.createElement( 'script' ); // on crée un nouvel 'élément script'
+  	script.src = 'https://cdn.jsdelivr.net/quicksettings/latest/quicksettings.min.js'; // on ajoute en source la lib (lien cdn)
+  	// on définit ce qu'on doit faire au chargement de la page via une fonction de rappel
+  	script.onload = function(){
+      	// On initialise notre variable, on passe en argument la position du widget dans le canvas
+        // et le nom du groupe d'éléments gui que l'on veut créer.
+    	settings = QuickSettings.create(5, 50, "GUI");
+    	// On ajoute un élément à ce widget qui est une boîte à cocher, on passe en argument, le nom
+    	// de l'élément, sa valeur initiale, et le nom de la fonction de rappel, qu'il faut définir
+    	settings.addBoolean("Check Me", flicker, eltChecked);
+      	
+    }
+    document.body.appendChild( script );
+}
+
+// définition de la fonction de rappel pour l'élément gui intitulé "check me"
+function eltChecked(val) { // val correspond à la valeur de l'élément
+    flicker = val; // on change notre variable "flicker" pour la remplacer par la valeur de notre gui
+    console.log(val)
+}
+```
 
 [^ home](#contenu)<br>
 
@@ -2550,6 +2654,7 @@ D'ailleurs l'intégration dans openprocessing d'une bibliothèque externe néces
 ## La bibliothèque son
 
 En attendant la complétion de ce chapitre : je vous invite à visiter cette ressource (écrite en anglais) : https://github.com/b2renger/p5js_sound_examples
+
 Les deux exemples Sping et Flock peuvent être intéressant et abordent le thème de la sonification de processus physiques à partir de générateurs (oscillateurs, bruits blancs, filtres et enveloppes connectés ensemble). Ces exemples nécessitent la commpréhension des concepts sous-jacents aux objets en javascript.
 
 

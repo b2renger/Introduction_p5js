@@ -10,11 +10,11 @@ var durY = 100
 
 
 function setup() {
-  createCanvas(windowWidth, windowHeight); 
-  background(100); 
-  
+  createCanvas(windowWidth, windowHeight);
+  background(100);
+
   selX = createSelect();
-  selX.position(100, windowHeight-25);
+  selX.position(windowWidth/3, windowHeight-25);
   selX.option('ease In Quadratic');
   selX.option('ease Out Quadratic');
   selX.option('ease InOut Quadratic');
@@ -37,16 +37,16 @@ function setup() {
   selX.option('ease Out Circular');
   selX.option('ease InOut Circular');
   selX.changed(mySelectEvent);
-  
+
   speedX = createSelect();
-  speedX.position(270, windowHeight-25);
+  speedX.position(windowWidth/3 + 170, windowHeight-25);
   speedX.option('fast');
   speedX.option('normal');
   speedX.option('slow');
   speedX.changed(mySelectEvent);
-  
+
   selY = createSelect();
-  selY.position(450, windowHeight-25);
+  selY.position(windowWidth*2/3, windowHeight-25);
   selY.option('ease In Quadratic');
   selY.option('ease Out Quadratic');
   selY.option('ease InOut Quadratic');
@@ -69,24 +69,33 @@ function setup() {
   selY.option('ease Out Circular');
   selY.option('ease InOut Circular');
   selY.changed(mySelectEvent);
-  
+
   speedY = createSelect();
-  speedY.position(620, windowHeight-25);
+  speedY.position(windowWidth*2/3+170, windowHeight-25);
   speedY.option('fast');
   speedY.option('normal');
   speedY.option('slow');
   speedY.changed(mySelectEvent);
-  
+
   posX = windowWidth/2
   targetX = windowWidth /2
   posY = windowHeight/2
   targetY = windowHeight /2
-} 
+
+  textSize(14)
+  textAlign(RIGHT,TOP)
+}
 
 function draw() {
-   
-  incr += 0.15; 
-  
+
+    push()
+    fill(0)
+    text("xpos interpolation  :  ", windowWidth / 3, windowHeight - 25);
+    text("ypos interpolation  :  ", windowWidth * 2 / 3, windowHeight - 25);
+    pop()
+
+  incr += 0.15;
+
   if (speedX.elt.value == "fast"){
      durX =100
   }
@@ -96,7 +105,7 @@ function draw() {
    if (speedX.elt.value == "slow"){
      durX =400
   }
-  
+
   if(selX.elt.value == "ease In Quadratic"){
      posX = easeInQuad(incr, posX, (targetX-posX), durX)
   }
@@ -105,7 +114,7 @@ function draw() {
   }
   else if (selX.elt.value == "ease InOut Quadratic"){
     posX = easeInOutQuad(incr, posX, (targetX-posX), durX)
-  } 
+  }
   else if(selX.elt.value == "ease In Cubic"){
      posX = easeInCubic(incr, posX, (targetX-posX), durX)
   }
@@ -160,7 +169,7 @@ function draw() {
   else if (selX.elt.value == "ease InOut Circular"){
     posX = easeInOutCirc(incr, posX, (targetX-posX), durX)
   }
-  
+
   if (speedY.elt.value == "fast"){
      durY =100
   }
@@ -170,7 +179,7 @@ function draw() {
    if (speedY.elt.value == "slow"){
      durY =400
   }
- 
+
   if(selY.elt.value == "ease In Quadratic"){
      posY = easeInQuad(incr, posY, (targetY-posY), durY)
   }
@@ -234,11 +243,11 @@ function draw() {
   else if (selY.elt.value == "ease InOut Circular"){
      posY = easeInOutCirc(incr, posY, (targetY-posY), durY)
   }
-  
-  
-  
 
-  
+
+
+
+
   ellipse(posX, posY, 20, 20);
 }
 
@@ -258,7 +267,7 @@ function mySelectEvent(){
 // Penner's tween functions : http://robertpenner.com/easing/penner_chapter7_tweening.pdf
 // quadratic
 function easeInQuad(t,b,c,d){
-  return c*(t/d)*t + b; 
+  return c*(t/d)*t + b;
 }
 function easeOutQuad(t, b, c, d) {
   return -c * (t/=d)*(t-2) + b;
