@@ -6,7 +6,7 @@ P5js est un projet issu de processing qui est un langage de programmation basé 
 
 P5js propose l'intégration dans un canvas html5 d'un maximum de fonction pour le dessin et d'animation, des possibilités d'interaction à travers différentes interfaces homme machine (clavier, souris, webcam, micro ...), ou encore avec les composants d'une page web et un support partiel mais en développement de webgl.
 
-De nombreuses librairies viennent offrir de nouvelles possibilité, mais il p5js peut naturellement s'interfacer avec n'importe quelle librairies js.
+De nombreuses bibliothèques viennent offrir de nouvelles possibilité, mais il p5js peut naturellement s'interfacer avec n'importe quelle bibliothèques js.
 
 P5js est différent de processing.js par le fait que le langage de base est le js. Lorsqu'on utilise processing.js on a générallement développé un programme avec processing et on utilise processing.js pour traduire le programme en javascript qui devient alors exécutable dans une page web. Avec p5js on code directement en javascript un langage natif pour les navigateurs.
 
@@ -28,7 +28,7 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
 		*	[Coordonnées polaires](#polaire)<br>
 		*	[Boucles : "for"](#boucles)<br> 
 * [DOM](#dom)<br>
-	*	[Utilisation de la librairie](#utilisation) - [**DEMO 1**](https://b2renger.github.io/Introduction_p5js/02_dom_01/index.html) - [**DEMO 2**](https://b2renger.github.io/Introduction_p5js/02_dom_02/index.html)<br>
+	*	[Utilisation de la bibliothèque](#utilisation) - [**DEMO 1**](https://b2renger.github.io/Introduction_p5js/02_dom_01/index.html) - [**DEMO 2**](https://b2renger.github.io/Introduction_p5js/02_dom_02/index.html)<br>
 		*	[Créer des éléments HTML5](#html5)<br>
 		*	[Styliser avec du css](#css)<br>
 	*	[Utilisation de la vidéo](#video) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/02_dom_03/index.html)<br>
@@ -36,10 +36,27 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
 	*	[Mode instance de p5js](#instanciation) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/02_dom_05/index.html)<br>
 	*	[Exemple de site web](#siteweb)<br>
 * [SocketIO](#socket) - [**DEMO1**](https://www.openprocessing.org/sketch/390650) - [**DEMO2**](https://www.openprocessing.org/sketch/390497)<br>
-	* [Utilisation des librairies](#socket-libs)<br>
+	* [Utilisation des bibliothèques](#socket-libs)<br>
 	* [JSON = JavaScript Object Notation](#socket-json)<br>
 	* [Emettre et recevoir des données dans une page web](#socket-emit)<br>
-* [Animation et objets](#animation)<br>
+	* [NodeJs et serveur local](#socket-localhost)<br>
+* [L'utilisation de bibliothèques : quicksettingsjs - gui](#quicksettings)<br>
+* [Animation](#animation)<br>
+  * [Balle rebondissant contre les parois](#balle) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_01/index.html)<br>
+  * [Suivre la souris](#souris) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_02/index.html)<br> - [**DEMO2**](https://b2renger.github.io/Introduction_p5js/04_animation_02_penner_position/index.html)<br>
+  * [Suivre la souris avec des forces](#sourisforces) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_03/index.html)<br>
+  * [Croissance de tentacules](#tentacules) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_04/index.html)<br>
+* [Objets](#objets)<br>
+    * [Objets et Instances](#oop) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/05_objets_01/index.html)<br>
+    * [Tableaux](#tableaux) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/05_objets_02/index.html)<br>
+    * [Pour aller un peu plus loin](#tableaux) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/05_objets_03/index.html)<br>
+* [Webgl et 3D](#webgl)<br>
+    * [Caméra, lumière, la bibliothèque Quicksettings.js](#3d) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/06_webgl_01/index.html)<br>
+    * [Algorithme de "dla", appliquer des textures](#dla) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/06_webgl_02/index.html)<br>
+    * [Tentacules revisitées en 3D](#tentacules3D) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/06_webgl_03/index.html)<br>
+    * [Génération d'arbres](#tree) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/06_webgl_04/index.html)<br>
+    * [Algorithme de "flocking"](#flock) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/06_webgl_05/index.html)<br> 
+* [La bibliothèque p5.sound](#son)<br>
 * [Ressources](#ressources)<br>
 * [Références](#references)<br>
 
@@ -48,26 +65,26 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
 <a name="p5js_tools"/>
 ## Comment travailler avec p5js
 
-Vous avez plusieurs choix : 
+Vous avez plusieurs possibilités : 
 
 
 ### openprocessing
 
-Openprocessing est une plateforme collaborative qui permet de coder avec p5js ou processing.js. Il suffit de créer un compte gratuit et de cliquer sur 'create a new sketch' et c'est partit ! Openprocessing permet d'uploader des images, des vidéos ou des sons et supporte plusieurs librairies y compris un librairie websocket qui permet à plusieurs utilisateur d'interagir à distance dans un même canvas.
+Openprocessing est une plateforme collaborative qui permet de coder avec p5js ou processing.js. Il suffit de créer un compte gratuit et de cliquer sur 'create a new sketch' et c'est partit ! Openprocessing permet d'uploader des images, des vidéos ou des sons et supporte plusieurs bibliothèques y compris un bibliothèque websocket qui permet à plusieurs utilisateur d'interagir à distance dans un même canvas.
 
 [Openprocessing](http://openprocessing.org)
 
 La plupart des exemples de ce cours seront probablement porté sur openprocessing à une date indéfinie. Mais vous pouvez copier l'intégralité du fichier "sketch.js" de n'importe quel dossier dans l'éditeur de code d'openprocessing, puis de cliquer sur "run".
 
-Il est aussi possible d'intégrer des librairies javascript externes voici un exemple pour faire cela : https://www.openprocessing.org/sketch/385808
+Il est aussi possible d'intégrer des bibliothèques javascript externes voici un exemple pour faire cela : https://www.openprocessing.org/sketch/385808
 
-Openprocessing est pratique car il permet de se passer de serveur local et permet de créer des portofolio d'applications interactives très facilement. Actuellement openprocessing connait malheureusement quelques soucis, l'intégration de la librairie DOM pose parfois problème, et le serveur websocket plante régulièrement (mais le nouveau site est récent, ces problèmes se dissiperont avec le temps)
+Openprocessing est pratique car il permet de se passer de serveur local et permet de créer des portofolio d'applications interactives très facilement. Actuellement openprocessing connait malheureusement quelques soucis, l'intégration de la bibliothèque DOM pose parfois problème, et le serveur websocket plante régulièrement (mais le nouveau site est récent, ces problèmes se dissiperont avec le temps)
 
 ![Openprocessing](assets/openprocessing.png)
 ![Openprocessing](assets/openprocessing-2.png)
 
 
-### editor
+### Editor
 
 Il existe une application windows, osx ou linux, faisant office d'éditeur et de serveur web. Il est disponnible sur la page de téléchargement de p5js
 
@@ -76,19 +93,23 @@ http://p5js.org/download/
 L'éditeur fait aussi office de serveur, et permet donc de travailler avec des images, vidéos et sons, sans avoir à lancer de serveur local.
 
 
-### developpeur web 
+### Développeur web 
 
-Le plus simple est probablement de [télécharger](http://p5js.org/download/) et d'ajouter la librairie js ou d'utiliser les liens cdn dans votre fichier index.html.
+Le plus simple est probablement de [télécharger](http://p5js.org/download/) et d'ajouter la bibliothèque js ou d'utiliser les liens cdn dans votre fichier index.html.
 
-Pour rappel CDN signifie Content Delivery Network et permet de lier son code à des librairies qui sont déjà hébergées en ligne.
+Pour rappel CDN signifie Content Delivery Network et permet de lier son code à des bibliothèques qui sont déjà hébergées en ligne.
 
 Généralement un bon éditeur de texte suffit. Parfois il pourra être utile d'utiliser un serveur local pour servir certaines pages demandant accès à des fonctions ou fichiers spécifiques (généralement des pages utilisant des images ou des sons sous formes de fichier doivent être ouvertes avec un serveur local). Il y a des nombreuses possibilités pour cela et beaucoup de documentation en ligne : personnellement j'utilise 'sinatra' un serveur en ruby, simplehttpserver pour python peut-être une alternative, ou d'autres encore via nodejs voire même des logiciels comme mamp.
 
+Une solution intéressante peut-être Brackets : http://brackets.io/
+Cet éditeur de texte est fait pour le développement web, il dispose d'une bonne ergonomie, il permet d'ouvrir des dossiers entiers et de naviguer à l'intérieur tout en éditant des fichiers, un serveur web est intégré (il suffit de cliquer sur le petit éclair en haut à droite pour ouvrir le fichier édité dans une page web) et il dispose aussi d'une intégration github.
 
-### des librairies
 
-P5js recense un bon nombre de librairies compatibles et revendiquant le même esprit : http://p5js.org/libraries/
-Mais il peut aussi être utilisé avec n'impote quelles autres librairies js.
+### Des bibliothèques
+
+P5js recense un bon nombre de bibliothèques compatibles et revendiquant le même esprit : http://p5js.org/libraries/
+Mais il peut aussi être utilisé avec n'impote quelles autres bibliothèques js.
+
 
 [^ home](#contenu)<br>
 
@@ -97,7 +118,7 @@ Mais il peut aussi être utilisé avec n'impote quelles autres librairies js.
 <a name="bases"/>
 ## Les principes de bases
 
-Un programme p5js est destiné à être utilisé dans une page web. Généralement en dispose d'un fichier *index.html* qui nous permet de définir notre page web et les fichiers ressources (liens vers les librairies) et d'un fichier *sketch.js* qui va être notre programme écrit en javascript.
+Un programme p5js est destiné à être utilisé dans une page web. Généralement en dispose d'un fichier *index.html* qui nous permet de définir notre page web et les fichiers ressources (liens vers les bibliothèques) et d'un fichier *sketch.js* qui va être notre programme écrit en javascript.
 
 ### HTML et JS
 
@@ -109,9 +130,9 @@ Le fichier *sketch.js* est lié au fichier *index.html* par une déclaration dan
 ```
 Lorsqu'on ouvre le fichier *index.html* celui-ci executera alors le fichier *sketch.js* dans la page web.
 
-Dans le cas de nos exemples nous trouverons les librairies javascripts dans un dossier **/librairies** dédié : on y trouve *p5.js*, *p5.dom.js*, *p5.sound.js*.
+Dans le cas de nos exemples nous trouverons les bibliothèques javascripts dans un dossier **/bibliothèques** dédié : on y trouve *p5.js*, *p5.dom.js*, *p5.sound.js*.
 
-Le fichier *index.html* ressemblera donc à ceci si on utilise toutes les librairies :
+Le fichier *index.html* ressemblera donc à ceci si on utilise toutes les bibliothèques :
 
 ```HTML
 <html>
@@ -262,7 +283,7 @@ function draw() {
 
 
 <a name="simuler"/>
-### utilisation de variables :"Simuler" un pinceau
+### Utilisation de variables :"Simuler" un pinceau
 
 Nous allons vouloir maintenant compléxifier notre programme. La première chose que nous allons faire est de rendre le dessin un peu plus sensible. L'idée serait de faire en sorte que lorsque notre geste est rapide les cercles soit gros et qu'ils soient petit quand notre geste est lent (une sorte de pinceau inversé).
 
@@ -615,7 +636,7 @@ Il ne nous reste plus qu'à informer notre utilisateur de son choix de couleur e
  [^ home](#contenu)<br>
 
 <a name="polaire"/>
-#### Coordonnées polaire
+#### Coordonnées polaires
 
 Les coordonnées polaire vont nous être très utiles ici. Elles permettent d'exprimer les position d'un objet en fonction d'une distance au centre et d'un angle - autrement dit en conservant un rayon constant et en faisant varier l'angle on dessine assez facilement un cercle.
 
@@ -791,16 +812,16 @@ https://b2renger.github.io/Introduction_p5js/01_dessiner_06/index.html
 ## DOM
 
 <a name="utilisation"/>
-### Utilisation de la librairie
+### Utilisation de la bibliothèque
 
-Nous allons maintenant nous intéresser à la librairie DOM, qui permet de manipuler des éléments HTML5 par du code p5js. Cela nous permettera de créer des sliders, des champs des textes etc. pour controller nos programmes.
+Nous allons maintenant nous intéresser à la bibliothèque DOM, qui permet de manipuler des éléments HTML5 par du code p5js. Cela nous permettera de créer des sliders, des champs des textes etc. pour controller nos programmes.
 
-La référence de la librairie est disponnible ici : http://p5js.org/reference/#/libraries/p5.dom
+La référence de la bibliothèque est disponnible ici : http://p5js.org/reference/#/libraries/p5.dom
 Elle n'est malheureusement pas forcément toujours simple à comprendre à mon sens il est préférable de regarder les exemples disponnibles à cette adresse, à la rubrique DOM : http://p5js.org/examples/
 
-A partir du programme de dessin précédent nous allons créer des sliders permettant de paramétrer la couleur ainsi que la taille de notre outil de dessin, à l'aide des fonctions **createSlider()** et **createP()** de la librairie DOM.
+A partir du programme de dessin précédent nous allons créer des sliders permettant de paramétrer la couleur ainsi que la taille de notre outil de dessin, à l'aide des fonctions **createSlider()** et **createP()** de la bibliothèque DOM.
 
-Tout d'abord, il faut ajouter la librairie à notre page en ajoutant la ligne suivante à l'habituel fichier *index.html*
+Tout d'abord, il faut ajouter la bibliothèque à notre page en ajoutant la ligne suivante à l'habituel fichier *index.html*
 
 ```html
 <script language="javascript" type="text/javascript" src="../libraries/p5.dom.js"></script>
@@ -838,7 +859,7 @@ fill(s_hue.value(),100,100,100)
 
 
 <a name="css"/>
-### Styliser avec  du css
+### Styliser avec du CSS
 
 Puisque ce sont des élements html, ils peuvent aussi être stylisés par css, il suffit pour cela de créer un fichier css dans le dossier de notre page, par exemple comme celui-ci :
 
@@ -1038,7 +1059,7 @@ https://www.openprocessing.org/sketch/390491
 <a name="video"/>-
 ### Accès vidéo
 
-La librairie DOM permet d'avoir accès au microphone et à la webcam à travers le navigateur via la fonction **createCapture()** : http://p5js.org/reference/#/p5/createCapture, et de lire des vidéos.
+La bibliothèque DOM permet d'avoir accès au microphone et à la webcam à travers le navigateur via la fonction **createCapture()** : http://p5js.org/reference/#/p5/createCapture, et de lire des vidéos.
 
 ```javascript
 var capture;
@@ -1176,7 +1197,7 @@ D'autres exemples peuvent être source d'inspiration pour créer de nouvelles fa
 Je vous conseille aussi l'excellent playlist de Daniel Shiffman sur le sujet : 
 	-	https://www.youtube.com/playlist?list=PLRqwX-V7Uu6aKKsDHZdDvN6oCJ2hRY_Ig
 
-et tout particulièrement le checkbox miror qui restitue un flux vidéo par une grille de boîtes à cocher html activées et désactivées programmatiquement grâce à la librairie dom : 
+et tout particulièrement le checkbox miror qui restitue un flux vidéo par une grille de boîtes à cocher html activées et désactivées programmatiquement grâce à la bibliothèque dom : 
 	-	https://www.youtube.com/watch?v=m1G6WBvrOBE&list=PLRqwX-V7Uu6aKKsDHZdDvN6oCJ2hRY_Ig&index=5
 
 
@@ -1370,10 +1391,10 @@ https://b2renger.github.io/Introduction_p5js/02_dom_05/index.html
 
 
 
-<a name="site"/>-
+<a name="siteweb"/>
 ### Exemple de site web
 
-Mon site web personnel est constuit à l'aide de la librairie DOM de p5js. Le principe est d'utiliser un canvas pour la navigation dans les 'pages' plutôt qu'un menu classique.
+Mon site web personnel est constuit à l'aide de la bibliothèque DOM de p5js. Le principe est d'utiliser un canvas pour la navigation dans les 'pages' plutôt qu'un menu classique.
 
 http://b2renger.github.io
 
@@ -1383,22 +1404,26 @@ La partie de gauche de la page web est donc un canvas faisant fonctionner un ske
 
 Un peu de documentation et un exemple simple sont disponnibles à cette adresse : http://b2renger.github.io/p5js_algae_dom/index.html
 
+Pour entrer un peu dans le code, il sera nécessaire d'avoir quelques bases sur l'utilisation des objets et des tableaux en javascript.
+
+Attention le code n'est pas exemplaire : il s'agit ici plus d'une expérimentation. A priori le choix d'utiliser le csv n'est pas idéal, car il empêche d'utiliser des virgules dans le texte des paragraphes (la virgule étant le séparateur du format CSV), il serait préférable d'utiliser le format JSON. Un autre défaut est que le site n'est pas très réactif : les éléments sont parsés du format json et disposé selon un grille fixe, il serait mieux de mapper les éléments vers des div qui pourraient alors être stylisées, déplacées en fonction de la taille de la fenêtre du client etc.
+
 
 [^ home](#contenu)<br>
 
 
 
 <a name="socket"/>
-## websocket et SocketIO
+## Websocket et SocketIO
 
 Dans le cadre de cette découverte de p5js nous allons effleurer le sujet des websockets qui permet des informations entre plusieurs ordinateurs dans une même page web. Les utilisateurs peuvent alors collaborer.
 
 Un excellent exemple est l'application de musique collaborative **Plink** :  http://dinahmoelabs.com/#plink
 
 <a name="socket-libs"/>
-### Les librairies et leur utilisation
+### Les bibliothèques et leur utilisation
 
-Nous n'allons pas nous lancer dans l'écriture de code côté serveur mais nous allons nous concentrer sur l'utilisation de la librairie inclue à openprocessing. 
+Nous n'allons pas nous lancer dans l'écriture de code côté serveur mais nous allons nous concentrer sur l'utilisation de la bibliothèque inclue à openprocessing. 
 
 Si jamais vous souhaitez vous lancer dans l'écriture d'applications websocket plus avancées, il vous faudra écrire un serveur capable d'utiliser cette technologie.
 
@@ -1406,7 +1431,7 @@ Les exemples du cours seront disponnibles sur openprocessing sans avoir recours 
 
 Nous allons donc nous attacher à modifier nos programmes de dessin pour permettre l'interaction de plusieurs utilisateurs sur la même page.
 
-Tout d'abord il faut ajouter les librairies DOM et socketIO à notre programme openprocessing en cliquant sur le menu (les trois points verticaux) sous le bouton *save*. 
+Tout d'abord il faut ajouter les bibliothèques DOM et socketIO à notre programme openprocessing en cliquant sur le menu (les trois points verticaux) sous le bouton *save*. 
 
 ![openprocessing add libraries](assets/03_socket_openprocessing.png)
 
@@ -1482,7 +1507,7 @@ function setup() {
 
 
 <a name="socket-json"/>
-### format JSON : JavaScript Object Notation
+### Format JSON : JavaScript Object Notation
 
 Ensuite pour que chaque utilisateur puisse choisir son "crayon", il faut que les données relatives à chaque paramètre qu'il a choisit soient envoyés à la page web principale qui accepte toutes les connections des utilisateurs. Pour cela nous allons créer un objet javascript au format **JSON** qui est un format très utilisé en developpement. Le format json fonctionne avec un système de clé. Entre deux accolades, il suffit d'inscrire "maClé : maValeur".
 
@@ -1599,40 +1624,1040 @@ Voici l'adaptation du sketch de "spray-paint" : https://www.openprocessing.org/s
 <a name="socket-localhost"/>
 ### Node et serveur local
 
-Comme mentionné en intro vous pouez vous référer à ce tutorial pour apprendre à coder un serveur wwebsocket avec nodeJS : https://github.com/processing/p5.js/wiki/p5.js,-node.js,-socket.io
+Comme mentionné en intro vous pouvez vous référer à ce tutorial pour apprendre à coder un serveur wwebsocket avec nodeJS : https://github.com/processing/p5.js/wiki/p5.js,-node.js,-socket.io
 
 Pour faire résumer et faire fonctionner les exemples fournis, il faut :
 
-	- installer NodeJS
-	- naviguer vers le dossier de l'exemple que vous souhaitez tester.
-	- installer les dépendences, grace au node package manager, ligne de commande à taper dans une invite de commande nodejs ou un terminal.
+-installer NodeJS
+-naviguer vers le dossier de l'exemple que vous souhaitez tester.
+-installer les dépendences, grace au node package manager, ligne de commande à taper dans une invite de commande nodejs ou un terminal.
+
 		```
 		npm install socket.io
 		```
-	- lancer le serveur local : 
-		```
+
+-lancer le serveur local : 
+		
+        ```
 		node servers.js
 		```
-	- se rendre sur la page :
+
+-se rendre sur la page :
+
 		```
 		http://localhost:8080/
 		```
 
 [^ home](#contenu)<br>
 
+<a name="quicksettings"/>
+## La bibliothèque quicksettings.js, les fonctions de callback, les bibliothèques dans openProcessing
+
+La bibliothèque quicksettings.js est une bibliothèque de GUI (General User Interface), elle permet de créer des éléments graphiques avec lequel l'utilisateur peut intéragir. Cela ressemble étrangement à ce que permet de faire la bibliothèque DOM, sauf que la bibliothèque DOM permet de faire beaucoup, plus comme modifier l'emplacement, l'apparence de n'importe quel élément d'une page web. Ici il s'agit surtout de pouvoir permettre à l'utilisateur de choisir une couleur, d'entrer du texte ou de cliquer sur un bouton pour activer / désactiver une fonctionnalité. 
+
+Elle possède l'avantage de placer tous les éléments qu'elle crée dans un ou plusieurs "tiroirs" qui sont déplaçables et qui peuvent être ouverts ou fermés. 
+
+La documentation sur la page github est simple à comprendre, elle présente les différentes fonction que l'on peut appeler pour créer des éléments gui.
+
+Vous pourrez trouver un apperçu de ses fonctionnalités via cet exemple : http://bit101.github.io/quicksettings/demos/styles_demo.html
+
+Cette bibliothèque ainsi que sa documentation sont hébergées ici : https://github.com/bit101/quicksettings
+
+Et elle est présente dans le dossier */libraries* des exemples de code, et elle est disponible via CDN (Content Delivery Network) : https://cdn.jsdelivr.net/quicksettings/latest/quicksettings.min.js
+
+D'ailleurs l'intégration dans openprocessing d'une bibliothèque externe nécessite que celle-ci soit disponnible via CDN.
+
+Il est cependant important de comprendre ce que sont et comment fonctionne **les fonctions de callback** ou ** fonctions de rappel**: ce sont des fonctions qui sont passées en arguments à d'autres fonctions et dont le code ne s'exécute dans certains cas et en fonction de certains évenements.
+
+Par exemple lorsqu'on appuit sur un bouton, on peut faire en sorte de créer une fonction de rappel propre au bouton et dont le code s'éxecute lorsqu'on clique sur ce bouton.
+
+Dans le cas de quicksettings, il faut : créer un panneau, lui ajouter des éléments et définir des fonctions de rappel pour modfier certaines variables en fonction de l'élément modifié :
+
+```javascript
+var settings // une variable pour stocker le panneau de controle
+var flicker = false // une valeur à modifier
+function setup() {
+    createCanvas(windowWidth, windowHeight);
+    background(0)
+    // On initialise notre variable, on passe en argument la position du widget dans le canvas
+    // et le nom du groupe d'éléments gui que l'on veut créer.
+    settings = QuickSettings.create(5, 5, "GUI");
+    // On ajoute un élément à ce widget qui est une boîte à cocher, on passe en argument, le nom
+    // de l'élément, sa valeur initiale, et le nom de la fonction de rappel, qu'il faut définir
+    settings.addBoolean("Check Me", flicker, eltChecked);
+}
+// définition de la fonction de rappel
+function eltChecked(val) { // val correspond à la valeur de l'élément
+    flicker = val; // on change notre variable "flicker" pour la remplacer par la valeur de notre gui
+    console.log(val)
+}
+
+function draw() {
+    // on utilise notre variable
+    if (!flicker) {
+        background(0)
+    }
+    else {
+        background(random(255))
+    }
+}
+```
+
+https://b2renger.github.io/Introduction_p5js/99_quicksettings/index.html
+
+Notez qu'au lieu de donner le nom de la fonction de rappel et la définir plus bas, on peut définir une fonction **anonyme** 
+
+Ainsi les lignes:
+```javascript
+ settings.addBoolean("Check Me", flicker, eltChecked);
+```
+ et :
+```javascript
+function eltChecked(val) { // val correspond à la valeur de l'élément
+    flicker = val; // on change notre variable "flicker" pour la remplacer par la valeur de notre gui
+    console.log(val)
+}
+```
+Peuven-être remplacées par une seul ligne : 
+```javascript
+settings.addBoolean("Check Me", flicker, function(val){flicker=val});
+```
+
+On écrit directement une fonction sans lui donner de nom, et on précise le code à éxecuter entre les accolades. C'est souvent moins fastidieu à écrire, mais plus pénible à débugger puisque généralement notre console se plaindra d'avoir eu une erreur dans une fonction anonyme sans réellement pouvoir nous dire laquelle et où exactement dans notre code...
+
+L'intégration de cette librairie externe est disponnible ici et peut-être généralisée à n'importe qu'elle librairie js pour peu qu'elle soit disponnible via CDN :
+
+https://www.openprocessing.org/sketch/403496
+
+Cette intégration nécessite l'usage de la fonction **preload()** qui s'éxécute avant le setup(). Le principe est de créer un élément html et de définir une source et une fonction de rappel lorsque notre source est chargée. (merci @makio135 pour l'exemple !)
+
+```javascript
+var settings // une variable pour stocker le panneau de controle
+
+// la fonction preload est executée avant le chargement de la page et donc avant le setup
+// ici on va l'utiliser pour charger la librairie quicksettings disponnible via CDN
+// et initialiser notre gui
+function preload(){
+	var script = document.createElement( 'script' ); // on crée un nouvel 'élément script'
+  	script.src = 'https://cdn.jsdelivr.net/quicksettings/latest/quicksettings.min.js'; // on ajoute en source la lib (lien cdn)
+  	// on définit ce qu'on doit faire au chargement de la page via une fonction de rappel
+  	script.onload = function(){
+      	// On initialise notre variable, on passe en argument la position du widget dans le canvas
+        // et le nom du groupe d'éléments gui que l'on veut créer.
+    	settings = QuickSettings.create(5, 50, "GUI");
+    	// On ajoute un élément à ce widget qui est une boîte à cocher, on passe en argument, le nom
+    	// de l'élément, sa valeur initiale, et le nom de la fonction de rappel, qu'il faut définir
+    	settings.addBoolean("Check Me", flicker, eltChecked);
+      	
+    }
+    document.body.appendChild( script );
+}
+
+// définition de la fonction de rappel pour l'élément gui intitulé "check me"
+function eltChecked(val) { // val correspond à la valeur de l'élément
+    flicker = val; // on change notre variable "flicker" pour la remplacer par la valeur de notre gui
+    console.log(val)
+}
+```
+
+[^ home](#contenu)<br>
+
+
 <a name="animation"/>
 ## Animer un déplacement
 
-## objets en js
+Il existe de nombreuses façons d'animer des déplacements d'objet, nous allons ici voir différentes modes de déplacements relativement simples. Pour réaliser des choses plus complexes il est souvent intéressant de se tourner vers de implémentations de lois physiques et donc de manipuler des vitesses, des accélérations, des forces etc. Vous trouverez des liens dans les ressources notamment avec le livre et les cours de Daniel Shiffman autour du thème [Nature of Code](http://natureofcode.com/book/chapter-2-forces/).
+
+<a name="balle"/>
+### Balle dans une boîte
+
+Nous allons maintenant à l'animation autonome d'un déplacement comme par exemple un disque qui se déplace seul et rebondit sur les bords de nôtre canvas.
+
+Pour cela nous allons avoir recours à l'utilisation de **variables**. Pour rappel les variables sont des emplacements en mémoire auxquels nous avons attribué une valeur (qui peut-être : un nombre, une chaîne de caractère, un tableau ...), le fait d'utiliser une variable nous permet, d'accèder à son contenu par son nom, mais aussi de modifier sa valeur.
+
+Par exemple ce petit bout de code permet de faire se déplacer un disque vers la droite. Il utilise deux variables *xpos* et *ypos* pour conserver en mémoire la position du disque. On peut alors incrémenter la position en abscisses dans le *draw()* de notre programme.
+
+```javascript
+// on définit des variables pour stocker la position de notre disque
+var xpos 
+var ypos 
+
+function setup() {
+  createCanvas(windowWidth, windowHeight); 
+  background(100);  
+  // on initialise nos variables
+  xpos = 0
+  ypos = windowHeight/2
+  
+} 
+
+function draw() { 
+  // on dessine notre disque à la position définie par nos variable
+  ellipse(xpos, ypos, 20, 20);
+  // on augmente la position en abscisses d'une unité
+  xpos = xpos + 1
+}
+```
+
+Précédement nous écrivions *xpos = xpos + 1*, la valeur "1" correspond au nombre de pixels dont le disque va se déplacer à chaque image. Si nous voulons qu'il se déplace plus vite nous pouvons écrire *xpos = xpos + 5* et si nous voulons qu'il se déplace dans l'autre sens *xpos = xpos - 5*.
+
+Nous pouvons maintenant modifier un peu notre programme pour lui donner un déplacement en diagonal et en faisant en sorte que notre disque rebondisse sur les bords du canvas. Pour cela nous allons avoir besoin de déclarer deux autres variable qui nous permettrons de donner une "grandeur" à la vitesse de déplacement en abscisses et en ordonnées. Et nous pourrons écrire des conditions à l'aide de **if** pour gérer les rebonds.
+
+
+```javascript
+// on définit des variables pour stocker la position de notre disque
+var xpos 
+var ypos 
+// on définit des variables pour stocker la vitesse de notre disque
+var xspeed
+var yspeed
+
+function setup() {
+  createCanvas(windowWidth, windowHeight); 
+  background(100);  
+  // on initialise nos variables
+  xpos = windowWidth/2
+  ypos = windowHeight/2
+  xspeed = 1
+  yspeed = 1
+  
+} 
+
+function draw() {
+  
+  // on dessine notre disque à la position définie par nos variable
+  ellipse(xpos, ypos, 20, 20);
+  // on augmente la position en abscisses de xspeed unités
+  xpos = xpos + xspeed
+  // on augmente la position en ordonnée d'yspeed unités
+  ypos = ypos + yspeed
+
+  // on vérifie que l'on ne tappe pas le bord gauche ou le bord droit
+  if (xpos < 0 || xpos > windowWidth){
+    xspeed = xspeed * (-1) // si c'est le cas on inverse le sens de déplacement en abscisses
+  }
+  // on vérifie que l'on ne tappe pas le haut ou le bas 
+  if (ypos < 0 || ypos > windowHeight){
+    yspeed = yspeed * (-1) // si c'est le cas on inverse le sens de déplacement en ordonnées
+  }
+}
+```
+
+Le seul problème qui nous reste est que notre balle part toujours dans le même sens à la même vitesse. Il pourrait être tentant d'utiliser la fonction **random()** ([doc](http://p5js.org/reference/#/p5/random)), mais cela nous condamne nécessairement à avoir des balles qui ne partent que dans un seul cadran (*random(1,5)*) ou risquer d'avoir une balle dont la vitesse est très (trop) proche de zéro (*random(-5,5)*). 
+
+Dans ce cas, généralement le plus simple et de passer par les coordonnées polaires pour initialiser la vitesse :
+
+```javascript
+xspeed = random(2,10)*cos(random(TWO_PI))
+yspeed = random(2,10)*sin(random(TWO_PI))
+```
+*random(2,10)* va correspondre au rayon (la distance au centre) et donc à la magnitude du vecteur de vitesse que l'on va définir soit la quantité de mouvement : est-ce que mon objet se déplace vite ou lentement.
+*random(TWO_PI)* correspond naturellement à l'angle, et va nous donner l'orientation.
+
+![balle dans une boite](assets/04_animation_balle.png)
+
+https://b2renger.github.io/Introduction_p5js/04_animation_01/index.html
+
+https://www.openprocessing.org/sketch/401282
+
+[^ home](#contenu)<br>
+
+<a name="souris"/>
+### Suivre la souris
+
+Pour présenter quelquechose d'un peu plus interactif, nous allons maintenant essayer de poser les bases de ce que l'on appelle le **easing** ou aussi le **tweening**. Le principe est simple il consiste à créer une animation pour passer d'un état A à un état B.
+
+Dans notre cas nous voulons faire en sorte qu'un cercle suive la souris. Nous allons donc créer deux jeux de variables, un pour stocker la position cible et un pour stocker notre position actuelle.
+
+```javascript
+var posX, posY
+var targetX, targetY
+```
+
+Pour effectuer notre animation nous allons nous baser sur la distance à parcourir pour atteindre notre cible. Ce qui est facilement calculable pour une coordonnée :
+
+```javascript
+var distanceX = targetX - posX
+var distanceY = targetY - posY
+```
+
+Si à chaque image nous ajoutons à notre position une petite fraction de cette distance nous finirons par atteindre notre cible
+
+```javascriptjavascript
+posX = posX + distanceX * 0.05
+posX = posY + distanceY * 0.05
+```
+
+La valeur "0.05" par laquelle nous multiplions correspond à la petite fraction de distance que nous prenons, plus elle est grande plus l'animation sera rapide (voire même instantanée pour une valeur de 1).
+
+Voici l'intégralité du code :
+
+```javascript
+var targetX, targetY;
+var posX, posY;
+
+function setup() {
+  createCanvas(windowWidth, windowHeight); 
+  background(100); 
+  
+  posX = windowWidth/2
+  targetX = windowWidth /2
+
+  posY = windowHeight/2
+  targetY = windowHeight /2
+} 
+
+function draw() {
+  
+  targetX = mouseX
+  targetY = mouseY
+  
+  posX += (targetX - posX) * 0.05
+  posY += (targetY- posY) * 0.05  
+
+  ellipse(posX, posY, 20, 20);
+}
+```
+
+![suivre la souris](assets/04_animation_souris.png)
+
+https://b2renger.github.io/Introduction_p5js/04_animation_02/index.html
+
+https://www.openprocessing.org/sketch/402030
+
+Le tweening et le easing sont des sujets relativement complexes, il existe des tas de façons d'interpoler les positions, couleurs etc. Ici plus la distance est grande plus notre objet va vite et plus on se rapproche de la cible plus le mouvement en lent : on appelle ça une animation "ease out".
+
+
+Lors de la préparation de ce cours j'ai pu implémenter ce qui fait office de référence : les équations de [Robert Penner](http://robertpenner.com/easing/). Ces équations proposent différentes fonctions (cubiques, sinusoidales...) de "easing" avec à chaque fois un easing en entrée ("ease in"), un easing en sortie ("ease out") et un easing en entrée et sortie ("ease in out").
+
+Dans cet exemple, le déplacement s'effectue avec un clic de la souris et vous pouvez choisir les différents types d'interpolations, ainsi que leurs vitesses d'éxecution.
+
+![suivre la souris](assets/04_animation_penner.png)
+
+https://b2renger.github.io/Introduction_p5js/04_animation_02_penner_position/index.html
+
+https://www.openprocessing.org/sketch/401812
+
+Un second exemple applique ces interpolation au rayon et à la couleur d'un cercle : 
+
+https://b2renger.github.io/Introduction_p5js/04_animation_02_penner_radius_color/index.html
+
+
+Il existe de nombreuses bibliothèques d'animation, [tween.js](https://github.com/tweenjs/tween.js/) semble en être une référence.
+
+Le sujet peut aussi être codé en css et s'appliquer à des éléments html : https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Animations/Using_CSS_animations
+
+[^ home](#contenu)<br>
+
+<a name="sourisforces"/>
+### Suivre la souris avec des forces
+
+Comme mentionné plus haut il est aussi possible d'avoir recourt à la modélisation physique et donc à l'utilisation de forces. En physique il existe une relation particulière entre la position, la vitesse et l'accélération. La vitesse est la dérivée de la position, et l'accélération est la dérivée de la vitesse. 
+
+En programmation, et à un instant t on peut calculer la vitesse et la position d'un objet en fonction de son accélération qui est une force que l'objet subit.
+En terme de code cela s'écrit comme cela :
+
+```javascript
+vitesse = vitesse + accélération
+position = position + vitesse
+
+```
+L'accélération elle est calculée en fonction de forces en présence : généralement une force d'attraction ou de répulsion, mais aussi une force de friction qui s'oppose au déplacement. Cette force de friction permet notament d'arréter un objet progressivement si aucune force nouvelle ne s'applique à l'objet. C'est le calcul de cette accélération qui est l'étape la plus compliquée de ce genre de simulation.
+
+
+```javascript
+var posX, posY // stocker la position de notre objet
+var speedX, speedY // stocker sa vitesse
+var friction = 0.05 // un force de friction pour faire ralentir les objets (résistance de l'air)
+var force = 10 // une force d'attraction ou de répulsion en fonction du mode choisi
+
+function setup() {
+    createCanvas(windowWidth, windowHeight); 
+    background(100); 
+    
+    posX = windowWidth/2
+    speedX = random(0.5,2)*cos(random(TWO_PI))
+    
+    posY = windowHeight/2
+    speedY = random(0.5,2)*sin(random(TWO_PI))
+} 
+
+function draw() {
+    // on utilise des vecteur pour stocker les positions, vitesses, cibles, cela facilite l'appel des fonctions de calcul
+    var vtarget = createVector(mouseX,mouseY)// un vecteur qui représente les coordonnées de notre cible.
+    var vpos = createVector(posX, posY) // un vecteur qui represente notre position
+    
+    // on ré-initialise l'accélération
+    var accX = 0
+    var accY = 0
+    // on calcule un force de friction : une résistance au mouvement, pour que notre objet s'arrête s'il n'est 
+    // plus soumis à aucune force. Cette force doit être inversement proportionnelle au déplacement et donc à 
+    // la vitesse pour ralentir l'objet en mouvement
+    var frict = createVector(speedX,speedY);
+    frict.normalize(); // cette opération ne permet de conserver que la direction du vecteur / l'orientation
+    frict.mult(-1) // on inverse le vecteur vitesse normalié pour qu'il soit opposé au déplacement
+    frict.mult(friction) // on multiplie par notre coefficient de friction
+    // on ajoute ce résultat à l'accélération que l'on va applique à notre objet
+    accX +=  frict.x;
+    accY +=  frict.y;
+
+    // déplacement : l'objet va être attiré par la souris 
+    var dir = pos.sub(target); // on obtient le vecteur de déplacement : différence entre la position et la cible
+    var d = dir.mag(); // on calcul sa magnitude : la distance  qui sépare les deux points du vecteur
+    dir.normalize();
+    dir.mult(-1);
+    dir.div(1/d*d) // on fait en sorte que la force appliquée dépende de l'inverse du carré de la distance
+    dir.div(force) // on multiplie par la force souhaitée
+    // on ajoute cela à l'accélération
+    accX = accX+ dir.x;
+    accY = accY+ dir.y;
+    
+    // on ajoute l'accélération à la vitesse
+    speedX = speedX + accX
+    speedY = speedY + accY
+    
+    // on ajoute la vitesse à la position
+    posX = posX + speedX
+    posY = posY + speedY
+    
+    // on vérifie les collisions
+    if (posX < 0 || posX > windowWidth) speedX = speedX * (-1) 
+    if (posY < 0 || posY > windowHeight) speedY = speedY * (-1)
+    
+    // on dessine notre cercle
+    ellipse(posX, posY, 20, 20);
+}
+```
+
+Pour implémenter un comportement de répulsion, il suffit de remplacer :
+```javascript
+dir.mult(-1);
+```
+par :
+```javascript
+dir.mult(1);
+```
+
+Après une petite remise en forme du code en utilisant une fonction pour l'attraction et une fonction pour la répulsion, ainsi qu'une légère interaction utilisateur pour passer d'un mode à l'autre on obtient le programme suivant :
+
+```javascript
+
+var posX, posY // stocker la position de notre objet
+var speedX, speedY // stocker sa vitesse
+var friction = 0.05 // un force de friction pour faire ralentir les objets (résistance de l'air)
+var force = 10 // une force d'attraction ou de répulsion en fonction du mode choisi
+var attraction = true // choix du mode true => la souris attire la balle , false => la souris repousse la balle
+
+function setup() {
+    createCanvas(windowWidth, windowHeight); 
+    background(100); 
+    
+    posX = windowWidth/2
+    speedX = random(0.5,2)*cos(random(TWO_PI))
+    
+    posY = windowHeight/2
+    speedY = random(0.5,2)*sin(random(TWO_PI))
+    
+    textSize(14)
+    textAlign(CENTER, BOTTOM)
+} 
+
+function draw() {
+    text("press ' a ' to attract the ball and ' r ' to repulse it",windowWidth/2,windowHeight - 5)
+    
+    // on utilise des vecteur pour stocker les positions, vitesses, cibles, cela facilite l'appel des fonctions de calcul
+    var vtarget = createVector(mouseX,mouseY)// un vecteur qui représente les coordonnées de notre cible.
+    var vpos = createVector(posX, posY) // un vecteur qui represente notre position
+    
+    // en fonction du mode choisi on appelle la fonction de calcul physique souhaitée
+    // ces fonctions vont calculer les nouvelles accélération, vitesses et positions en fonction 
+    // des distances, de la force choisie ci-dessus et du coefficient de friction.
+    if (attraction) calculs_physiques_attraction(vpos, vtarget) 
+    else calculs_physiques_repulsion(vpos, vtarget)
+   
+    // on vérifie les collisions
+    if (posX < 0 || posX > windowWidth) speedX = speedX * (-1) 
+    if (posY < 0 || posY > windowHeight) speedY = speedY * (-1)
+    
+    // on dessine notre cercle
+    ellipse(posX, posY, 20, 20);
+}
+
+// en change le mode en fonction d'interaction clavier
+function keyPressed(){
+    if (key == 'a' || key == 'A') attraction = true;
+    if (key == 'r' || key == 'R') attraction = false;
+}
+
+// une fonction pour calculer la position
+function calculs_physiques_attraction(pos, target){
+    // on ré-initialise l'accélération
+    var accX = 0
+    var accY = 0
+    // on calcule un force de friction : une résistance au mouvement, pour que notre objet s'arrête s'il n'est 
+    // plus soumis à aucune force. Cette force doit être inversement proportionnelle au déplacement et donc à 
+    // la vitesse pour ralentir l'objet en mouvement
+    var frict = createVector(speedX,speedY);
+    frict.normalize(); // cette opération ne permet de conserver que la direction du vecteur / l'orientation
+    frict.mult(-1) // on inverse le vecteur vitesse normalié pour qu'il soit opposé au déplacement
+    frict.mult(friction) // on multiplie par notre coefficient de friction
+    // on ajoute ce résultat à l'accélération que l'on va applique à notre objet
+    accX +=  frict.x;
+    accY +=  frict.y;
+
+    // déplacement : l'objet va être attiré par la souris 
+    var dir = pos.sub(target); // on obtient le vecteur de déplacement : différence entre la position et la cible
+    var d = dir.mag(); // on calcul sa magnitude : la distance  qui sépare les deux points du vecteur
+    dir.normalize();
+    dir.mult(-1);
+    dir.div(1/d*d) // on fait en sorte que la force appliquée dépende de l'inverse du carré de la distance
+    dir.div(force) // on multiplie par la force souhaitée
+    // on ajoute cela à l'accélération
+    accX = accX+ dir.x;
+    accY = accY+ dir.y;
+    
+    // on ajoute l'accélération à la vitesse
+    speedX = speedX + accX
+    speedY = speedY + accY
+    
+    // on ajoute la vitesse à la position
+    posX = posX + speedX
+    posY = posY + speedY
+     
+}
+
+function calculs_physiques_repulsion(pos, target){
+    
+    var accX = 0
+    var accY = 0
+    // force de friction inversement proportionnelle au déplacement
+    var frict = createVector(speedX,speedY);
+    frict.normalize();
+    frict.mult(-1)
+    frict.mult(friction)
+    accX = accX + frict.x;
+    accY = accY + frict.y;
+
+    // déplacement   
+    var dir = pos.sub(target);
+    var d = dir.mag();
+    if(d < 100){
+        dir.normalize();
+        dir.mult(1);
+        dir.div(1/d*d)
+        dir.div(force)
+        accX = accX+ dir.x;
+        accY = accY+ dir.y;
+    }
+    
+    speedX = speedX + accX
+    speedY = speedY + accY
+    
+    posX = posX + speedX
+    posY = posY + speedY
+     
+}
+
+```
+
+![suivre la souris avec de la physique](assets/04_animation_forces.png)
+
+https://b2renger.github.io/Introduction_p5js/04_animation_03/index.html
+
+https://www.openprocessing.org/sketch/392249
+
+
+Notez dans ce code l'utilisation de quelques abréviations concernant l'incrémentation de variable :
+```javascript
+a += 1
+```
+à la place de :
+```javascript
+a = a + 1
+```
+
+Ou aussi dans l'utilisation des conditions :
+```javascript
+if (attraction) calculs_physiques_attraction(vpos, vtarget) 
+else calculs_physiques_repulsion(vpos, vtarget)
+```
+à la place de la versions avec accolades :
+```javascript
+if (attraction) {
+    calculs_physiques_attraction(vpos, vtarget) 
+}
+else {
+    calculs_physiques_repulsion(vpos, vtarget)
+}
+```
+ce dernier raccourcis est utile lorsque les conséquences de la conditions peuvent s'écrirent en une seule ligne, si ce n'est pas le cas, il faut utiliser des accolades.
+
+
+[^ home](#contenu)<br>
+
+
+<a name="tentacules"/>
+### Croissance de Tentacules
+
+Notre dernier programme repose sur un algorithme de déplacement assez simple et va avoir recours à une fonction que l'on appele le bruit de [Perlin](https://fr.wikipedia.org/wiki/Ken_Perlin). Cette fonction une sorte de random() un peu particulier puisqu' elle permet de générer des suites de nombres très proches les uns des autres. Cela permet notament de créer des mouvement et des contours qui paraissent plus naturels.
+
+L'algorithme pour créer des tentacules est relativement simple :
+- on créer un cercle au milieu de notre fenêtre.
+- on s'éloigne du centre avec un angle qui évolue en fonction d'un bruit de Perlin.
+- tout en diminuant le diamètre de notre cercle.
+- lorsque le diamètre est quasi nul on recommence.
+
+La fonction **noise()** permet de générer un bruit de Perlin ([doc](http://p5js.org/reference/#/p5/noise))Son usage est un peu plus compliqué car il faut lui fournir un argument « évolutif », celle-ci renvoi des valeurs comprises entre 0 et 1. Il faut donc souvent adapter le résultat obtenu en fonction de nos besoins grâce à la fonction **map()** ([doc](http://p5js.org/reference/#/p5/map)) qui permet de transformer des valeurs comprises entre deux valeurs dans un autre intervalle.
+
+```javascript
+var anchorX, anchorY // coordonées du point d'ancrage du dessin
+var distance, orientation // variable pour stocker les coordonées polaires de notre cercle
+var diam; // diametre du cercle
+var noiseF; // une variable que l'on va faire évoluer à chaque image pour notre bruit de Perlin
+
+function setup() {
+  createCanvas(windowWidth, windowHeight); 
+  background(100);  
+  
+  diam = random(20,50)
+  anchorX = windowWidth/2;
+  anchorY = windowHeight/2;
+  
+  distance = 0;
+  orientation = random(TWO_PI);
+  
+  noiseF = 5
+} 
+
+function draw() {
+  
+  diam -= 0.1 // on diminue le diamètre
+  distance += 1; // on augmente la distance
+  orientation += map(noise(noiseF,10,20),0,1,-0.015,0.015) // on ajuste l'orientation avec un bruit de Perlin et la fonction map
+  // noise(noiseF,10,20) permet de générer un bruit compris entre 0 et 1
+  // ce résultat est directement utilisé dans la fonction map, pour convertir le résultat de l'intervalle [0,1] à l'intervalle [-0.015,0.015]
+  // qui peut être assimilable à un angle en radians soit des variations comprises entre + ou - 1 degrée par image
+  noiseF += 0.005 // on incrémente la variable évolutive pour générer notre bruit
+  
+  // on calcule la position en coordonnées cartésiennes à partir de nos coordonnées polaires
+  var xpos = anchorX + distance * cos(orientation)  
+  var ypos = anchorY + distance * sin(orientation)
+  
+  ellipse(xpos,ypos,diam,diam)
+  
+  // si le diamètre est suffisament petit on réinitialise un certain nombre de variables
+  if(diam<0.1){
+    noiseF = random(-1000,1000)
+    diam = random(20,50)
+    distance = 0;
+    orientation = random(TWO_PI);  
+  }
+  
+}
+
+function mousePressed(){
+  anchorX = mouseX
+  anchorY = mouseY
+  diam = random(20,50)
+}
+```
+![tentacules](assets/04_animation_tentacules.png)
+
+https://b2renger.github.io/Introduction_p5js/04_animation_04/index.html
+
+https://www.openprocessing.org/sketch/395964
+
+Pour plus d'information sur le fonctionnement de **noise()**, je vous recommande cette série de vidéos :
+http://funprogramming.org/36-Organic-random-animation-using-noise.html
+http://funprogramming.org/39-The-candy-space-Understanding-noise-with-1-parameter.html
+http://funprogramming.org/40-The-candy-space-Understanding-noise-with-2-and-3-parameters.html
+
+Les exemples sont codés à l'aide de [processing](https://processing.org/) qui a sensiblement la même syntaxe que p5js (p5js étant la petite soeur de processing) mais processing utilise le langage java qui est au demeurant très différents de javascript.
+
+[^ home](#contenu)<br>
+
+
+
+<a name="objets"/>
+## Objets en js
+
+Les animations que nous avons réalisés ci-dessus sont très bien, mais en terme de code que se passe-t-il, si je veux avoir deux balles qui rebondissent ou même une centaine ? La quantité de code à reproduire et le nombre de variables à renommer est trop important pour pouvoir imaginer utilise ce même code. Nous allons avoir besoin de rendre un peu plus abstrait notre code pour qu'il soit plus souple à l'utilisation. Nous allons donc créer des objets. La notion d'objet en programmation (même si les objets dans différents langages ont différentes propriétés) correspond à notre capacité à décrire avec du code la façon dont un élément doit se comporter : ce qui signifie en programmation écrire une **classe**. Une fois cette classe écrite on peut créer des objets qui se comporteront comme décrits dans la classe, chaque objet créé est alors appelé une **instance** de la classe.
+
+Pour résumer et faire une analogie concrète une classe c'est la définition d'un objet : prenons par exemple une table (comme un table basse de salon). Une **table** c'est un objet composé :
+- d'un **plateau** qui peut être rectangulaire ou circulaire, d'une certaine **surface**.
+- d'un certain nombre de **pieds** (3 ou 4 généralement) qui peuvent être réglables en hauteur.
+- éventuellement de **roulettes**.
+L'utilisateur peut alors récupérer sa table en kit la monter, et l'utiliser : il peut alors poser des livres, ordinateurs, téléphones sur le plateau, régler la hauteur des pieds, et la déplacer en la faisant rouler. Définir ce à quoi la table ressemble et ce qu'on va pouvoir faire avec correspond à l'écriture d'une classe.
+
+<a name="oop"/>
+### Objets et Instances
+
+Dans notre cas on va par exemple créer une classe **Balle**, une instance de cette classe se déplacera à une vitesse donnée aléatoirement lors de sa création, elle rebondira sur les bords de la fenêtre, et elle se dessinera avec une couleur définie.
+
+Pour définir un objet ou une classe en javascript, il s'agit en fait de définir une fonction :
+
+```javascript
+// on définit un classe qui s'appelle "Balle"
+function Balle() {
+    // code à implémenter
+}
+```
+Notre objet "Balle", manipulera des variables et même chaque instance de cet objet manipulerie la même série de variables, pour qu'il n'y ait pas de conflits entre tout ces différents noms de variable lorsque l'on écrit une classe on fait précéder le nom d'une variable de **this.**
+
+Ainsi d'habitude nous pouvons écrire 
+```javascript
+var posX = 0;
+```
+
+Dans un objet nous devons écrire :
+
+```javascript
+this.posX = 0
+```
+
+Ainsi si nous reprenons le code de l'exemple *04_Animation_01*, nous pouvons définir l'ensemble des variables dont nous aurons besoin pour notre classe :
+
+```javascript
+// on définit un classe qui s'appelle "Balle"
+function Balle() {
+    // on définit et on initialise des variables pour stocker la position et 
+    // la vitesse de notre disque précédées de "this."
+    this.xpos  = windowWidth/2
+    this.ypos  = windowHeight/2
+    this.xspeed = random(2,10)*cos(random(TWO_PI))
+    this.yspeed = random(2,10)*sin(random(TWO_PI))
+}
+```
+
+Nous pouvons maintenant ajouter des actions que pourra exécuter notre objet sous forme de fonctions. Nous allons séparer les différentes actions : se dessiner à l'écran, calculer sa prochaine position, et rebondir sur les côtés, chacune en une fonction. Dans une classe pour créer une fonction qui s'appelera *dessiner*, il faut encore une fois utiliser **this**.
+
+```javascript
+// on définit un classe qui s'appelle "Balle"
+function Balle() {
+    // on définit et on initialise des variables pour stocker la position et 
+    // la vitesse de notre disque précédées de "this."
+    this.xpos  = windowWidth/2
+    this.ypos  = windowHeight/2
+    this.xspeed = random(2,10)*cos(random(TWO_PI))
+    this.yspeed = random(2,10)*sin(random(TWO_PI))
+    
+    // on définit une fonction qui va dessiner notre objet à l'endroit prévu
+    this.dessiner = function(){
+        // code à éxecuter
+        ellipse(this.xpos, this.ypos,20,20)
+    }
+}
+```
+En prenant exemple sur le programmae d'animation *04_Animation_01*, on peut maintenant ajouter les autres actions prévues : calculer sa position et rebondir. Et voici notre objet javascript complet, inséré dans un sketch p5js.
+
+```javascript
+function setup(){
+    createCanvas(windowWidth, windowHeight); 
+}
+
+function draw(){
+
+}
+
+// on définit un classe qui s'appelle "Balle"
+function Balle() {
+    // on définit et on initialise des variables pour stocker la position et 
+    // la vitesse de notre disque précédées de "this."
+    this.xpos  = windowWidth/2
+    this.ypos  = windowHeight/2
+    this.xspeed = random(2,10)*cos(random(TWO_PI))
+    this.yspeed = random(2,10)*sin(random(TWO_PI))
+    
+    // on définit une fonction pour dessiner notre disque
+    this.draw = function(){  
+        ellipse(this.xpos, this.ypos, 20, 20); // on utilise les variables précédées de "this."
+    }
+    
+    // on définit une fonction pour calculer la prochaine position de notre disque
+    this.update = function(){ 
+        this.xpos = this.xpos + this.xspeed  
+        this.ypos = this.ypos + this.yspeed   
+    }
+    
+    // on définit une fonction pour vérifier les collisions
+    this.check = function(){ 
+        if (this.xpos < 0 || this.xpos > windowWidth) this.xspeed = this.xspeed * (-1) 
+        if (this.ypos < 0 || this.ypos > windowHeight) this.yspeed = this.yspeed * (-1) 
+    }  
+}
+```
+Si vous ouvrez la page contenant ce sketch, rien ne se passe; et pour cause nous avons juste écrit la classe : la définition de notre objet (les différentes variables et la façon dont elles interagissent entre elles ou dont on va les utiliser à l'aide de fonctions), mais à aucun moment nous n'avons créee une **instance** de cet objet. 
+
+Pour cela il faut créer une variable, préciser au code que cette variable est un objet et de quel type il est, puis utiliser ses fonctions d'objet :
+
+``` javascript
+var bal // on crée une variable nommée 'bal' qui va stocker notre objet
+
+function setup() {
+  createCanvas(windowWidth, windowHeight); 
+  background(100);   
+    
+  bal = new Balle() // on définit la variable 'bal' comme un objet de type "Balle" 
+} 
+
+function draw() { 
+    // on appelle les fonctions de l'objet 'bal' qui est une instance de la classe "Balle"
+    bal.draw();
+    bal.update();
+    bal.check();
+}
+```
+Si vous ajoutez ces quelques lignes au code précédent, vous vous retrouvez avec exactement le même programme que *04_Animation_01* sauf que cette fois-ci vous disposez d'une classe et il vous sera beaucoup plus facile de créer plusieurs centaines d'instances de ce comportement que vous avez définit dans la classe Balle. De plus le code est plus facile à maintenir, et plus facilement modifiables, nous nous attacherons à ajouter de nouveaux comportements un peu plus tard.
+
+Mais pour l'instant en début de paragraphe, nous évoquions la possibilité d'attribuer une couleur à chaque balle : il est en effet possible de "passer" des arguments au moment ou nous créeons chaque instance, soit dans le code précédent à cette ligne :
+
+```javascript   
+  bal = new Balle() // on définit la variable 'bal' comme un objet de type "Balle" 
+```
+
+Comme pour n'importe quelle fonction, il suffit de le "passer" entre les parenthèses :
+
+```javascript   
+  var col = color(255,180,180)
+  bal = new Balle(c) // on définit la variable 'bal' comme un objet de type "Balle" et on passe une couleur !
+```
+Dans notre classe Balle il suffit de stocker cette valeur dans une variable propre à la classe (avec **this.**) et de l'utiliser au moment de dessiner :
+
+```javascript
+// on définit un classe qui s'appelle "Balle" et on passe un argument au moment de la création
+// de chacune de ses instances
+function Balle(c) {
+   
+    this.xpos  = windowWidth/2
+    this.ypos  = windowHeight/2
+    this.xspeed = random(2,10)*cos(random(TWO_PI))
+    this.yspeed = random(2,10)*sin(random(TWO_PI))
+    
+    this.c = c // on récupère la valeur passée "c" et on la stocke dans une variable propre à la classe "this.c"
+    
+    // on définit une fonction pour dessiner notre disque
+    this.draw = function(){  
+        fill(this.c) // on utilise la variable "this.c" qui stocke la couleur passée à la création de l'instance
+        ellipse(this.xpos, this.ypos, 20, 20); // on utilise les variables précédées de "this."
+    }
+    
+    // etc
+}
+```
+
+![balle dans une boite](assets/05_objets_01.png)
+
+https://b2renger.github.io/Introduction_p5js/05_objets_01/index.html
+
+https://www.openprocessing.org/sketch/401282
+
+Notez que dans l'exemple de code fournit, nous initialisons la vitesse par une valeur aléatoire sans passer d'arguments à notre futur objet, alors que pour la couleur nous créons une couleur aléatoire en dehors de la classe puis nous lui passons cette couleur. Dans notre cas ces deux pratiques sont équivalentes, mais dans certains cas on veut initialiser certains objets à certaines valeurs.
+
+Dans ces [exemples sur le théme de la typographie](https://b2renger.github.io/p5js_typo/) on passe généralement un point d'ancrage comme argument à chaque instance d'objet, c'est à dire les coordonnées où doit être dessinée une forme si rien ne vient perturber cela. (note ces exemples sont encore un peu trop avancés à ce stade. Avant des les aborder je vous conseille de finir le prochain paragraphe).
+
+[^ home](#contenu)<br>
+
+
+<a name="tableaux"/>
+### Des tableaux d'objets
+
+Le but de créer une classe était de pouvoir créer plusieurs centaines d'instances d'un comportement, comme une balle qui rebondit contre les bords de la fenêtre. Pour cela nous allons avoir recours une fois n'est pas coutume à des boucles **for** mais aussi à des tableaux.
+
+Nous allons en réalité, créer un tableau pour dans chaque case y stocker une instance d'un objet : cela correspond à un emplacement mémoire ou seront stockées toutes les variables qui font notre objet.
+
+Créer un tableau est assez simple, comme d'habitude il suffit de créer une variable, mais on va l'initialiser d'une manière spécifique :
+
+```javascript
+var monTableauDeBalles = []
+```
+"monTableauDeBalles" est le nom de ma variable et les deux crochets "[]" précise que cette variable est un tableau. Pour ajouter des objet à ce tableau on utilise la fonction **.push()** comme ceci :
+
+```javascript
+monTableauDeBalles.push(new Balle(color(255,180,180))) // ajouter une balle rose à mon tableau
+monTableauDeBalles.push(new Balle(color(180,180,255))) // ajouter une balle bleu ciel à mon tableau
+```
+***Note** : pour retirer un élément d'un tableau il faut utiliser la fonction* **.splice()** *connaitre son index et il faut préciser le nombre d'éléments à retirer. Vous pourrez trouver un exemple d'utilisation dans les deux derniers exemples du chapitre suivant concernant webgl.*
+```javascript
+monTableauDeBalles..splice(0,1); // on retire le premier élément du tableau
+```
+
+Maintenant mon tableau contient deux **instances** de la classe balle : une dont la couleur de dessin est le rose, et une autre dont la couleur de dessin et le bleu ciel.
+Il faut maintenant pouvoir accéder au différentes instances pour pourvoir appeler les fonctions souhaitées. Dans un tableau les objets sont rangés dans l'ordre dans lequel ils ont été ajoutés. On utilise "[]" pour accéder à un élément précis du tableau. Ainsi si je veux dessiner la balle bleue, je dois écrire :
+
+```javascript
+monTableauDeBalles[1].draw()
+```
+"monTableauDeBalles[1]" correspond à l'instance de la classe Balle stockée à l'index 1 du tableau "monTableauDeBalles" on peut donc appeler directement sa fonction **.draw()**.
+
+Bien sûr si nous utilisons un tableau le but est de pouvoir automatiser l'appel de fonction à l'ensemble des instances créees à l'aide d'une boucle **for()**.
+Il est alors relativement simple de créer 100 objet et de les animer.
+
+```javascript
+var balles =[] // créer un tableau de balles
+
+function setup() {
+    createCanvas(windowWidth, windowHeight); 
+    background(100);   
+    colorMode(HSB,360,100,100)
+    // on utilise une boucle for pour créer 100 instances de la classe Balle
+    // qui vont être stockées dans notre tableau appelé "balles/
+    for (var i = 0 ; i < 100 ; i++){
+        balles.push(new Balle(color(random(360),100,100))) // on ajoute chaque instance au tableau en "passant" une couleur aléatoire.
+    }
+} 
+
+function draw() { 
+    background(100);  
+    // on parcourt notre tableau
+    for (var i = 0 ; i < balles.length ; i++){ // la condition d'arrêt est la longueur du tableau "balles.length"
+        // l'instance stockée à l'index "i" on appelle les différentes fonctions implémentées.
+        balles[i].draw();
+        balles[i].update();
+        balles[i].check();
+    }
+}
+
+// on définit un classe qui s'appelle "Balle"
+function Balle(c) {
+    this.xpos  = windowWidth/2
+    this.ypos  = windowHeight/2
+    this.xspeed = random(2,10)*cos(random(TWO_PI))
+    this.yspeed = random(2,10)*sin(random(TWO_PI))
+    this.c = c
+    
+    this.draw = function(){  
+        fill(this.c);
+        ellipse(this.xpos, this.ypos, 20, 20); // on utilise les variables précédées de "this."
+    }
+    
+    this.update = function(){ 
+        this.xpos = this.xpos + this.xspeed  
+        this.ypos = this.ypos + this.yspeed   
+    }
+    
+    this.check = function(){ 
+        if (this.xpos < 0 || this.xpos > windowWidth) this.xspeed = this.xspeed * (-1) 
+        if (this.ypos < 0 || this.ypos > windowHeight) this.yspeed = this.yspeed * (-1) 
+    }  
+}
+```
+
+![balle dans une boite](assets/05_objets_02.png)
+
+https://b2renger.github.io/Introduction_p5js/05_objets_02/index.html
+
+https://www.openprocessing.org/sketch/402750
+
+Et voilà ! si vous avez tout lu depuis le début vous savez maintenant à peu près tout ce qu'il y a à savoir en terme de programmation. Bien sûr il y a une montagne de choses spécifiques, de bonnes pratiques à apprendre pour pouvoir programmer ce que l'on souhaite, mais ces éléments de bases sont communs à la pluspart des grandes familles de languages de programmation. Ces bases vous permettront de lire du code dans a peu près n'importe quel language et d'écrire un bon nombre d'applications.
+
+Il ne vous reste plus qu'à pratiquer, expérimenter pour gagner de l'expérience ... c'est certainement la plus grosse partie du travail de développeur. A partir de ce point nous verrons des choses plus spécifiques.
+
+Il pourrait être d'ailleurs assez intéressant comme exercice pratique d'essayer d'adapter quelques uns des exemples vus dans le chapitre d'animation en classes (et probablement celui utilisant des forces...)
+
+[^ home](#contenu)<br>
+
+<a name="fonctions"/>
+### Pour aller un peu plus loin
+
+En continuant avec l'exemple développé précédement, nous allons essayer de faire en sorte que si deux balles sont à une distance inférieure à une certaine valeur, nous dessinions une ligne reliant leurs centres respectifs.
+
+A priori il est relativement simple de calculer la distance entre deux balles et de dessiner une ligne entre leur deux centres, disons pour une balle stockée à l'index *i* de notre tableau et une autre balle stockée à l'index *j* : il nous faut d'abord définir une distance en dessous de laquelle nous dessinerons une ligne puis d'utiliser la fonction **dist()** qui permet de calculer la distance entre deux jeux de coordonées :
+```javascript
+var threshold = map(mouseX,0,windowWidth,50,250) // on définit la distance grace à la souris
+if (dist(balles[i].xpos, balles[i].ypos, balles[j].xpos, balles[j].ypos) < threshold){ // on vérifie la distance entre les centres par rapport à "threshold"
+    line(balles[i].xpos, balles[i].ypos, balles[j].xpos, balles[j].ypos) // on dessine une ligne entre les centres
+}    
+```
+Pour rappel, la fonction *map(mouseX,0,windowWidth,50,250)* nous permet de calculer une valeur qui dépend de *mouseX* : *mouseX* est compris entre "0" et "windowWidth" (puisqu'il est forcément dans le fenêtre de dessin) et on veut que lorsque *mouseX* vaut "0" alors notre valeur *threshold* vaille "50", et que lorsque *mouseX* vaut "windowWidth" alors notre valeur *threshold* vaille "250".
+
+Maintenant il faut trouver un moyen pour pouvoir comparer n'importe quelle balle à n'importe qu'elle autre dans nôtre tableau de balles. Pour cela nous allons devoir parcourir deux fois le tableau de balles avec deux boucles **for()** imbriquées :
+
+```javascript
+for (var i = 0 ; i < balles.length ; i++){  // on parcourt notre tableau une première fois
+    for (var j = 0 ; j < balles.length ; j++){ // on parcourt notre tableau une seconde fois
+        var threshold = map(mouseX,0,windowWidth,50,250)
+        if (dist(balles[i].xpos, balles[i].ypos, balles[j].xpos, balles[j].ypos) < threshold){
+            line(balles[i].xpos, balles[i].ypos, balles[j].xpos, balles[j].ypos)
+        }    
+    }   
+}
+```
+Remarquez que ce code bien qu'il fonctionne n'est pas très optimisé car il réalise plusieurs fois les mêmes calculs. Par exemple quand i vaut 0 et que j vaut 1 c'est sont les mêmes instances que l'on compare que si j vaut 0 et que i vaut 1 ! Cela signifie que plusieurs lignes sont déssinées les unes par dessus les autres. Dans l'absolu ce n'est pas très grave : avec un nombre réduit d'objet cela n'impacte pas trop la performance de notre programme, mais si l'on souhaite ajouter encore plus de balles cela peut commencer à perturber les performances.
+
+Pour "optimiser" un peu notre programme, nous pouvons commencer la seconde boucle pour une valeur de *j* égale à *i+1* :
+```javascript
+var balles =[] 
+
+function setup() {
+    createCanvas(windowWidth, windowHeight); 
+    background(100);   
+    colorMode(HSB,360,100,100)
+    for (var i = 0 ; i < 100 ; i++){
+        balles.push(new Balle(color(random(360),100,100))) 
+    }
+} 
+
+function draw() { 
+    background(100);  
+    // on parcourt notre tableau une première fois
+    for (var i = 0 ; i < balles.length ; i++){ 
+        // l'instance stockée à l'index "i" on appelle les différentes fonctions implémentées.
+        balles[i].draw();
+        balles[i].update();
+        balles[i].check();
+        // on parcourt notre tableau une seconde fois
+        for (var j = i+1 ; j < balles.length ; j++){
+            var threshold = map(mouseX,0,windowWidth,50,250)
+            if (dist(balles[i].xpos, balles[i].ypos, balles[j].xpos, balles[j].ypos) < threshold){
+                line(balles[i].xpos, balles[i].ypos, balles[j].xpos, balles[j].ypos)
+            }    
+        }     
+    }
+}
+```
+![balle dans une boite](assets/05_objets_03.png)
+
+https://b2renger.github.io/Introduction_p5js/05_objets_03/index.html
+
+https://www.openprocessing.org/sketch/402758
+
+Les "doubles boucles for()" peuvent aussi être très utiles lorsqu'il s'agit de créer des patterns / grilles de motifs. Je vous invite à regarder ce lien :
+
+https://github.com/b2renger/p5js_patterns
+
+
+![balle dans une boite](assets/05_objets_patterns.png)
+
+Dont les exemples sont en ligne :
+
+https://www.openprocessing.org/sketch/387519
+
+https://www.openprocessing.org/sketch/387534
+
+https://www.openprocessing.org/sketch/387567
+
+https://www.openprocessing.org/sketch/387602
+
+
+[^ home](#contenu)<br>
+
+
+<a name="webgl"/>
+## Webgl et 3D
+
+
 
 
 [^ home](#contenu)<br>
 
 
 <a name="sound"/>
-## La librairie son
+## La bibliothèque son
 
-## Mini-projet son websocket
+En attendant la complétion de ce chapitre : je vous invite à visiter cette ressource (écrite en anglais) : https://github.com/b2renger/p5js_sound_examples
+
+Les deux exemples Sping et Flock peuvent être intéressant et abordent le thème de la sonification de processus physiques à partir de générateurs (oscillateurs, bruits blancs, filtres et enveloppes connectés ensemble). Ces exemples nécessitent la commpréhension des concepts sous-jacents aux objets en javascript.
+
 
 
 [^ home](#contenu)<br>
@@ -1663,13 +2688,22 @@ Pour faire résumer et faire fonctionner les exemples fournis, il faut :
 
 * Utilisation de p5js en mode instanciable - avoir plusieurs canvas dans une page : https://github.com/processing/p5.js/wiki/Instantiation-Cases
 
+* P5js et responsive design : http://gildasp.fr/exp/P5js-fullscreen/
+
+* p5.css3d : https://github.com/bitcraftlab/p5.css3d
+
+* p5.gui (créer des sliders, boutons etc.) : https://github.com/bitcraftlab/p5.gui
+
+* p5.canvascam (ajoute des fonction des zooms qui peuvent être pénibles à coder) https://github.com/bitcraftlab/p5.canvascam
+
+
 [^ home](#contenu)<br>
 
 
 
 
 <a name="references"/>
-## Ressources
+## Références
 
 Quelques projets liant le web à des espaces physiques :
 
@@ -1683,6 +2717,8 @@ Quelques projets liant le web à des espaces physiques :
 
 
 Des projets exclusivement web :
+
+* Land lines : https://lines.chromeexperiments.com/
 
 * Aaron Koblin : 
 
@@ -1703,6 +2739,8 @@ Des projets exclusivement web :
 * Carp and seagull : http://thecarpandtheseagull.thecreatorsproject.com/#
 
 * Plink : musique collaborative : http://dinahmoelabs.com/#plink
+
+* Loops : projet de musique collaborative nantais : http://solam.co/loops/
 
 
 [^ home](#contenu)<br>
