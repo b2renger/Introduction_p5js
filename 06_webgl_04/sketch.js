@@ -6,6 +6,7 @@ var maxIteration = 150
 var niteration = 0
 var seed
 var settings // une variable pour la librairie quicksettings
+
 function setup() {
     createCanvas(windowWidth, windowHeight, WEBGL); // on utilise le mode webgl : on peut donc faire de la 3D
     background(0);
@@ -98,7 +99,7 @@ function Stem(x, y, z, rad, noiseIncr, theta, phi) {
             if (this.rad > maxRad / 25 && this.rad < this.startRad * 0.719 && niteration < maxIteration) {
                 var i = stems.indexOf(this);
                 stems.splice(i, 1)
-                    // en fonction de l'iteration on crée différents types d'embranchements
+                // en fonction de l'iteration on crée différents types d'embranchements
                 if (niteration < 20) {
                     stems.push(new Stem(this.x, this.y, this.z, this.rad, 0.065, random(-PI / 4, PI / 4), random(-PI / 4, PI / 4)))
                     stems.push(new Stem(this.x, this.y, this.z, this.rad, 0.065, random(-PI / 4, PI / 4), random(-PI / 4, PI / 4)))
@@ -116,7 +117,7 @@ function Stem(x, y, z, rad, noiseIncr, theta, phi) {
                 }
                 niteration += 1
             }
-            console.log(nodes.length, stems.length, niteration)
+            //console.log(nodes.length, stems.length, niteration)
         }
     }
 }
