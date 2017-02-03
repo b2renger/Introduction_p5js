@@ -1,6 +1,7 @@
 var gui
 var initSound = "acoustic_grand_piano"
 var lead
+var amplitude
 
 function preload() {
     ctx = getAudioContext();
@@ -8,8 +9,12 @@ function preload() {
 }
 
 function setup() {
-    createCanvas(windowWidth, windowHeight,WEBGL);
+    createCanvas(windowWidth, windowHeight);
 
+    amplitude = new p5.Amplitude();
+    lead.then(function(inst){
+        inst.connect(amplitude)
+    });
 
     gui = QuickSettings.create(255, 5, "GUI");
     gui.addDropDown("instrument" , instrumentTable, setSound);
@@ -24,6 +29,10 @@ function setSound(){
 
 
 function draw() {
+    background(255)
+    fill(255,0,0)
+    console.log(amplitude.getLevel());
+    ellipse(windowWidth/2,windowHeight/2,amplitude.getLevel()*5000, amplitude.getLevel()*5000)
 
     if (keyIsPressed && key == 'a'){
         lead.then(function (inst) {
