@@ -19,8 +19,8 @@ function draw() {
   targetY = mouseY
   
   // on ajoute une petite portion de la distance nous séparant de notre cible à notre position
-  posX += (targetX - posX) * 0.05
-  posY += (targetY- posY) * 0.05  
+  posX += (targetX - posX) * 0.01
+  posY += (targetY- posY) * 0.01
 
   ellipse(posX, posY, 20, 20);
 }

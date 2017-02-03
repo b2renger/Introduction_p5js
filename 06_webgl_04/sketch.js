@@ -132,7 +132,7 @@ function Node(x, y, z, rad) {
         push()
         specularMaterial(180)
         translate(this.xpos, this.ypos, this.zpos)
-        sphere(this.rad)
+        box(this.rad)
         pop()
     }
 }
