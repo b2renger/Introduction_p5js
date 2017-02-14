@@ -40,7 +40,7 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
 	* [JSON = JavaScript Object Notation](#socket-json)<br>
 	* [Emettre et recevoir des données dans une page web](#socket-emit)<br>
 	* [NodeJs et serveur local](#socket-localhost)<br>
-* [L'utilisation de bibliothèques : quicksettingsjs - gui](#quicksettings)<br>
+* [L'utilisation de bibliothèques : quicksettingsjs - gui](#quicksettings)  - [**DEMO**](https://b2renger.github.io/Introduction_p5js/99_quicksettings/index.html)<br>
 * [Animation](#animation)<br>
   * [Balle rebondissant contre les parois](#balle) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_01/index.html)<br>
   * [Suivre la souris](#souris) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_02/index.html)<br> - [**DEMO2**](https://b2renger.github.io/Introduction_p5js/04_animation_02_penner_position/index.html)<br>
@@ -56,7 +56,13 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
     * [Tentacules revisitées en 3D](#tentacules3D) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/06_webgl_03/index.html)<br>
     * [Génération d'arbres](#tree) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/06_webgl_04/index.html)<br>
     * [Algorithme de "flocking"](#flock) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/06_webgl_05/index.html)<br> 
-* [La bibliothèque p5.sound](#son)<br>
+* [Audio et p5.sound](#son)<br>
+    * [Utiliser des soundfonts, pour une palette sonore variée](#soundfont) -- [**DEMO**](https://b2renger.github.io/Introduction_p5js/07_audio_01_soundfont/index.html)<br>
+    * [Jouer des fichier audio, utiliser des effets et construire un séquenceur](#sequenceur) -- [**DEMO**](https://b2renger.github.io/Introduction_p5js/07_audio_02_stepsequencer/index.html)<br>
+    * [Lecture de fichier audio avancée : sampler granulaire](#granular) -- [**DEMO**](https://b2renger.github.io/Introduction_p5js/07_audio_03_granular/index.html)<br>
+    * [Synthèse FM monophonique](#fmsynth) -- [**DEMO**](https://b2renger.github.io/Introduction_p5js/07_audio_04_synthese_simple/index.html)<br>
+    * [Synthèse additive polyphonique](#addsynth) -- [**DEMO**](https://b2renger.github.io/Introduction_p5js/07_audio_05_synthese_avancee/index.html)<br>
+    * [Visualisation audio](#viz) -- [**DEMO**](https://b2renger.github.io/Introduction_p5js/07_audio_06_audioviz/index.html)<br>
 * [Ressources](#ressources)<br>
 * [Références](#references)<br>
 
@@ -1942,6 +1948,8 @@ Un second exemple applique ces interpolation au rayon et à la couleur d'un cerc
 
 https://b2renger.github.io/Introduction_p5js/04_animation_02_penner_radius_color/index.html
 
+Ici le code est écrit avec des fonctions, ce qui rend un peu fastidieux l'implémentation de la possibilité de choisir pour deux actions (déplacement en x et déplacement en y) à chaque un type d'interpolation et une vitesse. Ce code est plutôt destiné à être copié/collé quand on sait quelle interpolation on veut. Pour laisser le choix et avoir une implémentation un peu plus élégante il serait intéressant d'écrire une classe.
+
 
 Il existe de nombreuses bibliothèques d'animation, [tween.js](https://github.com/tweenjs/tween.js/) semble en être une référence.
 
@@ -2698,8 +2706,6 @@ Les deux exemples Sping et Flock peuvent être intéressant et abordent le thèm
 
 
 [^ home](#contenu)<br>
-
-
 
 
 <a name="references"/>
