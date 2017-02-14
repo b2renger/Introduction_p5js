@@ -43,7 +43,7 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
 * [L'utilisation de bibliothèques : quicksettingsjs - gui](#quicksettings)  - [**DEMO**](https://b2renger.github.io/Introduction_p5js/99_quicksettings/index.html)<br>
 * [Animation](#animation)<br>
   * [Balle rebondissant contre les parois](#balle) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_01/index.html)<br>
-  * [Suivre la souris](#souris) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_02/index.html)<br> - [**DEMO2**](https://b2renger.github.io/Introduction_p5js/04_animation_02_penner_position/index.html)<br>
+  * [Suivre la souris](#souris) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_02/index.html) - [**DEMO2**](https://b2renger.github.io/Introduction_p5js/04_animation_02_penner_position/index.html)<br>
   * [Suivre la souris avec des forces](#sourisforces) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_03/index.html)<br>
   * [Croissance de tentacules](#tentacules) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/04_animation_04/index.html)<br>
 * [Objets](#objets)<br>
@@ -2664,7 +2664,7 @@ https://www.openprocessing.org/sketch/387602
 
 En attendant la complétion de ce chapitre : je vous invite à visiter cette ressource (écrite en anglais) : https://github.com/b2renger/p5js_sound_examples
 
-Les deux exemples Sping et Flock peuvent être intéressant et abordent le thème de la sonification de processus physiques à partir de générateurs (oscillateurs, bruits blancs, filtres et enveloppes connectés ensemble). Ces exemples nécessitent la commpréhension des concepts sous-jacents aux objets en javascript.
+Les deux exemples Sping et Flock peuvent être intéressants et abordent le thème de la sonification de processus physiques à partir de générateurs (oscillateurs, bruits blancs, filtres et enveloppes connectés ensemble). Ces exemples nécessitent la commpréhension des concepts sous-jacents aux objets en javascript.
 
 
 
