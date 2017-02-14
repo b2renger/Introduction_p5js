@@ -29,13 +29,20 @@ function regenerate() {
     maxRad = 25
     stems.push(new Stem(0, 0, 0, maxRad, 0.00, 0.0, 0.0))
     niteration = 0
+    sphereDetail(5)
 }
 
 function draw() {
     background(0);
-    ambientLight(55, 45, 3);
-    pointLight(55, 65, 10, -300 * cos(frameCount / 20), 0, -300 * sin(frameCount / 20 + PI));
-    pointLight(55, 65, 10, -300 * cos(frameCount / 20), -300 * sin(frameCount / 20 + PI), 0);
+
+    var locY = (mouseX / width - 0.5) * (5);
+    var locX = (mouseY / height - 0.5) * (-5);
+    ambientLight(55, 85, 3);
+    directionalLight(100, 100, 100, 0.55, 0.25, 0.25);
+    pointLight(90, 80, 10, locY, locX, 0);
+    pointLight(25, 50, 25, -locY, -locX, 0);
+    //ambientLight(55, 45, 3);
+
     cam.update()
     // on pousse un nouveau repère pour garder les transformation de la caméra mais pouvoir quand même
     // dessiner la base de l'arbre plus bas, mais de garder le fait de se déplace en abscisses pour faire
@@ -130,9 +137,10 @@ function Node(x, y, z, rad) {
     this.rad = rad;
     this.draw = function () {
         push()
+
         specularMaterial(180)
         translate(this.xpos, this.ypos, this.zpos)
-        box(this.rad)
+        sphere(this.rad,8,4)
         pop()
     }
 }
