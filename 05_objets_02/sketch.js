@@ -6,7 +6,7 @@ function setup() {
     colorMode(HSB,360,100,100)
     // on utilise une boucle for pour créer 100 instances de la classe Balle
     // qui vont être stockées dans notre tableau appelé "balles/
-    for (var i = 0 ; i < 100 ; i++){
+    for (var i = 0 ; i < 200 ; i++){
         balles.push(new Balle(color(random(360),100,100))) // on ajoute chaque instance au tableau en "passant" une couleur aléatoire.
     }
 }
