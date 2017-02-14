@@ -1,49 +1,92 @@
-var gui
-var initSound = "acoustic_grand_piano"
-var lead
+var gui // une variable pour quicksettings
+var initSound = "acoustic_grand_piano" // une valeur pour l'initialisation du premier argument
+var lead // une variable pour stocker notre synthétiseur de soundfont
+// deux objets d'analyse audio pour représenter le son.
 var amplitude
-
+var fft
+// un tableau permettant de mapper des touches du clavier à des notes midi
+var keys = {
+    S: 60
+    , E: 61
+    , D: 62
+    , R: 63
+    , F: 64
+    , G: 65
+    , Y: 66
+    , H: 67
+    , U: 68
+    , J: 69
+    , I: 70
+    , K: 71
+    , L: 72
+}
+// on précharge un son
 function preload() {
-    ctx = getAudioContext();
-    lead = Soundfont.instrument(ctx, initSound );
+    ctx = getAudioContext(); // on récupère le contexte audio pour le passer à notre instrument
+    lead = Soundfont.instrument(ctx, initSound); // on intialise notre synthétiseur avec le contexte et le nom du son à charger
 }
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
-
+    background(0)
+    // on initialise les objets d'analyse
     amplitude = new p5.Amplitude();
-    lead.then(function(inst){
+    fft = new p5.FFT();
+    // on les connecte à notre instrument
+    lead.then(function (inst) {
         inst.connect(amplitude)
+        inst.connect(fft);
     });
-
+    // on créer un panneau de gui avec une sélection d'instruments
     gui = QuickSettings.create(255, 5, "GUI");
-    gui.addDropDown("instrument" , instrumentTable, setSound);
-
+    gui.addDropDown("instrument", instrumentTable, setSound); // instrumentTable est définie tout en bas.
+    colorMode(HSB, 360, 100, 100)
 }
 
-function setSound(){
-    initSound = gui.getValuesAsJSON(false)["instrument"]
+// function de callback pour charger les nouveaux sons après choix de l'utilisateur
+function setSound() {
+    initSound = gui.getValuesAsJSON(false)["instrument"] // récuperer la valeur de l'objet gui
+    // recréer l'instrument lead
     ctx = getAudioContext();
     lead = Soundfont.instrument(ctx, initSound);
+    // reconnecter les objets d'analyse audio
+    lead.then(function (inst) {
+        inst.connect(amplitude)
+        inst.connect(fft);
+    });
 }
-
 
 function draw() {
-    background(255)
-    fill(255,0,0)
-    console.log(amplitude.getLevel());
-    ellipse(windowWidth/2,windowHeight/2,amplitude.getLevel()*5000, amplitude.getLevel()*5000)
-
-    if (keyIsPressed && key == 'a'){
-        lead.then(function (inst) {
-            inst.play(60, 0, {
-                 loop: false
-            });
-        });
+    noStroke();
+    fill(0, 0, 0, 0.15)
+    rect(0, 0, windowWidth, windowHeight)
+    fill(0, 0, 100, 0.25)
+    // on dessine un cercle dont le rayon dépend du volume.
+    ellipse(windowWidth / 2, windowHeight / 2, amplitude.getLevel() * 5000, amplitude.getLevel() * 5000)
+    // on dessine le spectre ie l'énergie par bande de fréquence
+    var spectrum = fft.analyze();
+    for (i = 0; i < spectrum.length; i++) {
+        fill(map(i, 0, spectrum.length, 0, 180), 100, map(spectrum[i], 0, 255, 0, 100))
+        rect(map(i, 0, spectrum.length, 0, windowWidth), height, windowWidth / spectrum.length, map(spectrum[i], 0, 255, 0, -height));
     }
-
 }
-
+// les notes sons jouées ici
+function keyPressed() {
+    // si la touche préssée est dans notre tableau
+    if (keys[key]) {
+        note = keys[key] // on récupère la valeur midi
+        play(note) // on appelle une fonction spécifique
+    }
+}
+// on joue la note
+function play(midinote) {
+    lead.then(function (inst) {
+        inst.play(midinote + 24, 0, {
+            loop: false
+        });
+    });
+}
+// ensemble des instruments disponnibles dans la bibliothèque soundfont
 var instrumentTable = [
     "accordion"
     , "acoustic_bass"
@@ -174,4 +217,3 @@ var instrumentTable = [
     , "woodblock"
     , "xylophone"
 ];
-
