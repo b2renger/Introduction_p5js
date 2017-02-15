@@ -1,4 +1,4 @@
-/*! p5.dom.js v0.2.13 Oct 1, 2016 */
+/*! p5.dom.js v0.3.1 Jan 3, 2017 */
 /**
  * <p>The web is much more than just canvas and p5.dom makes it easy to interact
  * with other HTML5 objects, including text, hyperlink, image, input, video,
@@ -33,6 +33,7 @@
   else
     factory(root['p5']);
 }(this, function (p5) {
+
 // =============================================================================
 //                         p5 additions
 // =============================================================================
@@ -291,7 +292,7 @@
   });
 
   /**
-   * Creates an &lt;img /&gt; element in the DOM with given src and
+   * Creates an &lt;img&gt; element in the DOM with given src and
    * alternate text.
    * Appends to the container node if one is specified, otherwise
    * appends to body.
@@ -314,8 +315,8 @@
     var args = arguments;
     var self;
     var setAttrs = function(){
-      self.width = elt.offsetWidth;
-      self.height = elt.offsetHeight;
+      self.width = elt.offsetWidth || elt.width;
+      self.height = elt.offsetHeight || elt.height;
       if (args.length > 1 && typeof args[1] === 'function'){
         self.fn = args[1];
         self.fn();
@@ -720,7 +721,8 @@
    * appends to body.
    *
    * @method createInput
-   * @param  {Number} [value] default value of the input box
+   * @param {Number} [value] default value of the input box
+   * @param {String} [type] type of text, ie text, password etc. Defaults to text
    * @return {Object/p5.Element} pointer to p5.Element holding created node
    * @example
    * <div class='norender'><code>
@@ -735,9 +737,9 @@
    *
    * </code></div>
    */
-  p5.prototype.createInput = function(value) {
+  p5.prototype.createInput = function(value, type) {
     var elt = document.createElement('input');
-    elt.type = 'text';
+    elt.type = type ? type : 'text';
     if (value) elt.value = value;
     return addElement(elt, this);
   };
@@ -750,6 +752,28 @@
    * @param  {Function} [callback] callback function for when a file loaded
    * @param  {String} [multiple] optional to allow multiple files selected
    * @return {Object/p5.Element} pointer to p5.Element holding created DOM element
+   * @example
+   * var input;
+   * var img;
+   *
+   * function setup() {
+   *   input = createFileInput(handleFile);
+   *   input.position(0, 0);
+   * }
+   *
+   * function draw() {
+   *   if (img) {
+   *     image(img, 0, 0, width, height);
+   *   }
+   * }
+   *
+   * function handleFile(file) {
+   *   print(file);
+   *   if (file.type === 'image') {
+   *     img = createImg(file.data);
+   *     img.hide();
+   *   }
+   * }
    */
   p5.prototype.createFileInput = function(callback, multiple) {
 
@@ -999,8 +1023,13 @@
     // set width and height onload metadata
     elt.addEventListener('loadedmetadata', function() {
       elt.play();
-      c.width = c.elt.width = elt.videoWidth;
-      c.height = c.elt.height = elt.videoHeight;
+      if (elt.width) {
+        c.width = elt.videoWidth = elt.width;
+        c.height = elt.videoHeight = elt.height;
+      } else {
+        c.width = c.elt.width = elt.videoWidth;
+        c.height = c.elt.height = elt.videoHeight;
+      }
       c.loadedmetadata = true;
     });
     return c;
@@ -1103,7 +1132,7 @@
    * </code></div>
    */
   p5.Element.prototype.child = function(c) {
-    if (c === null){
+    if (typeof c === 'undefined'){
       return this.elt.childNodes
     }
     if (typeof c === 'string') {
@@ -1174,26 +1203,35 @@
   /**
    *
    * If an argument is given, sets the inner HTML of the element,
-   * replacing any existing html. If no arguments are given, returns
+   * replacing any existing html. If true is included as a second
+   * argument, html is appended instead of replacing existing html.
+   * If no arguments are given, returns
    * the inner HTML of the element.
    *
    * @for p5.Element
    * @method html
    * @param  {String} [html] the HTML to be placed inside the element
+   * @param  {boolean} [append] whether to append HTML to existing
    * @return {Object/p5.Element|String}
    * @example
    * <div class='norender'><code>
    * var div = createDiv('').size(100,100);
-   * div.style('background-color','orange');
    * div.html('hi');
    * </code></div>
+   * <div class='norender'><code>
+   * var div = createDiv('Hello ').size(100,100);
+   * div.html('World', true);
+   * </code></div>
    */
-  p5.Element.prototype.html = function(html) {
-    if (typeof html !== 'undefined') {
-      this.elt.innerHTML = html;
+  p5.Element.prototype.html = function() {
+    if (arguments.length === 0) {
+      return this.elt.innerHTML;
+    } else if (arguments[1]) {
+      this.elt.innerHTML += arguments[0];
       return this;
     } else {
-      return this.elt.innerHTML;
+      this.elt.innerHTML = arguments[0];
+      return this;
     }
   };
 
@@ -1822,8 +1860,10 @@
   p5.MediaElement.prototype.get = function(x, y, w, h){
     if (this.loadedmetadata) { // wait for metadata
       return p5.Renderer2D.prototype.get.call(this, x, y, w, h);
-    } else if (!x) {
+    } else if (typeof x === 'undefined') {
       return new p5.Image(1, 1);
+    } else if (w > 1) {
+      return new p5.Image(x, y, w, h);
     } else {
       return [0, 0, 0, 255];
     }
