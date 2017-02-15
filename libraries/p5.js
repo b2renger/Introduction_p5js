@@ -1,4 +1,4 @@
-/*! p5.js v0.5.4 October 01, 2016 */
+/*! p5.js v0.5.7 February 08, 2017 */
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.p5 = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 
 },{}],2:[function(_dereq_,module,exports){
@@ -5845,7 +5845,7 @@ p5.ColorConversion._rgbaToHSLA = function(rgba) {
     if (li < 1) {
       sat = chroma / li;
     } else {
-      sat = chroma / (2 - chroma);
+      sat = chroma / (2 - li);
     }
     if (red === val) {  // Magenta to yellow.
       hue = (green - blue) / chroma;
@@ -6009,7 +6009,7 @@ p5.prototype.brightness = function(c) {
  * @param  {Number|String} gray    number specifying value between white
  *                                 and black.
  * @param  {Number}        [alpha] alpha value relative to current color range
- *                                 (default is 0-100)
+ *                                 (default is 0-255)
  * @return {Array}                 resulting color
  *
  * @example
@@ -7820,7 +7820,8 @@ p5.prototype.arc = function(x, y, w, h, start, stop, mode) {
  * height is a circle. By default, the first two parameters set the location,
  * and the third and fourth parameters set the shape's width and height. If
  * no height is specified, the value of width is used for both the width and
- * height. The origin may be changed with the ellipseMode() function.
+ * height. If a negative height or width is specified, the absolute value is taken.
+ * The origin may be changed with the ellipseMode() function.
  *
  * @method ellipse
  * @param  {Number} x x-coordinate of the ellipse.
@@ -8838,7 +8839,10 @@ var p5 = function(sketch, node, sync) {
    * asynchronous loading of external files. If a preload function is
    * defined, setup() will wait until any load calls within have finished.
    * Nothing besides load calls should be inside preload (loadImage,
-   * loadJSON, loadFont, loadStrings, etc).
+   * loadJSON, loadFont, loadStrings, etc).<br><br>
+   * By default the text "loading..." will be displayed. To make your own
+   * loading page, include an HTML element with id "p5_loading" in your
+   * page. More information <a href="http://bit.ly/2kQ6Nio">here</a>.
    *
    * @method preload
    * @example
@@ -9003,16 +9007,6 @@ var p5 = function(sketch, node, sync) {
       }
     }
 
-    // Always create a default canvas.
-    // Later on if the user calls createCanvas, this default one
-    // will be replaced
-    this.createCanvas(
-      this._defaultCanvasSize.width,
-      this._defaultCanvasSize.height,
-      'p2d',
-      true
-    );
-
     var userPreload = this.preload || window.preload; // look for "preload"
     if (userPreload) {
 
@@ -9090,6 +9084,16 @@ var p5 = function(sketch, node, sync) {
 
   this._setup = function() {
 
+    // Always create a default canvas.
+    // Later on if the user calls createCanvas, this default one
+    // will be replaced
+    this.createCanvas(
+      this._defaultCanvasSize.width,
+      this._defaultCanvasSize.height,
+      'p2d',
+      true
+    );
+
     // return preload functions to their normal vals if switched by preload
     var context = this._isGlobal ? window : this;
     if (typeof context.preload === 'function') {
@@ -9142,7 +9146,6 @@ var p5 = function(sketch, node, sync) {
       this._setProperty('frameCount', this.frameCount + 1);
       this.redraw();
       this._updateMouseCoords();
-      this._updateTouchCoords();
       this._frameRate = 1000.0/(now - this._lastFrameTime);
       this._lastFrameTime = now;
     }
@@ -9524,25 +9527,7 @@ p5.prototype.bezier = function() {
   for (var i = 0; i < args.length; ++i) {
     args[i] = arguments[i];
   }
-  if(this._renderer.isP3D){
-    this._validateParameters(
-      'bezier',
-      args,
-      ['Number', 'Number', 'Number',
-      'Number', 'Number', 'Number',
-      'Number', 'Number', 'Number',
-      'Number', 'Number', 'Number'
-      ]
-    );
-  } else{
-    this._validateParameters(
-      'bezier',
-      args,
-      [ 'Number', 'Number', 'Number', 'Number',
-        'Number', 'Number', 'Number', 'Number' ]
-    );
-  }
-  if (!this._renderer._doStroke) {
+  if (!this._renderer._doStroke && !this._renderer._doFill) {
     return this;
   }
   if (this._renderer.isP3D){
@@ -9782,24 +9767,6 @@ p5.prototype.curve = function() {
   var args = new Array(arguments.length);
   for (var i = 0; i < args.length; ++i) {
     args[i] = arguments[i];
-  }
-  if(this._renderer.isP3D){
-    this._validateParameters(
-      'curve',
-      args,
-      ['Number', 'Number', 'Number',
-      'Number', 'Number', 'Number',
-      'Number', 'Number', 'Number',
-      'Number', 'Number', 'Number'
-      ]
-    );
-  } else{
-    this._validateParameters(
-      'curve',
-      args,
-      [ 'Number', 'Number', 'Number', 'Number',
-        'Number', 'Number', 'Number', 'Number' ]
-    );
   }
   if (!this._renderer._doStroke) {
     return this;
@@ -10152,7 +10119,8 @@ p5.prototype.cursor = function(type, x, y) {
       // https://developer.mozilla.org/en-US/docs/Web/CSS/cursor
       coords = x + ' ' + y;
     }
-    if (type.substring(0, 6) !== 'http://') {
+    if ((type.substring(0, 7) === 'http://') ||
+        (type.substring(0, 8) === 'https://')) {
       // Image (absolute url)
       cursor = 'url(' + type + ') ' + coords + ', auto';
     } else if (/\.(cur|jpg|jpeg|gif|png|CUR|JPG|JPEG|GIF|PNG)$/.test(type)) {
@@ -10345,7 +10313,7 @@ p5.prototype.windowHeight = getWindowHeight();
 /**
  * The windowResized() function is called once every time the browser window
  * is resized. This is a good place to resize the canvas or do any other
- * adjustements to accomodate the new window size.
+ * adjustments to accommodate the new window size.
  *
  * @method windowResized
  * @example
@@ -10678,37 +10646,9 @@ var getType = function( obj ) {
     class2type[ toString.call(obj) ] || 'object' :
     typeof obj;
 };
-var isArray = Array.isArray || function( obj ) {
-  return getType(obj) === 'array';
-};
-var isNumeric =function( obj ) {
-  // parseFloat NaNs numeric-cast false positives (null|true|false|"")
-  // ...but misinterprets leading-number strings, particularly hex literals
-  // subtraction forces infinities to NaN
-  // adding 1 corrects loss of precision from parseFloat (#15100)
-  return !isArray( obj ) && (obj - parseFloat( obj ) + 1) >= 0;
-};
+
 // -- End borrow --
 
-/**
- * Checks the definition type against the argument type
- * If any of these passes (in order), it matches:
- *
- * - p5.* definitions are checked with instanceof
- * - Booleans are let through (everything is truthy or falsey)
- * - Lowercase of the definition is checked against the js type
- * - Number types are checked to see if they are numerically castable
- */
-var numberTypes = ['Number', 'Integer', 'Number/Constant'];
-function typeMatches(defType, argType, arg) {
-  if(defType.match(/^p5\./)) {
-    var parts = defType.split('.');
-    return arg instanceof p5[parts[1]];
-  }
-  return defType === 'Boolean' || // Anything is truthy, cover in Debug Guide
-    (defType.toLowerCase() === argType) ||
-    (numberTypes.indexOf(defType) > -1 && isNumeric(arg));
-}
 
 /**
  * Prints out a fancy, colorful message to the console log
@@ -10720,9 +10660,6 @@ function typeMatches(defType, argType, arg) {
  * @return console logs
  */
 // Wrong number of params, undefined param, wrong type
-var PARAM_COUNT = 0;
-var EMPTY_VAR = 1;
-var WRONG_TYPE = 2;
 var FILE_LOAD = 3;
 // p5.js blue, p5.js orange, auto dark green; fallback p5.js darkened magenta
 // See testColors below for all the color codes and names
@@ -10756,96 +10693,6 @@ function report(message, func, color) {
   //   );
   // }
 }
-
-/**
- * Validate all the parameters of a function for number and type
- * NOTE THIS FUNCTION IS TEMPORARILY DISABLED UNTIL FURTHER WORK
- * AND UPDATES ARE IMPLEMENTED. -LMCCART
- *
- * @param  {String} func  name of function we're checking
- * @param  {Array}  args  pass of the JS default arguments array
- * @param  {Array}  types List of types accepted ['Number', 'String, ...] OR
- *                        a list of lists for each format: [
- *                          ['String', 'Number', 'Number'],
- *                          ['String', 'Number', 'Number', 'Number', 'Number'
- *                        ]
- *
- * @return console logs
- */
-p5.prototype._validateParameters = function(func, args, types) {
-  if (!isArray(types[0])) {
-    types = [types];
-  }
-  // Check number of parameters
-  // Example: "You wrote ellipse(X,X,X). ellipse was expecting 4
-  //          parameters. Try ellipse(X,X,X,X)."
-  var diff = Math.abs(args.length-types[0].length);
-  var message, tindex = 0;
-  for (var i=1, len=types.length; i<len; i++) {
-    var d = Math.abs(args.length-types[i].length);
-    if (d <= diff) {
-      tindex = i;
-      diff = d;
-    }
-  }
-  var symbol = 'X'; // Parameter placeholder
-  if(diff > 0) {
-    message = 'You wrote ' + func + '(';
-    // Concat an appropriate number of placeholders for call
-    if (args.length > 0) {
-      message += symbol + Array(args.length).join(',' + symbol);
-    }
-    message += '). ' + func + ' was expecting ' + types[tindex].length +
-      ' parameters. Try ' + func + '(';
-    // Concat an appropriate number of placeholders for definition
-    if (types[tindex].length > 0) {
-      message += symbol + Array(types[tindex].length).join(',' + symbol);
-    }
-    message += ').';
-    // If multiple definitions
-    if (types.length > 1) {
-      message += ' ' + func + ' takes different numbers of parameters ' +
-        'depending on what you want to do. Click this link to learn more: ';
-    }
-    report(message, func, PARAM_COUNT);
-  }
-  // Type checking
-  // Example: "It looks like ellipse received an empty variable in spot #2."
-  // Example: "ellipse was expecting a number for parameter #1,
-  //           received "foo" instead."
-  for (var format=0; format<types.length; format++) {
-    for (var p=0; p < types[format].length && p < args.length; p++) {
-      var defType = types[format][p];
-      var argType = getType(args[p]);
-      if ('undefined' === argType || null === argType) {
-        report('It looks like ' + func +
-          ' received an empty variable in spot #' + (p+1) +
-          '. If not intentional, this is often a problem with scope: ' +
-          '[link to scope].', func, EMPTY_VAR);
-      } else if (defType !== '*' && !typeMatches(defType, argType, args[p])) {
-        message = func + ' was expecting a ' + defType.toLowerCase() +
-          ' for parameter #' + (p+1) + ', received ';
-        // Wrap strings in quotes
-        message += 'string' === argType ? '"' + args[p] + '"' : args[p];
-        message += ' instead.';
-        // If multiple definitions
-        if (types.length > 1) {
-          message += ' ' + func + ' takes different numbers of parameters ' +
-            'depending on what you want to do. ' +
-            'Click this link to learn more:';
-        }
-        report(message, func, WRONG_TYPE);
-      }
-    }
-  }
-};
-/*
- * NOTE THIS FUNCTION IS TEMPORARILY DISABLED UNTIL FURTHER WORK
- * AND UPDATES ARE IMPLEMENTED. -LMCCART
- */
-p5.prototype._validateParameters = function() {
-  return true;
-};
 
 var errorCases = {
   '0': {
@@ -11014,7 +10861,7 @@ function helpForMisusedAtTopLevelCode(e, log) {
     //   * ReferenceError: PI is undefined             (Firefox)
     //   * Uncaught ReferenceError: PI is not defined  (Chrome)
 
-    if (e.message && e.message.indexOf(symbol.name) !== -1) {
+    if (e.message && e.message.match('\\W?'+symbol.name+'\\W') !== null) {
       log('%cDid you just try to use p5.js\'s ' + symbol.name +
           (symbol.type === 'function' ? '() ' : ' ') + symbol.type +
           '? If so, you may want to ' +
@@ -11991,6 +11838,15 @@ p5.Graphics = function(w, h, renderer, pInst) {
 
 p5.Graphics.prototype = Object.create(p5.Element.prototype);
 
+p5.Graphics.prototype.remove = function() {
+  if (this.elt.parentNode) {
+    this.elt.parentNode.removeChild(this.elt);
+  }
+  for (var elt_ev in this._events) {
+    this.elt.removeEventListener(elt_ev, this._events[elt_ev]);
+  }
+};
+
 module.exports = p5.Graphics;
 
 },{"./constants":36,"./core":37}],43:[function(_dereq_,module,exports){
@@ -12406,9 +12262,7 @@ p5.Renderer2D.prototype.copy = function () {
 
 p5.Renderer2D._copyHelper =
 function (srcImage, sx, sy, sw, sh, dx, dy, dw, dh) {
-  if (!srcImage.canvas) {
-    srcImage.loadPixels();
-  }
+  srcImage.loadPixels();
   var s = srcImage.canvas.width / srcImage.width;
   this.drawingContext.drawImage(srcImage.canvas,
     s * sx, s * sy, s * sw, s * sh, dx, dy, dw, dh);
@@ -12432,12 +12286,15 @@ p5.Renderer2D.prototype.get = function(x, y, w, h) {
   }
 
   var ctx = this._pInst || this;
+  ctx.loadPixels();
 
   var pd = ctx._pixelDensity;
 
   // round down to get integer numbers
   x = Math.floor(x);
   y = Math.floor(y);
+  w = Math.floor(w);
+  h = Math.floor(h);
 
   var sx = x * pd;
   var sy = y * pd;
@@ -14412,18 +14269,7 @@ p5.prototype.rotate = function() {
  * @return {[type]}     [description]
  */
 p5.prototype.rotateX = function(rad) {
-  var args = new Array(arguments.length);
-  for (var i = 0; i < args.length; ++i) {
-    args[i] = arguments[i];
-  }
   if (this._renderer.isP3D) {
-    this._validateParameters(
-      'rotateX',
-      args,
-      [
-        ['Number']
-      ]
-    );
     this._renderer.rotateX(rad);
   } else {
     throw 'not supported in p2d. Please use webgl mode';
@@ -14439,17 +14285,6 @@ p5.prototype.rotateX = function(rad) {
  */
 p5.prototype.rotateY = function(rad) {
   if (this._renderer.isP3D) {
-    var args = new Array(arguments.length);
-    for (var i = 0; i < args.length; ++i) {
-      args[i] = arguments[i];
-    }
-    this._validateParameters(
-      'rotateY',
-      args,
-      [
-        ['Number']
-      ]
-    );
     this._renderer.rotateY(rad);
   } else {
     throw 'not supported in p2d. Please use webgl mode';
@@ -14465,17 +14300,6 @@ p5.prototype.rotateY = function(rad) {
  */
 p5.prototype.rotateZ = function(rad) {
   if (this._renderer.isP3D) {
-    var args = new Array(arguments.length);
-    for (var i = 0; i < args.length; ++i) {
-      args[i] = arguments[i];
-    }
-    this._validateParameters(
-      'rotateZ',
-      args,
-      [
-        ['Number']
-      ]
-    );
     this._renderer.rotateZ(rad);
   } else {
     throw 'not supported in p2d. Please use webgl mode';
@@ -14687,30 +14511,9 @@ p5.prototype.shearY = function(angle) {
  *
  */
 p5.prototype.translate = function(x, y, z) {
-  var args = new Array(arguments.length);
-  for (var i = 0; i < args.length; ++i) {
-    args[i] = arguments[i];
-  }
-
   if (this._renderer.isP3D) {
-    this._validateParameters(
-      'translate',
-      args,
-      [
-        //p3d
-        ['Number', 'Number', 'Number']
-      ]
-    );
     this._renderer.translate(x, y, z);
   } else {
-    this._validateParameters(
-      'translate',
-      args,
-      [
-        //p2d
-        ['Number', 'Number']
-      ]
-    );
     this._renderer.translate(x, y);
   }
   return this;
@@ -15324,29 +15127,9 @@ p5.prototype.quadraticVertex = function(cx, cy, x3, y3) {
  *
  */
 p5.prototype.vertex = function(x, y, moveTo) {
-  var args = new Array(arguments.length);
-  for (var i = 0; i < args.length; ++i) {
-    args[i] = arguments[i];
-  }
   if(this._renderer.isP3D){
-    this._validateParameters(
-      'vertex',
-      args,
-      [
-        ['Number', 'Number', 'Number']
-      ]
-    );
-    this._renderer.vertex
-    (arguments[0], arguments[1], arguments[2]);
+    this._renderer.vertex(x, y, moveTo);
   }else{
-    this._validateParameters(
-      'vertex',
-      args,
-      [
-        ['Number', 'Number'],
-        ['Number', 'Number', 'Number']
-      ]
-    );
     var vert = [];
     vert.isVert = true;
     vert[0] = x;
@@ -15373,6 +15156,7 @@ p5.prototype.vertex = function(x, y, moveTo) {
 };
 
 module.exports = p5;
+
 },{"./constants":36,"./core":37}],50:[function(_dereq_,module,exports){
 /**
  * @module Events
@@ -15737,7 +15521,7 @@ p5.prototype.setShakeThreshold = function(val){
  * 0.5.
  * @method deviceMoved
  * @example
- * <div>
+ * <div class="norender">
  * <code>
  * // Run this example on a mobile device
  * // Move the device around
@@ -15772,7 +15556,7 @@ p5.prototype.setShakeThreshold = function(val){
  *
  * @method deviceTurned
  * @example
- * <div>
+ * <div class="norender">
  * <code>
  * // Run this example on a mobile device
  * // Rotate the device by 90 degrees
@@ -15827,7 +15611,7 @@ p5.prototype.setShakeThreshold = function(val){
  * the threshold value. The default threshold is set to 30.
  * @method deviceShaken
  * @example
- * <div>
+ * <div class="norender">
  * <code>
  * // Run this example on a mobile device
  * // Shake the device to change the value.
@@ -16043,6 +15827,8 @@ p5.prototype.key = '';
  * The variable keyCode is used to detect special keys such as BACKSPACE,
  * DELETE, ENTER, RETURN, TAB, ESCAPE, SHIFT, CONTROL, OPTION, ALT, UP_ARROW,
  * DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW.
+ * You can also check for custom keys by looking up the keyCode of any key
+ * on a site like this: <a href="http://keycode.info/">keycode.info</a>.
  *
  * @property keyCode
  * @example
@@ -16192,12 +15978,16 @@ p5.prototype._onkeydown = function (e) {
  */
 p5.prototype._onkeyup = function (e) {
   var keyReleased = this.keyReleased || window.keyReleased;
-  this._setProperty('isKeyPressed', false);
-  this._setProperty('keyIsPressed', false);
-  this._setProperty('_lastKeyCodeTyped', null);
   downKeys[e.which] = false;
   //delete this._downKeys[e.which];
   var key = String.fromCharCode(e.which);
+
+  if(areDownKeys()) {
+    this._setProperty('isKeyPressed', false);
+    this._setProperty('keyIsPressed', false);
+  }
+
+  this._setProperty('_lastKeyCodeTyped', null);
   if (!key) {
     key = e.which;
   }
@@ -16321,6 +16111,24 @@ p5.prototype.keyIsDown = function(code) {
   return downKeys[code];
 };
 
+/**
+ * The checkDownKeys function returns a boolean true if any keys pressed
+ * and a false if no keys are currently pressed.
+
+ * Helps avoid instances where a multiple keys are pressed simultaneously and
+ * releasing a single key will then switch the
+ * keyIsPressed property to true.
+ * @private
+**/
+function areDownKeys() {
+  for (var key in downKeys) {
+    if (downKeys[key] === true ) {
+      return true;
+    }
+  }
+  return false;
+}
+
 module.exports = p5;
 
 },{"../core/core":37}],52:[function(_dereq_,module,exports){
@@ -16348,7 +16156,9 @@ p5.prototype._hasMouseInteracted = false;
 
 /**
  * The system variable mouseX always contains the current horizontal
- * position of the mouse, relative to (0, 0) of the canvas.
+ * position of the mouse, relative to (0, 0) of the canvas. If touch is
+ * used instead of mouse input, mouseX will hold the x value of the most
+ * recent touch point.
  *
  * @property mouseX
  *
@@ -16371,7 +16181,9 @@ p5.prototype.mouseX = 0;
 
 /**
  * The system variable mouseY always contains the current vertical position
- * of the mouse, relative to (0, 0) of the canvas.
+ * of the mouse, relative to (0, 0) of the canvas. If touch is
+ * used instead of mouse input, mouseY will hold the y value of the most
+ * recent touch point.
  *
  * @property mouseY
  *
@@ -16394,8 +16206,8 @@ p5.prototype.mouseY = 0;
 
 /**
  * The system variable pmouseX always contains the horizontal position of
- * the mouse in the frame previous to the current frame, relative to (0, 0)
- * of the canvas.
+ * the mouse or finger in the frame previous to the current frame, relative to
+ * (0, 0) of the canvas.
  *
  * @property pmouseX
  *
@@ -16425,8 +16237,8 @@ p5.prototype.pmouseX = 0;
 
 /**
  * The system variable pmouseY always contains the vertical position of the
- * mouse in the frame previous to the current frame, relative to (0, 0) of
- * the canvas.
+ * mouse or finger in the frame previous to the current frame, relative to
+ * (0, 0) of the canvas.
  *
  * @property pmouseY
  *
@@ -16675,28 +16487,13 @@ p5.prototype.mouseIsPressed = false;
 p5.prototype.isMousePressed = false; // both are supported
 
 p5.prototype._updateNextMouseCoords = function(e) {
-  var x = this.mouseX;
-  var y = this.mouseY;
-  var winX = this.winMouseX;
-  var winY = this.winMouseY;
-  if(e.type === 'touchstart' ||
-     e.type === 'touchmove' ||
-     e.type === 'touchend' || e.touches) {
-    x = this.touchX;
-    y = this.touchY;
-    winX = this.winTouchX;
-    winY = this.winTouchY;
-  } else if(this._curElement !== null) {
-    var mousePos = getMousePos(this._curElement.elt, e);
-    x = mousePos.x;
-    y = mousePos.y;
-    winX = mousePos.winX;
-    winY = mousePos.winY;
+  if(this._curElement !== null && (!e.touches || e.touches.length>0)) {
+    var mousePos = getMousePos(this._curElement.elt, this.width, this.height, e);
+    this._setProperty('mouseX', mousePos.x);
+    this._setProperty('mouseY', mousePos.y);
+    this._setProperty('winMouseX', mousePos.winX);
+    this._setProperty('winMouseY', mousePos.winY);
   }
-  this._setProperty('mouseX', x);
-  this._setProperty('mouseY', y);
-  this._setProperty('winMouseX', winX);
-  this._setProperty('winMouseY', winY);
   if (!this._hasMouseInteracted) {
     // For first draw, make previous and next equal
     this._updateMouseCoords();
@@ -16711,13 +16508,23 @@ p5.prototype._updateMouseCoords = function() {
   this._setProperty('pwinMouseY', this.winMouseY);
 };
 
-function getMousePos(canvas, evt) {
+function getMousePos(canvas, w, h, evt) {
+  if (evt && !evt.clientX) { // use touches if touch and not mouse
+    if (evt.touches) {
+      evt = evt.touches[0];
+    } else if (evt.changedTouches) {
+      evt = evt.changedTouches[0];
+    }
+  }
   var rect = canvas.getBoundingClientRect();
+  var sx = canvas.scrollWidth / w;
+  var sy = canvas.scrollHeight / h;
   return {
-    x: evt.clientX - rect.left,
-    y: evt.clientY - rect.top,
+    x: (evt.clientX - rect.left) / sx,
+    y: (evt.clientY - rect.top) / sy,
     winX: evt.clientX,
-    winY: evt.clientY
+    winY: evt.clientY,
+    id: evt.identifier
   };
 }
 
@@ -16823,7 +16630,6 @@ p5.prototype._onmousemove = function(e){
   var context = this._isGlobal ? window : this;
   var executeDefault;
   this._updateNextMouseCoords(e);
-  this._updateNextTouchCoords(e);
   if (!this.isMousePressed) {
     if (typeof context.mouseMoved === 'function') {
       executeDefault = context.mouseMoved(e);
@@ -16901,7 +16707,6 @@ p5.prototype._onmousedown = function(e) {
   this._setProperty('mouseIsPressed', true);
   this._setMouseButton(e);
   this._updateNextMouseCoords(e);
-  this._updateNextTouchCoords(e);
   if (typeof context.mousePressed === 'function') {
     executeDefault = context.mousePressed(e);
     if(executeDefault === false) {
@@ -17104,128 +16909,6 @@ module.exports = p5;
 
 var p5 = _dereq_('../core/core');
 
-/*
- * This is a flag which is false until the first time
- * we receive a touch event. The ptouchX and ptouchY
- * values will match the touchX and touchY values until
- * this interaction takes place.
- */
-p5.prototype._hasTouchInteracted = false;
-
-/**
- * The system variable touchX always contains the horizontal position of
- * one finger, relative to (0, 0) of the canvas. This is best used for
- * single touch interactions. For multi-touch interactions, use the
- * touches[] array.
- *
- * @property touchX
- * @method touchX
- * @example
- * <div>
- * <code>
- * // Touch and move  the finger in horizontally  across the canvas
- * function setup() {
- *   createCanvas(100, 100);
- * }
- *
- * function draw() {
- *   background(51);
- *   stroke(255, 204, 0);
- *   strokeWeight(4);
- *   rect(touchX, 50, 10, 10);
- * }
- * </code>
- * </div>
- *
- * @alt
- * 10x10 white rect with thick gold outline moves left and right with touch x.
- *
- */
-p5.prototype.touchX = 0;
-
-/**
- * The system variable touchY always contains the vertical position of
- * one finger, relative to (0, 0) of the canvas. This is best used for
- * single touch interactions. For multi-touch interactions, use the
- * touches[] array.
- *
- * @property touchY
- * @method touchY
- * @example
- * <div>
- * <code>
- * // Touch and move the finger vertically across the canvas
- * function setup() {
- *   createCanvas(100, 100);
- * }
- *
- * function draw() {
- *   background(51);
- *   stroke(255, 204, 0);
- *   strokeWeight(4);
- *   rect(50, touchY, 10, 10);
- * }
- * </code>
- * </div>
- *
- * @alt
- * 10x10 white rect with thick gold outline moves up and down with touch y.
- *
- */
-p5.prototype.touchY = 0;
-
-/**
- * The system variable ptouchX always contains the horizontal position of
- * one finger, relative to (0, 0) of the canvas, in the frame previous to the
- * current frame.
- *
- * @property ptouchX
- */
-p5.prototype.ptouchX = 0;
-
-/**
- * The system variable ptouchY always contains the vertical position of
- * one finger, relative to (0, 0) of the canvas, in the frame previous to the
- * current frame.
- *
- * @property ptouchY
- */
-p5.prototype.ptouchY = 0;
-
-/**
- * The system variable winTouchX always contains the horizontal position of
- * one finger, relative to (0, 0) of the window.
- *
- * @property winTouchX
- */
-p5.prototype.winTouchX = 0;
-
-/**
- * The system variable winTouchY always contains the vertical position of
- * one finger, relative to (0, 0) of the window.
- *
- * @property winTouchY
- */
-p5.prototype.winTouchY = 0;
-
-/**
- * The system variable pwinTouchX always contains the horizontal position of
- * one finger, relative to (0, 0) of the window, in the frame previous to the
- * current frame.
- *
- * @property pwinTouchX
- */
-p5.prototype.pwinTouchX = 0;
-
-/**
- * The system variable pwinTouchY always contains the vertical position of
- * one finger, relative to (0, 0) of the window, in the frame previous to the
- * current frame.
- *
- * @property pwinTouchY
- */
-p5.prototype.pwinTouchY = 0;
-
 /**
  * The system variable touches[] contains an array of the positions of all
  * current touch points, relative to (0, 0) of the canvas, and IDs identifying a
@@ -17236,66 +16919,27 @@ p5.prototype.pwinTouchY = 0;
  */
 p5.prototype.touches = [];
 
-/**
- * The boolean system variable touchIsDown is true if the screen is
- * touched and false if not.
- *
- * @property touchIsDown
- */
-p5.prototype.touchIsDown = false;
-
-p5.prototype._updateNextTouchCoords = function(e) {
-  var x = this.touchX;
-  var y = this.touchY;
-  var winX = this.winTouchX;
-  var winY = this.winTouchY;
-  if(e.type === 'mousedown' ||
-     e.type === 'mousemove' ||
-     e.type === 'mouseup' || !e.touches) {
-    x = this.mouseX;
-    y = this.mouseY;
-    winX = this.winMouseX;
-    winY = this.winMouseY;
-  } else {
-    if(this._curElement !== null) {
-      var touchInfo = getTouchInfo(this._curElement.elt, e, 0);
-      x = touchInfo.x;
-      y = touchInfo.y;
-      winX = touchInfo.winX;
-      winY = touchInfo.winY;
-
-      var touches = [];
-      for(var i = 0; i < e.touches.length; i++){
-        touches[i] = getTouchInfo(this._curElement.elt, e, i);
-      }
-      this._setProperty('touches', touches);
+p5.prototype._updateTouchCoords = function(e) {
+  if (this._curElement !== null) {
+    var touches = [];
+    for(var i = 0; i < e.touches.length; i++){
+      touches[i] = getTouchInfo(this._curElement.elt,
+        this.width, this.height, e, i);
     }
-  }
-  this._setProperty('touchX', x);
-  this._setProperty('touchY', y);
-  this._setProperty('winTouchX', winX);
-  this._setProperty('winTouchY', winY);
-  if (!this._hasTouchInteracted) {
-    // For first draw, make previous and next equal
-    this._updateTouchCoords();
-    this._setProperty('_hasTouchInteracted', true);
+    this._setProperty('touches', touches);
   }
 };
 
-p5.prototype._updateTouchCoords = function() {
-  this._setProperty('ptouchX', this.touchX);
-  this._setProperty('ptouchY', this.touchY);
-  this._setProperty('pwinTouchX', this.winTouchX);
-  this._setProperty('pwinTouchY', this.winTouchY);
-};
 
-function getTouchInfo(canvas, e, i) {
+function getTouchInfo(canvas, w, h, e, i) {
   i = i || 0;
   var rect = canvas.getBoundingClientRect();
+  var sx = canvas.scrollWidth / w;
+  var sy = canvas.scrollHeight / h;
   var touch = e.touches[i] || e.changedTouches[i];
   return {
-    x: touch.clientX - rect.left,
-    y: touch.clientY - rect.top,
+    x: (touch.clientX - rect.left) / sx,
+    y: (touch.clientY - rect.top) / sy,
     winX: touch.clientX,
     winY: touch.clientY,
     id: touch.identifier
@@ -17335,7 +16979,7 @@ function getTouchInfo(canvas, e, i) {
  * <div class="norender">
  * <code>
  * function touchStarted() {
- *   ellipse(touchX, touchY, 5, 5);
+ *   ellipse(mouseX, mouseY, 5, 5);
  *   // prevent default
  *   return false;
  * }
@@ -17349,9 +16993,8 @@ function getTouchInfo(canvas, e, i) {
 p5.prototype._ontouchstart = function(e) {
   var context = this._isGlobal ? window : this;
   var executeDefault;
-  this._updateNextTouchCoords(e);
+  this._updateTouchCoords(e);
   this._updateNextMouseCoords(e);
-  this._setProperty('touchIsDown', true);
   if(typeof context.touchStarted === 'function') {
     executeDefault = context.touchStarted(e);
     if(executeDefault === false) {
@@ -17398,7 +17041,7 @@ p5.prototype._ontouchstart = function(e) {
  * <div class="norender">
  * <code>
  * function touchMoved() {
- *   ellipse(touchX, touchY, 5, 5);
+ *   ellipse(mouseX, mouseY, 5, 5);
  *   // prevent default
  *   return false;
  * }
@@ -17413,7 +17056,7 @@ p5.prototype._ontouchstart = function(e) {
 p5.prototype._ontouchmove = function(e) {
   var context = this._isGlobal ? window : this;
   var executeDefault;
-  this._updateNextTouchCoords(e);
+  this._updateTouchCoords(e);
   this._updateNextMouseCoords(e);
   if (typeof context.touchMoved === 'function') {
     executeDefault = context.touchMoved(e);
@@ -17461,7 +17104,7 @@ p5.prototype._ontouchmove = function(e) {
  * <div class="norender">
  * <code>
  * function touchEnded() {
- *   ellipse(touchX, touchY, 5, 5);
+ *   ellipse(mouseX, mouseY, 5, 5);
  *   // prevent default
  *   return false;
  * }
@@ -17474,7 +17117,7 @@ p5.prototype._ontouchmove = function(e) {
  *
  */
 p5.prototype._ontouchend = function(e) {
-  this._updateNextTouchCoords(e);
+  this._updateTouchCoords(e);
   this._updateNextMouseCoords(e);
   if (this.touches.length === 0) {
     this._setProperty('touchIsDown', false);
@@ -18179,7 +17822,7 @@ var frames = [];
  * var pink = color(255, 102, 204);
  * img = createImage(66, 66);
  * img.loadPixels();
- * var d = pixelDensity;
+ * var d = pixelDensity();
  * var halfImage = 4 * (width * d) * (height/2 * d);
  * for (var i = 0; i < halfImage; i+=4) {
  *   img.pixels[i] = red(pink);
@@ -18568,28 +18211,12 @@ function _sAssign(sVal, iVal) {
  *
  * @method image
  * @param  {p5.Image} img    the image to display
- * @param  {Number}   [sx=0]   The X coordinate of the top left corner of the
- *                             sub-rectangle of the source image to draw into
- *                             the destination canvas.
- * @param  {Number}   [sy=0]   The Y coordinate of the top left corner of the
- *                             sub-rectangle of the source image to draw into
- *                             the destination canvas.
- * @param {Number} [sWidth=img.width] The width of the sub-rectangle of the
- *                                    source image to draw into the destination
- *                                    canvas.
- * @param {Number} [sHeight=img.height] The height of the sub-rectangle of the
- *                                      source image to draw into the
- *                                      destination context.
- * @param  {Number}   [dx=0]    The X coordinate in the destination canvas at
- *                              which to place the top-left corner of the
- *                              source image.
- * @param  {Number}   [dy=0]    The Y coordinate in the destination canvas at
- *                              which to place the top-left corner of the
- *                              source image.
- * @param  {Number}   [dWidth]  The width to draw the image in the destination
- *                              canvas. This allows scaling of the drawn image.
- * @param  {Number}   [dHeight] The height to draw the image in the destination
- *                              canvas. This allows scaling of the drawn image.
+ * @param  {Number}   x      the x-coordinate at which to place the top-left
+ *                           corner of the source image
+ * @param  {Number}   y      the y-coordinate at which to place the top-left
+ *                           corner of the source image
+ * @param  {Number}   width  the width to draw the image
+ * @param  {Number}   height the height to draw the image
  * @example
  * <div>
  * <code>
@@ -18620,62 +18247,83 @@ function _sAssign(sVal, iVal) {
  * image of the underside of a white umbrella and grided ceiling above
  *
  */
+/**
+ * @method image
+ * @param  {p5.Image} img
+ * @param  {Number}   dx     the x-coordinate in the destination canvas at
+ *                           which to place the top-left corner of the
+ *                           source image
+ * @param  {Number}   dy     the y-coordinate in the destination canvas at
+ *                           which to place the top-left corner of the
+ *                           source image
+ * @param  {Number}   dWidth the width to draw the image in the destination
+ *                           canvas
+ * @param  {Number}   dHeight the height to draw the image in the destination
+ *                            canvas
+ * @param  {Number}   sx     the x-coordinate of the top left corner of the
+ *                           sub-rectangle of the source image to draw into
+ *                           the destination canvas
+ * @param  {Number}   sy     the y-coordinate of the top left corner of the
+ *                           sub-rectangle of the source image to draw into
+ *                           the destination canvas
+ * @param {Number}    [sWidth] the width of the sub-rectangle of the
+ *                           source image to draw into the destination
+ *                           canvas
+ * @param {Number}    [sHeight] the height of the sub-rectangle of the
+ *                            source image to draw into the destination context
+ */
 p5.prototype.image =
-  function(img, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight) {
-  // Temporarily disabling until options for p5.Graphics are added.
-  // var args = new Array(arguments.length);
-  // for (var i = 0; i < args.length; ++i) {
-  //   args[i] = arguments[i];
-  // }
-  // this._validateParameters(
-  //   'image',
-  //   args,
-  //   [
-  //     ['p5.Image', 'Number', 'Number'],
-  //     ['p5.Image', 'Number', 'Number', 'Number', 'Number']
-  //   ]
-  // );
-
+  function(img, dx, dy, dWidth, dHeight, sx, sy, sWidth, sHeight) {
   // set defaults per spec: https://goo.gl/3ykfOq
-  if (arguments.length <= 5) {
-    dx = sx || 0;
-    dy = sy || 0;
-    sx = 0;
-    sy = 0;
-    if (img.elt && img.elt.videoWidth && !img.canvas) { // video no canvas
-      var actualW = img.elt.videoWidth;
-      var actualH = img.elt.videoHeight;
-      dWidth = sWidth || img.elt.width;
-      dHeight = sHeight || img.elt.width*actualH/actualW;
-      sWidth = actualW;
-      sHeight = actualH;
-    } else {
-      dWidth = sWidth || img.width;
-      dHeight = sHeight || img.height;
-      sWidth = img.width;
-      sHeight = img.height;
-    }
-  } else if (arguments.length === 9) {
-    sx = sx || 0;
-    sy = sy || 0;
-    sWidth = _sAssign(sWidth, img.width);
-    sHeight = _sAssign(sHeight, img.height);
 
-    dx = dx || 0;
-    dy = dy || 0;
-    dWidth = dWidth || img.width;
-    dHeight = dHeight || img.height;
-  } else {
-    throw 'Wrong number of arguments to image()';
+  var defW = img.width;
+  var defH = img.height;
+
+  if (img.elt && img.elt.videoWidth && !img.canvas) { // video no canvas
+    var actualW = img.elt.videoWidth;
+    var actualH = img.elt.videoHeight;
+    defW = img.elt.videoWidth;
+    defH = img.elt.width*actualH/actualW;
   }
 
-  var vals = canvas.modeAdjust(dx, dy, dWidth, dHeight,
+  var _dx = dx;
+  var _dy = dy;
+  var _dw = dWidth || defW;
+  var _dh = dHeight || defH;
+  var _sx = sx || 0;
+  var _sy = sy || 0;
+  var _sw = sWidth || defW;
+  var _sh = sHeight || defH;
+
+  _sw = _sAssign(_sw, defW);
+  _sh = _sAssign(_sh, defH);
+
+
+  // This part needs cleanup and unit tests
+  // see issues https://github.com/processing/p5.js/issues/1741
+  // and https://github.com/processing/p5.js/issues/1673
+  var pd = 1;
+
+  if (img.elt && img.elt.videoWidth && img.elt.style.width && !img.canvas) {
+    pd = img.elt.videoWidth / parseInt(img.elt.style.width, 10);
+  }
+  else if (img.elt && img.elt.width && img.elt.style.width) {
+    pd = img.elt.width / parseInt(img.elt.style.width, 10);
+  }
+
+  _sx *= pd;
+  _sy *= pd;
+  _sh *= pd;
+  _sw *= pd;
+
+  var vals = canvas.modeAdjust(_dx, _dy, _dw, _dh,
     this._renderer._imageMode);
 
   // tint the image if there is a tint
-  this._renderer.image(img, sx, sy, sWidth, sHeight, vals.x, vals.y, vals.w,
+  this._renderer.image(img, _sx, _sy, _sw, _sh, vals.x, vals.y, vals.w,
     vals.h);
 };
+
 
 /**
  * Sets the fill value for displaying images. Images can be tinted to
@@ -19012,18 +18660,19 @@ p5.Image = function(width, height){
    * (0, 0). The second four values (indices 4-7) will contain the R, G, B, A
    * values of the pixel at (1, 0). More generally, to set values for a pixel
    * at (x, y):
-   * <code><pre>var d = pixelDensity;
+   * ```javascript
+   * var d = pixelDensity;
    * for (var i = 0; i < d; i++) {
    *   for (var j = 0; j < d; j++) {
    *     // loop over
-   *     idx = 4*((y * d + j) * width * d + (x * d + i));
+   *     idx = 4 * ((y * d + j) * width * d + (x * d + i));
    *     pixels[idx] = r;
    *     pixels[idx+1] = g;
    *     pixels[idx+2] = b;
    *     pixels[idx+3] = a;
    *   }
    * }
-   * </pre></code>
+   * ```
    * <br><br>
    * Before accessing this array, the data must loaded with the loadPixels()
    * function. After the array data has been modified, the updatePixels()
@@ -19363,7 +19012,7 @@ p5.Image.prototype.copy = function () {
 
 /**
  * Masks part of an image from displaying by loading another
- * image and using it's blue channel as an alpha channel for
+ * image and using it's alpha channel as an alpha channel for
  * this image.
  *
  * @method mask
@@ -19630,7 +19279,7 @@ _dereq_('../color/p5.Color');
  * values of the pixel at (0, 0). The second four values (indices 4-7) will
  * contain the R, G, B, A values of the pixel at (1, 0). More generally, to
  * set values for a pixel at (x, y):
- * <code><pre>
+ * ```javascript
  * var d = pixelDensity;
  * for (var i = 0; i < d; i++) {
  *   for (var j = 0; j < d; j++) {
@@ -19642,8 +19291,7 @@ _dereq_('../color/p5.Color');
  *     pixels[idx+3] = a;
  *   }
  * }
- * </pre></code>
- *
+ * ```
  * <p>While the above method is complex, it is flexible enough to work with
  * any pixelDensity. Note that set() will automatically take care of
  * setting all the appropriate values in pixels[] for a given (x, y) at
@@ -19981,7 +19629,12 @@ p5.prototype.copy = function () {
  *
  */
 p5.prototype.filter = function(operation, value) {
-  Filters.apply(this.canvas, Filters[operation.toLowerCase()], value);
+  if(this.canvas !== undefined) {
+    Filters.apply(this.canvas, Filters[operation.toLowerCase()], value);
+  }
+  else {
+    Filters.apply(this.elt, Filters[operation.toLowerCase()], value);
+  }
 };
 
 /**
@@ -21076,7 +20729,7 @@ p5.prototype.httpDo = function () {
     for (var i = 1; i < arguments.length; i++) {
       var a = arguments[i];
       if (typeof a === 'string') {
-        if (a === 'GET' || a === 'POST' || a === 'PUT') {
+        if (a === 'GET' || a === 'POST' || a === 'PUT' || a === 'DELETE') {
           method = a;
         } else {
           type = a;
@@ -21635,7 +21288,11 @@ p5.prototype.downloadFile = function (href, fName, extension) {
   a.download = filename;
 
   // Firefox requires the link to be added to the DOM before click()
-  a.onclick = destroyClickedElement;
+  a.onclick = function(e) {
+    destroyClickedElement(e);
+    e.stopPropagation();
+  };
+
   a.style.display = 'none';
   document.body.appendChild(a);
 
@@ -24005,9 +23662,9 @@ p5.prototype.constrain = function(n, low, high) {
 p5.prototype.dist = function(x1, y1, z1, x2, y2, z2) {
   if (arguments.length === 4) {
     // In the case of 2d: z1 means x2 and x2 means y2
-    return Math.sqrt( (z1-x1)*(z1-x1) + (x2-y1)*(x2-y1) );
+    return hypot(z1-x1, x2-y1);
   } else if (arguments.length === 6) {
-    return Math.sqrt( (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1) + (z2-z1)*(z2-z1) );
+    return hypot(x2-x1, y2-y1, z2-z1);
   }
 };
 
@@ -24218,13 +23875,13 @@ p5.prototype.log = Math.log;
  *   var y2 = 70;
  *
  *   line(0, 0, x1, y1);
- *   print(mag(x1, y1));  // Prints "36.05551"
+ *   print(mag(x1, y1));  // Prints "36.05551275463989"
  *   line(0, 0, x2, y1);
- *   print(mag(x2, y1));  // Prints "85.44004"
+ *   print(mag(x2, y1));  // Prints "85.44003745317531"
  *   line(0, 0, x1, y2);
- *   print(mag(x1, y2));  // Prints "72.8011"
+ *   print(mag(x1, y2));  // Prints "72.80109889280519"
  *   line(0, 0, x2, y2);
- *   print(mag(x2, y2));  // Prints "106.30146"
+ *   print(mag(x2, y2));  // Prints "106.3014581273465"
  * }
  * </code></div>
  *
@@ -24233,7 +23890,7 @@ p5.prototype.log = Math.log;
  *
  */
 p5.prototype.mag = function(x, y) {
-  return Math.sqrt(x*x+y*y);
+  return hypot(x, y);
 };
 
 /**
@@ -24581,6 +24238,48 @@ p5.prototype.sq = function(n) { return n*n; };
  *
  */
 p5.prototype.sqrt = Math.sqrt;
+
+// Calculate the length of the hypotenuse of a right triangle
+// This won't under- or overflow in intermediate steps
+// https://en.wikipedia.org/wiki/Hypot
+function hypot(x, y, z) {
+  // Use the native implementation if it's available
+  if (typeof Math.hypot === 'function') {
+    return Math.hypot.apply(null, arguments);
+  }
+
+  // Otherwise use the V8 implementation
+  // https://github.com/v8/v8/blob/8cd3cf297287e581a49e487067f5cbd991b27123/src/js/math.js#L217
+  var length = arguments.length;
+  var args = [];
+  var max = 0;
+  for (var i = 0; i < length; i++) {
+    var n = arguments[i];
+    n = +n;
+    if (n === Infinity || n === -Infinity) {
+      return Infinity;
+    }
+    n = Math.abs(n);
+    if (n > max) {
+      max = n;
+    }
+    args[i] = n;
+  }
+
+  if (max === 0) {
+    max = 1;
+  }
+  var sum = 0;
+  var compensation = 0;
+  for (var j = 0; j < length; j++) {
+    var m = args[j] / max;
+    var summand = m * m - compensation;
+    var preliminary = sum + summand;
+    compensation = (preliminary - sum) - summand;
+    sum = preliminary;
+  }
+  return Math.sqrt(sum) * max;
+}
 
 module.exports = p5;
 
@@ -25113,7 +24812,7 @@ p5.Vector.prototype.copy = function () {
  * <code>
  * var v = createVector(1, 2, 3);
  * v.add(4,5,6);
- * // v's compnents are set to [5, 7, 9]
+ * // v's components are set to [5, 7, 9]
  * </code>
  * </div>
  * <div class="norender">
@@ -25164,7 +24863,7 @@ p5.Vector.prototype.add = function (x, y, z) {
  * <code>
  * var v = createVector(4, 5, 6);
  * v.sub(1, 1, 1);
- * // v's compnents are set to [3, 4, 5]
+ * // v's components are set to [3, 4, 5]
  * </code>
  * </div>
  *
@@ -25175,7 +24874,7 @@ p5.Vector.prototype.add = function (x, y, z) {
  * var v2 = createVector(1, 2, 3);
  *
  * var v3 = p5.Vector.sub(v1, v2);
- * // v3 has compnents [1, 1, 1]
+ * // v3 has components [1, 1, 1]
  * </code>
  * </div>
  */
@@ -25212,7 +24911,7 @@ p5.Vector.prototype.sub = function (x, y, z) {
  * <code>
  * var v = createVector(1, 2, 3);
  * v.mult(2);
- * // v's compnents are set to [2, 4, 6]
+ * // v's components are set to [2, 4, 6]
  * </code>
  * </div>
  *
@@ -25221,7 +24920,7 @@ p5.Vector.prototype.sub = function (x, y, z) {
  * // Static method
  * var v1 = createVector(1, 2, 3);
  * var v2 = p5.Vector.mult(v1, 2);
- * // v2 has compnents [2, 4, 6]
+ * // v2 has components [2, 4, 6]
  * </code>
  * </div>
  */
@@ -25245,7 +24944,7 @@ p5.Vector.prototype.mult = function (n) {
  * <div class="norender">
  * <code>
  * var v = createVector(6, 4, 2);
- * v.div(2); //v's compnents are set to [3, 2, 1]
+ * v.div(2); //v's components are set to [3, 2, 1]
  * </code>
  * </div>
  *
@@ -25254,7 +24953,7 @@ p5.Vector.prototype.mult = function (n) {
  * // Static method
  * var v1  = createVector(6, 4, 2);
  * var v2 = p5.Vector.div(v, 2);
- * // v2 has compnents [3, 2, 1]
+ * // v2 has components [3, 2, 1]
  * </code>
  * </div>
  */
@@ -25427,9 +25126,9 @@ p5.Vector.prototype.dist = function (v) {
  * <div class="norender">
  * <code>
  * var v = createVector(10, 20, 2);
- * // v has compnents [10.0, 20.0, 2.0]
+ * // v has components [10.0, 20.0, 2.0]
  * v.normalize();
- * // v's compnents are set to
+ * // v's components are set to
  * // [0.4454354, 0.8908708, 0.089087084]
  * </code>
  * </div>
@@ -25450,9 +25149,9 @@ p5.Vector.prototype.normalize = function () {
  * <div class="norender">
  * <code>
  * var v = createVector(10, 20, 2);
- * // v has compnents [10.0, 20.0, 2.0]
+ * // v has components [10.0, 20.0, 2.0]
  * v.limit(5);
- * // v's compnents are set to
+ * // v's components are set to
  * // [2.2271771, 4.4543543, 0.4454354]
  * </code>
  * </div>
@@ -25476,10 +25175,10 @@ p5.Vector.prototype.limit = function (max) {
  * @example
  * <div class="norender">
  * <code>
- * var v1 = createVector(10, 20, 2);
- * // v has compnents [10.0, 20.0, 2.0]
- * v1.setMag(10);
- * // v's compnents are set to [6.0, 8.0, 0.0]
+ * var v = createVector(10, 20, 2);
+ * // v has components [10.0, 20.0, 2.0]
+ * v.setMag(10);
+ * // v's components are set to [6.0, 8.0, 0.0]
  * </code>
  * </div>
  */
@@ -25530,19 +25229,19 @@ p5.Vector.prototype.heading = function () {
  * <div class="norender">
  * <code>
  * var v = createVector(10.0, 20.0);
- * // v has compnents [10.0, 20.0, 0.0]
+ * // v has components [10.0, 20.0, 0.0]
  * v.rotate(HALF_PI);
- * // v's compnents are set to [-20.0, 9.999999, 0.0]
+ * // v's components are set to [-20.0, 9.999999, 0.0]
  * </code>
  * </div>
  */
 p5.Vector.prototype.rotate = function (a) {
+  var newHeading = this.heading() + a;
   if (this.p5) {
     if (this.p5._angleMode === constants.DEGREES) {
-      a = polarGeometry.degreesToRadians(a);
+      newHeading = polarGeometry.degreesToRadians(newHeading);
     }
   }
-  var newHeading = this.heading() + a;
   var mag = this.mag();
   this.x = Math.cos(newHeading) * mag;
   this.y = Math.sin(newHeading) * mag;
@@ -26003,6 +25702,8 @@ module.exports = {
 var p5 = _dereq_('../core/core');
 
 var seeded = false;
+var previous = false;
+var y2 = 0;
 
 // Linear Congruential Generator
 // Variant of a Lehman Generator
@@ -26063,6 +25764,7 @@ var lcg = (function() {
 p5.prototype.randomSeed = function(seed) {
   lcg.setSeed(seed);
   seeded = true;
+  previous = false;
 };
 
 /**
@@ -26210,8 +25912,6 @@ p5.prototype.random = function (min, max) {
  * 100 horizontal lines from center of canvas. height & side change each render
  * black lines radiate from center of canvas. size determined each render
  */
-var y2;
-var previous = false;
 p5.prototype.randomGaussian = function(mean, sd)  {
   var y1,x1,x2,w;
   if (previous) {
@@ -26907,19 +26607,6 @@ _dereq_('../core/error_helpers');
  *
  */
 p5.prototype.text = function(str, x, y, maxWidth, maxHeight) {
-  var args = new Array(arguments.length);
-  for (var i = 0; i < args.length; ++i) {
-    args[i] = arguments[i];
-  }
-  this._validateParameters(
-    'text',
-    args,
-    [
-      ['*', 'Number', 'Number'],
-      ['*', 'Number', 'Number', 'Number', 'Number']
-    ]
-  );
-
   return (!(this._renderer._doFill || this._renderer._doStroke)) ? this :
     this._renderer.text.apply(this._renderer, arguments);
 };
@@ -27123,7 +26810,7 @@ p5.Font.prototype.textBounds = function(str, x, y, fontSize, options) {
 
         var gm = glyph.getMetrics();
 
-        if (glyph.name !== 'space') {
+        if (glyph.name !== 'space' && glyph.unicode !== 32) {
 
           xCoords.push(gX + (gm.xMax * scale));
           yCoords.push(gY + (-gm.yMin * scale));
@@ -28431,6 +28118,9 @@ var p5 = _dereq_('../core/core');
  * For example, float("1234.56") evaluates to 1234.56, but float("giraffe")
  * will return NaN.
  *
+ * When an array of values is passed in, then an array of floats of the same
+ * length is returned.
+ *
  * @method float
  * @param {String}  str float string to parse
  * @return {Number}     floating point representation of string
@@ -28446,6 +28136,9 @@ var p5 = _dereq_('../core/core');
  *
  */
 p5.prototype.float = function(str) {
+  if (str instanceof Array) {
+    return str.map(parseFloat);
+  }
   return parseFloat(str);
 };
 
@@ -28468,8 +28161,8 @@ p5.prototype.float = function(str) {
  * </code></div>
  */
 p5.prototype.int = function(n, radix) {
+  radix = radix || 10;
   if (typeof n === 'string') {
-    radix = radix || 10;
     return parseInt(n, radix);
   } else if (typeof n === 'number') {
     return n | 0;
@@ -29420,15 +29113,6 @@ var p5 = _dereq_('../core/core');
  *
  */
 p5.prototype.camera = function(x, y, z){
-  var args = new Array(arguments.length);
-  for (var i = 0; i < args.length; ++i) {
-    args[i] = arguments[i];
-  }
-  this._validateParameters(
-    'camera',
-    args,
-    ['Number', 'Number', 'Number']
-  );
   //what it manipulates is the model view matrix
   this._renderer.translate(-x, -y, -z);
 };
@@ -29449,7 +29133,9 @@ p5.prototype.camera = function(x, y, z){
  * //you will see there's a vanish point
  * function setup(){
  *   createCanvas(100, 100, WEBGL);
- *   perspective(60 / 180 * PI, width/height, 0.1, 100);
+ *   var fov = 60 / 180 * PI;
+ *   var cameraZ = (height/2.0) / tan(fov/2.0);
+ *   perspective(60 / 180 * PI, width/height, cameraZ * 0.1, cameraZ * 10);
  * }
  * function draw(){
  *  background(200);
@@ -29471,15 +29157,10 @@ p5.prototype.camera = function(x, y, z){
  *
  */
 p5.prototype.perspective = function(fovy,aspect,near,far) {
-  var args = new Array(arguments.length);
-  for (var i = 0; i < args.length; ++i) {
-    args[i] = arguments[i];
-  }
-  this._validateParameters(
-    'perspective',
-    args,
-    ['Number', 'Number', 'Number', 'Number']
-  );
+  fovy = fovy || (60 / 180 * this.PI);
+  aspect = aspect || (this.width/this.height);
+  near = near || ((this.height/2.0) / this.tan(fovy/2.0) * 0.1);
+  far = far || ((this.height/2.0) / this.tan(fovy/2.0) * 10);
   this._renderer.uPMatrix = p5.Matrix.identity();
   this._renderer.uPMatrix.perspective(fovy,aspect,near,far);
   this._renderer._curCamera = 'custom';
@@ -29502,7 +29183,7 @@ p5.prototype.perspective = function(fovy,aspect,near,far) {
  * //there's no vanish point
  * function setup(){
  *   createCanvas(100, 100, WEBGL);
- *   ortho(-width/2, width/2, height/2, -height/2, 0.1, 100);
+ *   ortho(-width/2, width/2, height/2, -height/2, 0, 500);
  * }
  * function draw(){
  *  background(200);
@@ -29524,19 +29205,12 @@ p5.prototype.perspective = function(fovy,aspect,near,far) {
  *
  */
 p5.prototype.ortho = function(left,right,bottom,top,near,far) {
-  var args = new Array(arguments.length);
-  for (var i = 0; i < args.length; ++i) {
-    args[i] = arguments[i];
-  }
-  this._validateParameters(
-    'ortho',
-    args,
-      ['Number', 'Number', 'Number', 'Number', 'Number', 'Number']
-  );
-  left /= this.width;
-  right /= this.width;
-  top /= this.height;
-  bottom /= this.height;
+  left = left || (-this.width/2);
+  right = right || (this.width/2);
+  bottom = bottom || (-this.height/2);
+  top = top || (this.height/2);
+  near = near || 0;
+  far = far || Math.max(this.width, this.height);
   this._renderer.uPMatrix = p5.Matrix.identity();
   this._renderer.uPMatrix.ortho(left,right,bottom,top,near,far);
   this._renderer._curCamera = 'custom';
@@ -29668,40 +29342,6 @@ p5.prototype.ambientLight = function(v1, v2, v3, a){
  *
  */
 p5.prototype.directionalLight = function(v1, v2, v3, a, x, y, z) {
-  // TODO(jgessner): Find an example using this and profile it.
-  // var args = new Array(arguments.length);
-  // for (var i = 0; i < args.length; ++i) {
-  //   args[i] = arguments[i];
-  // }
-  // this._validateParameters(
-  //   'directionalLight',
-  //   args,
-  //   [
-  //     //rgbaxyz
-  //     ['Number', 'Number', 'Number', 'Number', 'Number', 'Number', 'Number'],
-  //     //rgbxyz
-  //     ['Number', 'Number', 'Number', 'Number', 'Number', 'Number'],
-  //     //caxyz
-  //     ['Number', 'Number', 'Number', 'Number', 'Number'],
-  //     //cxyz
-  //     ['Number', 'Number', 'Number', 'Number'],
-  //     ['String', 'Number', 'Number', 'Number'],
-  //     ['Array', 'Number', 'Number', 'Number'],
-  //     ['Object', 'Number', 'Number', 'Number'],
-  //     //rgbavector
-  //     ['Number', 'Number', 'Number', 'Number', 'Object'],
-  //     //rgbvector
-  //     ['Number', 'Number', 'Number', 'Object'],
-  //     //cavector
-  //     ['Number', 'Number', 'Object'],
-  //     //cvector
-  //     ['Number', 'Object'],
-  //     ['String', 'Object'],
-  //     ['Array', 'Object'],
-  //     ['Object', 'Object']
-  //   ]
-  // );
-
   var gl = this._renderer.GL;
   var shaderProgram = this._renderer._getShader(
     'lightVert', 'lightTextureFrag');
@@ -29803,40 +29443,6 @@ p5.prototype.directionalLight = function(v1, v2, v3, a, x, y, z) {
  *
  */
 p5.prototype.pointLight = function(v1, v2, v3, a, x, y, z) {
-  // TODO(jgessner): Find an example using this and profile it.
-  // var args = new Array(arguments.length);
-  // for (var i = 0; i < args.length; ++i) {
-  //   args[i] = arguments[i];
-  // }
-  // this._validateParameters(
-  //   'pointLight',
-  //   arguments,
-  //   [
-  //     //rgbaxyz
-  //     ['Number', 'Number', 'Number', 'Number', 'Number', 'Number', 'Number'],
-  //     //rgbxyz
-  //     ['Number', 'Number', 'Number', 'Number', 'Number', 'Number'],
-  //     //caxyz
-  //     ['Number', 'Number', 'Number', 'Number', 'Number'],
-  //     //cxyz
-  //     ['Number', 'Number', 'Number', 'Number'],
-  //     ['String', 'Number', 'Number', 'Number'],
-  //     ['Array', 'Number', 'Number', 'Number'],
-  //     ['Object', 'Number', 'Number', 'Number'],
-  //     //rgbavector
-  //     ['Number', 'Number', 'Number', 'Number', 'Object'],
-  //     //rgbvector
-  //     ['Number', 'Number', 'Number', 'Object'],
-  //     //cavector
-  //     ['Number', 'Number', 'Object'],
-  //     //cvector
-  //     ['Number', 'Object'],
-  //     ['String', 'Object'],
-  //     ['Array', 'Object'],
-  //     ['Object', 'Object']
-  //   ]
-  // );
-
   var gl = this._renderer.GL;
   var shaderProgram = this._renderer._getShader(
     'lightVert', 'lightTextureFrag');
@@ -30146,7 +29752,7 @@ var p5 = _dereq_('../core/core');
 /**
  * Normal material for geometry. You can view all
  * possible materials in this
- * <a href="https://p5js.org/examples/examples/3D_Materials.php">example</a>.
+ * <a href="https://http://p5js.org/examples/3d-materials.html">example</a>.
  * @method normalMaterial
  * @return {p5}                the p5 object
  * @example
@@ -30175,7 +29781,7 @@ p5.prototype.normalMaterial = function(){
 
 /**
  * Texture for geometry.  You can view other possible materials in this
- * <a href="https://p5js.org/examples/examples/3D_Materials.php">example</a>.
+ * <a href="https://http://p5js.org/examples/3d-materials.html">example</a>.
  * @method texture
  * @param {p5.Image | p5.MediaElement | p5.Graphics} tex 2-dimensional graphics
  *                    to render as texture
@@ -30348,7 +29954,7 @@ p5.RendererGL.prototype._bind = function(tex, data){
 /**
  * Ambient material for geometry with a given color. You can view all
  * possible materials in this
- * <a href="https://p5js.org/examples/examples/3D_Materials.php">example</a>.
+ * <a href="https://http://p5js.org/examples/3d-materials.html">example</a>.
  * @method  ambientMaterial
  * @param  {Number|Array|String|p5.Color} v1  gray value,
  * red or hue value (depending on the current color mode),
@@ -30402,7 +30008,7 @@ p5.prototype.ambientMaterial = function(v1, v2, v3, a) {
 /**
  * Specular material for geometry with a given color. You can view all
  * possible materials in this
- * <a href="https://p5js.org/examples/examples/3D_Materials.php">example</a>.
+ * <a href="https://http://p5js.org/examples/3d-materials.html">example</a>.
  * @method specularMaterial
  * @param  {Number|Array|String|p5.Color} v1  gray value,
  * red or hue value (depending on the current color mode),
@@ -31720,7 +31326,6 @@ var shader = _dereq_('./shader');
 _dereq_('../core/p5.Renderer');
 _dereq_('./p5.Matrix');
 var uMVMatrixStack = [];
-var RESOLUTION = 1000;
 
 //@TODO should implement public method
 //to override these attributes
@@ -31805,7 +31410,9 @@ p5.RendererGL.prototype._setDefaultCamera = function(){
     var _w = this.width;
     var _h = this.height;
     this.uPMatrix = p5.Matrix.identity();
-    this.uPMatrix.perspective(60 / 180 * Math.PI, _w / _h, 0.1, 100);
+    var cameraZ = (this.height / 2) / Math.tan(Math.PI * 30 / 180);
+    this.uPMatrix.perspective(60 / 180 * Math.PI, _w / _h,
+                              cameraZ * 0.1, cameraZ * 10);
     this._curCamera = 'default';
   }
 };
@@ -31895,9 +31502,6 @@ p5.RendererGL.prototype._getLocation =
 function(shaderProgram, isImmediateMode) {
   var gl = this.GL;
   gl.useProgram(shaderProgram);
-  shaderProgram.uResolution =
-    gl.getUniformLocation(shaderProgram, 'uResolution');
-  gl.uniform1f(shaderProgram.uResolution, RESOLUTION);
 
   //projection Matrix uniform
   shaderProgram.uPMatrixUniform =
@@ -32135,11 +31739,7 @@ p5.RendererGL.prototype.clear = function() {
  * @todo implement handle for components or vector as args
  */
 p5.RendererGL.prototype.translate = function(x, y, z) {
-  //@TODO: figure out how to fit the resolution
-  x = x / RESOLUTION;
-  y = -y / RESOLUTION;
-  z = z / RESOLUTION;
-  this.uMVMatrix.translate([x,y,z]);
+  this.uMVMatrix.translate([x,-y,z]);
   return this;
 };
 
@@ -32241,7 +31841,7 @@ _dereq_('./p5.Geometry');
  *
  * function draw(){
  *   background(200);
- *   plane(200, 200);
+ *   plane(50, 50);
  * }
  * </code>
  * </div>
@@ -32410,8 +32010,6 @@ p5.prototype.sphere = function(){
   for (var i = 0; i < args.length; ++i) {
     args[i] = arguments[i];
   }
-  //@todo validate params here
-  //
   var radius = args[0] || 50;
   var detailX = typeof args[1] === 'number' ? args[1] : 24;
   var detailY = typeof args[2] === 'number' ? args[2] : 16;
@@ -32645,7 +32243,7 @@ p5.prototype.cone = function(){
 };
 
 /**
- * Draw an ellipsoid with given raduis
+ * Draw an ellipsoid with given radius
  * @method ellipsoid
  * @param  {Number} radiusx           xradius of circle
  * @param  {Number} radiusy           yradius of circle
@@ -32917,8 +32515,6 @@ p5.RendererGL.prototype.quad = function(){
   for (var i = 0; i < args.length; ++i) {
     args[i] = arguments[i];
   }
-  //@todo validate params here
-  //
   var x1 = args[0],
     y1 = args[1],
     x2 = args[2],
@@ -33009,19 +32605,19 @@ module.exports = p5;
 
 module.exports = {
   immediateVert:
-    "attribute vec3 aPosition;\nattribute vec4 aVertexColor;\n\nuniform mat4 uModelViewMatrix;\nuniform mat4 uProjectionMatrix;\nuniform float uResolution;\nuniform float uPointSize;\n\nvarying vec4 vColor;\nvoid main(void) {\n  vec4 positionVec4 = vec4(aPosition / uResolution *vec3(1.0, -1.0, 1.0), 1.0);\n  gl_Position = uProjectionMatrix * uModelViewMatrix * positionVec4;\n  vColor = aVertexColor;\n  gl_PointSize = uPointSize;\n}\n",
+    "attribute vec3 aPosition;\nattribute vec4 aVertexColor;\n\nuniform mat4 uModelViewMatrix;\nuniform mat4 uProjectionMatrix;\nuniform float uResolution;\nuniform float uPointSize;\n\nvarying vec4 vColor;\nvoid main(void) {\n  vec4 positionVec4 = vec4(aPosition * vec3(1.0, -1.0, 1.0), 1.0);\n  gl_Position = uProjectionMatrix * uModelViewMatrix * positionVec4;\n  vColor = aVertexColor;\n  gl_PointSize = uPointSize;\n}\n",
   vertexColorVert:
-    "attribute vec3 aPosition;\nattribute vec4 aVertexColor;\n\nuniform mat4 uModelViewMatrix;\nuniform mat4 uProjectionMatrix;\nuniform float uResolution;\n\nvarying vec4 vColor;\n\nvoid main(void) {\n  vec4 positionVec4 = vec4(aPosition / uResolution * vec3(1.0, -1.0, 1.0), 1.0);\n  gl_Position = uProjectionMatrix * uModelViewMatrix * positionVec4;\n  vColor = aVertexColor;\n}\n",
+    "attribute vec3 aPosition;\nattribute vec4 aVertexColor;\n\nuniform mat4 uModelViewMatrix;\nuniform mat4 uProjectionMatrix;\n\nvarying vec4 vColor;\n\nvoid main(void) {\n  vec4 positionVec4 = vec4(aPosition * vec3(1.0, -1.0, 1.0), 1.0);\n  gl_Position = uProjectionMatrix * uModelViewMatrix * positionVec4;\n  vColor = aVertexColor;\n}\n",
   vertexColorFrag:
     "precision mediump float;\nvarying vec4 vColor;\nvoid main(void) {\n  gl_FragColor = vColor;\n}",
   normalVert:
-    "attribute vec3 aPosition;\nattribute vec3 aNormal;\nattribute vec2 aTexCoord;\n\nuniform mat4 uModelViewMatrix;\nuniform mat4 uProjectionMatrix;\nuniform mat3 uNormalMatrix;\nuniform float uResolution;\n\nvarying vec3 vVertexNormal;\nvarying highp vec2 vVertTexCoord;\n\nvoid main(void) {\n  vec4 positionVec4 = vec4(aPosition / uResolution * vec3(1.0, -1.0, 1.0), 1.0);\n  gl_Position = uProjectionMatrix * uModelViewMatrix * positionVec4;\n  vVertexNormal = vec3( uNormalMatrix * aNormal );\n  vVertTexCoord = aTexCoord;\n}\n",
+    "attribute vec3 aPosition;\nattribute vec3 aNormal;\nattribute vec2 aTexCoord;\n\nuniform mat4 uModelViewMatrix;\nuniform mat4 uProjectionMatrix;\nuniform mat3 uNormalMatrix;\n\nvarying vec3 vVertexNormal;\nvarying highp vec2 vVertTexCoord;\n\nvoid main(void) {\n  vec4 positionVec4 = vec4(aPosition * vec3(1.0, -1.0, 1.0), 1.0);\n  gl_Position = uProjectionMatrix * uModelViewMatrix * positionVec4;\n  vVertexNormal = vec3( uNormalMatrix * aNormal );\n  vVertTexCoord = aTexCoord;\n}\n",
   normalFrag:
     "precision mediump float;\nvarying vec3 vVertexNormal;\nvoid main(void) {\n  gl_FragColor = vec4(vVertexNormal, 1.0);\n}",
   basicFrag:
     "precision mediump float;\nvarying vec3 vVertexNormal;\nuniform vec4 uMaterialColor;\nvoid main(void) {\n  gl_FragColor = uMaterialColor;\n}",
   lightVert:
-    "attribute vec3 aPosition;\nattribute vec3 aNormal;\nattribute vec2 aTexCoord;\n\nuniform mat4 uModelViewMatrix;\nuniform mat4 uProjectionMatrix;\nuniform mat3 uNormalMatrix;\nuniform float uResolution;\nuniform int uAmbientLightCount;\nuniform int uDirectionalLightCount;\nuniform int uPointLightCount;\n\nuniform vec3 uAmbientColor[8];\nuniform vec3 uLightingDirection[8];\nuniform vec3 uDirectionalColor[8];\nuniform vec3 uPointLightLocation[8];\nuniform vec3 uPointLightColor[8];\nuniform bool uSpecular;\n\nvarying vec3 vVertexNormal;\nvarying vec2 vVertTexCoord;\nvarying vec3 vLightWeighting;\n\nvec3 ambientLightFactor = vec3(0.0, 0.0, 0.0);\nvec3 directionalLightFactor = vec3(0.0, 0.0, 0.0);\nvec3 pointLightFactor = vec3(0.0, 0.0, 0.0);\nvec3 pointLightFactor2 = vec3(0.0, 0.0, 0.0);\n\nvoid main(void){\n\n  vec4 positionVec4 = vec4(aPosition / uResolution, 1.0);\n  gl_Position = uProjectionMatrix * uModelViewMatrix * positionVec4;\n\n  vec3 vertexNormal = vec3( uNormalMatrix * aNormal );\n  vVertexNormal = vertexNormal;\n  vVertTexCoord = aTexCoord;\n\n  vec4 mvPosition = uModelViewMatrix * vec4(aPosition / uResolution, 1.0);\n  vec3 eyeDirection = normalize(-mvPosition.xyz);\n\n  float shininess = 32.0;\n  float specularFactor = 2.0;\n  float diffuseFactor = 0.3;\n\n  for(int i = 0; i < 8; i++){\n    if(uAmbientLightCount == i) break;\n    ambientLightFactor += uAmbientColor[i];\n  }\n\n  for(int j = 0; j < 8; j++){\n    if(uDirectionalLightCount == j) break;\n    vec3 dir = uLightingDirection[j];\n    float directionalLightWeighting = max(dot(vertexNormal, dir), 0.0);\n    directionalLightFactor += uDirectionalColor[j] * directionalLightWeighting;\n  }\n\n  for(int k = 0; k < 8; k++){\n    if(uPointLightCount == k) break;\n    vec3 loc = uPointLightLocation[k];\n    //loc = loc / uResolution;\n    vec3 lightDirection = normalize(loc - mvPosition.xyz);\n\n    float directionalLightWeighting = max(dot(vertexNormal, lightDirection), 0.0);\n    pointLightFactor += uPointLightColor[k] * directionalLightWeighting;\n\n    //factor2 for specular\n    vec3 reflectionDirection = reflect(-lightDirection, vertexNormal);\n    float specularLightWeighting = pow(max(dot(reflectionDirection, eyeDirection), 0.0), shininess);\n\n    pointLightFactor2 += uPointLightColor[k] * (specularFactor * specularLightWeighting\n      +  directionalLightWeighting * diffuseFactor);\n  }\n\n  if(!uSpecular){\n    vLightWeighting =  ambientLightFactor + directionalLightFactor + pointLightFactor;\n  }else{\n    vLightWeighting = ambientLightFactor + directionalLightFactor + pointLightFactor2;\n  }\n\n}\n",
+    "attribute vec3 aPosition;\nattribute vec3 aNormal;\nattribute vec2 aTexCoord;\n\nuniform mat4 uModelViewMatrix;\nuniform mat4 uProjectionMatrix;\nuniform mat3 uNormalMatrix;\nuniform int uAmbientLightCount;\nuniform int uDirectionalLightCount;\nuniform int uPointLightCount;\n\nuniform vec3 uAmbientColor[8];\nuniform vec3 uLightingDirection[8];\nuniform vec3 uDirectionalColor[8];\nuniform vec3 uPointLightLocation[8];\nuniform vec3 uPointLightColor[8];\nuniform bool uSpecular;\n\nvarying vec3 vVertexNormal;\nvarying vec2 vVertTexCoord;\nvarying vec3 vLightWeighting;\n\nvec3 ambientLightFactor = vec3(0.0, 0.0, 0.0);\nvec3 directionalLightFactor = vec3(0.0, 0.0, 0.0);\nvec3 pointLightFactor = vec3(0.0, 0.0, 0.0);\nvec3 pointLightFactor2 = vec3(0.0, 0.0, 0.0);\n\nvoid main(void){\n\n  vec4 positionVec4 = vec4(aPosition, 1.0);\n  gl_Position = uProjectionMatrix * uModelViewMatrix * positionVec4;\n\n  vec3 vertexNormal = vec3( uNormalMatrix * aNormal );\n  vVertexNormal = vertexNormal;\n  vVertTexCoord = aTexCoord;\n\n  vec4 mvPosition = uModelViewMatrix * vec4(aPosition, 1.0);\n  vec3 eyeDirection = normalize(-mvPosition.xyz);\n\n  float shininess = 32.0;\n  float specularFactor = 2.0;\n  float diffuseFactor = 0.3;\n\n  for(int i = 0; i < 8; i++){\n    if(uAmbientLightCount == i) break;\n    ambientLightFactor += uAmbientColor[i];\n  }\n\n  for(int j = 0; j < 8; j++){\n    if(uDirectionalLightCount == j) break;\n    vec3 dir = uLightingDirection[j];\n    float directionalLightWeighting = max(dot(vertexNormal, dir), 0.0);\n    directionalLightFactor += uDirectionalColor[j] * directionalLightWeighting;\n  }\n\n  for(int k = 0; k < 8; k++){\n    if(uPointLightCount == k) break;\n    vec3 loc = uPointLightLocation[k];\n    vec3 lightDirection = normalize(loc - mvPosition.xyz);\n\n    float directionalLightWeighting = max(dot(vertexNormal, lightDirection), 0.0);\n    pointLightFactor += uPointLightColor[k] * directionalLightWeighting;\n\n    //factor2 for specular\n    vec3 reflectionDirection = reflect(-lightDirection, vertexNormal);\n    float specularLightWeighting = pow(max(dot(reflectionDirection, eyeDirection), 0.0), shininess);\n\n    pointLightFactor2 += uPointLightColor[k] * (specularFactor * specularLightWeighting\n      +  directionalLightWeighting * diffuseFactor);\n  }\n\n  if(!uSpecular){\n    vLightWeighting =  ambientLightFactor + directionalLightFactor + pointLightFactor;\n  }else{\n    vLightWeighting = ambientLightFactor + directionalLightFactor + pointLightFactor2;\n  }\n\n}\n",
   lightTextureFrag:
     "precision mediump float;\n\nuniform vec4 uMaterialColor;\nuniform sampler2D uSampler;\nuniform bool isTexture;\n\nvarying vec3 vLightWeighting;\nvarying highp vec2 vVertTexCoord;\n\nvoid main(void) {\n  if(!isTexture){\n    gl_FragColor = vec4(vec3(uMaterialColor.rgb * vLightWeighting), uMaterialColor.a);\n  }else{\n    vec4 textureColor = texture2D(uSampler, vVertTexCoord);\n    if(vLightWeighting == vec3(0., 0., 0.)){\n      gl_FragColor = textureColor;\n    }else{\n      gl_FragColor = vec4(vec3(textureColor.rgb * vLightWeighting), textureColor.a);\n    }\n  }\n}"
 };
