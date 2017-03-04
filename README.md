@@ -2704,6 +2704,8 @@ Les deux exemples Sping et Flock peuvent être intéressants et abordent le thè
 
 * p5.canvascam (ajoute des fonction des zooms qui peuvent être pénibles à coder) https://github.com/bitcraftlab/p5.canvascam
 
+* excellents tutotiels vidéos sur les maths, la physique etc : https://www.youtube.com/user/codingmath
+
 
 [^ home](#contenu)<br>
 
