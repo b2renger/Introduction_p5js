@@ -2663,6 +2663,10 @@ function draw() {
 
 https://b2renger.github.io/Introduction_p5js/05_objets_03/index.html
 
+Avec quelques petites modifications cosmétiques et l'ajout d'un gui cela peut donner ce genre de choses :
+
+https://b2renger.github.io/Introduction_p5js/05_objets_04/index.html
+
 https://www.openprocessing.org/sketch/402758
 
 Les "doubles boucles for()" peuvent aussi être très utiles lorsqu'il s'agit de créer des patterns / grilles de motifs. Je vous invite à regarder ce lien :
