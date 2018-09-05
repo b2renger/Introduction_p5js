@@ -2742,7 +2742,7 @@ Les deux exemples Sping et Flock peuvent être intéressants et abordent le thè
 
 * Utilisation de p5js en mode instanciable - avoir plusieurs canvas dans une page : https://github.com/processing/p5.js/wiki/Instantiation-Cases
 
-* P5js et responsive design : http://gildasp.fr/exp/P5js-fullscreen/
+* p5js et responsive design : http://gildasp.fr/exp/P5js-fullscreen/
 
 * p5.css3d : https://github.com/bitcraftlab/p5.css3d
 
@@ -2751,6 +2751,10 @@ Les deux exemples Sping et Flock peuvent être intéressants et abordent le thè
 * p5.canvascam (ajoute des fonction des zooms qui peuvent être pénibles à coder) https://github.com/bitcraftlab/p5.canvascam
 
 * excellents tutotiels vidéos sur les maths, la physique etc : https://www.youtube.com/user/codingmath
+
+* une superbe ressource de maths pratiques et de "presque" physique : https://kynd.github.io/p5sketches/
+
+* machine learning avec p5js ! (ou sans aussi) : https://ml5js.org/ 
 
 
 [^ home](#contenu)<br>
