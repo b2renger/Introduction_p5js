@@ -179,7 +179,7 @@ La fonction **setup()** est executée une fois à chaque chargement de la page, 
 
 ```javascript
 function setup() {
-    // créer un objet de type HTML5 canvas aux dimension de la fenêtre de notre navigateur
+    // créer un objet de type HTML5 canvas aux dimensions de la fenêtre de notre navigateur
 	createCanvas(windowWidth,windowHeight) 
 }
 ```
@@ -190,7 +190,16 @@ Une **variable** est quant à elle un espace mémoire dans le navigateur accessi
 
 La fonction **draw()** est elle une boucle infinie : le code entre les deux accolades est éxecuté en boucle par votre navigateur aussi vite que possible. Cela tranche avec le principe évenementiel du javascript, mais ici nous allons faire des applications interactives avec de l'animation.
 
-Vous pourrez trouver la référence du langage p5js ) cette adresse : http://p5js.org/reference/
+Vous pourrez trouver la référence du langage p5js à cette adresse : http://p5js.org/reference/
+
+Une autre chose qui peut-être importante est la notion de réactivité à la fenêtre dans laquelle on dessine. Par exemple un utilisateur pourrait vouloir redimensionner la fenêtre de son navigateur pendant l'éxectution de votre page web. Pour cela il existe une fonction qui va permettre de redimensionner le canvas dans lequel on dessine à la nouvelle taille de la fenêtre du navigateur.
+
+```javascript
+function windowResized() {
+    // redimensionner dynamiquement notre canvas aux dimensions de la fenêtre de notre navigateur
+	resizeCanvas(windowWidth,windowHeight) 
+}
+```
 
 
 [^ home](#contenu)<br>
