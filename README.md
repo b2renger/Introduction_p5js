@@ -94,12 +94,31 @@ Openprocessing est pratique car il permet de se passer de serveur local et perme
 
 ### Editor
 
-Il existe une application windows, osx ou linux, faisant office d'éditeur et de serveur web. Il est disponnible sur la page de téléchargement de p5js
+Il existe un éditeur en ligne officiel dédié à P5js :
 
-http://p5js.org/download/
+https://editor.p5js.org/
 
-L'éditeur fait aussi office de serveur, et permet donc de travailler avec des images, vidéos et sons, sans avoir à lancer de serveur local.
+![mode p5js](assets/online-editor.png)
 
+
+Vous pouvez créer un compte et vos sketchs seront automatiquement sauvegardés.
+
+
+### Ajout du mode p5js à l'éditeur processing
+
+Vous pouvez travailler avec p5js directement dans l'éditeur classique de processing.
+
+Afin d'ajouter le mode javascript à processing, il suffit de cliquer sur le petit menu déroulant en haut à droite de votre éditeur; celui-ci indique très probablement 'java' : si vous cliquez dessus vous pourrez cliquer sur 'ajouter un mode' 
+![mode p5js](assets/ajout-mode-scroll.png)
+
+et voire cette fenêtre apparaitre :
+![mode p5js](assets/ajout-mode.png)
+
+Vous pouvez donc maintenant cliquer sur 'p5js mode' et sur 'install'.
+
+Nous pouvons maintenant taper du code javascript dans l'éditeur de processing et l'éxecuter en cliquant sur le bouton 'play'. La différence principale est qu'au lieu de créer une fenêtre d'application notre programme va s'éxecuter dans un nouvel onglet de notre navigateur web !
+
+Processing lance alors un serveur web local qui va nous permettre d'accéder à notre page comme-ci celle ci était en ligne (cela est utile particulièrement lorsqu'on ajoute des medias à notre page web : son, images etc. - en effet pour des raisons de sécurité évidentes un navigateur n'a pas les autorisations nécessaires pour aller chercher automatiquement des fichiers sur notre disque dur).    
 
 ### Développeur web 
 
@@ -2764,6 +2783,8 @@ Les deux exemples Sping et Flock peuvent être intéressants et abordent le thè
 * une superbe ressource de maths pratiques et de "presque" physique : https://kynd.github.io/p5sketches/
 
 * machine learning avec p5js ! (ou sans aussi) : https://ml5js.org/ 
+
+* explications sur push() et pop() : http://genekogan.com/code/p5js-transformations/
 
 
 [^ home](#contenu)<br>
