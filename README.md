@@ -1,8 +1,10 @@
 # Introduction_p5js
 
-This is a french introduction to p5*js : http://p5js.org
+This is a french introduction to [p5*js](http://p5js.org)
 
-P5js est un projet issu de processing qui est un langage de programmation basé sur java orienté vers la création graphique et interactive. P5js a pour but de transposer l'esprit de processing au web et donc au langage javascript. C'est un framework simple d'accès pour les débutants avec une bonne documentation et une communauté active. 
+P5js est un projet issu de [processing](https://processing.org/) qui est un langage de programmation basé sur java orienté vers la création graphique et interactive. P5js a pour but de transposer l'esprit de processing au web et donc au langage javascript. C'est un framework simple d'accès pour les débutants avec une bonne documentation et une communauté active. 
+
+Si jamais vous ne connaissez ni processing, ni p5js, il peut-être intéressant de jeter un oeil à la vidéo d'introduction de [Hello Processing](https://hello.processing.org/) qui vous donnera un aperçu assez complet de ce qu'il est possibble de faire avec ce genre d'outils.
 
 P5js propose l'intégration dans un canvas html5 d'un maximum de fonction pour le dessin et d'animation, des possibilités d'interaction à travers différentes interfaces homme machine (clavier, souris, webcam, micro ...), ou encore avec les composants d'une page web et un support partiel mais en développement de webgl.
 
@@ -10,7 +12,7 @@ De nombreuses bibliothèques viennent offrir de nouvelles possibilité, mais il 
 
 P5js est différent de processing.js par le fait que le langage de base est le js. Lorsqu'on utilise processing.js on a générallement développé un programme avec processing et on utilise processing.js pour traduire le programme en javascript qui devient alors exécutable dans une page web. Avec p5js on code directement en javascript un langage natif pour les navigateurs.
 
-Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les différentes fonctions de dessin et la base de la programmation en js ( conditions, boucles for et fonction + prototypage d'objets javascript).
+Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les différentes fonctions de dessin et la base de la programmation en js (conditions, boucles for, variables, fonctions, utilisation de tableaux et prototypage d'objets javascript et à la toute fin des exemples couvrant les bases de la 3D avec webgl et de l'audio avec la web audio api = waa).
 
 <a name="contenu"/>
 
@@ -73,7 +75,9 @@ Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les 
 
 ## Comment travailler avec p5js
 
-Vous avez plusieurs possibilités : 
+Vous avez plusieurs possibilités : des éditeurs en ligne (si vous souhaitez que votre programme soit directement en ligne sans avoir à la publier sur un site web), un mode pour l'IDE processing (qui permet de continuer à travailler dans un environnement que vous connaissez bien si vous utilisez déjà processing), ou encore l'usage des bibliothèques js directement - comme le feront les usagers ayant déjà des connaissances en html/CSS. 
+
+Nous allons privilégier cette dernière solution, mais par soucis d'exhaustivité les différentes options sont quand même présentées.
 
 
 ### openprocessing
@@ -128,14 +132,66 @@ Pour rappel CDN signifie Content Delivery Network et permet de lier son code à 
 
 Généralement un bon éditeur de texte suffit. Parfois il pourra être utile d'utiliser un serveur local pour servir certaines pages demandant accès à des fonctions ou fichiers spécifiques (généralement des pages utilisant des images ou des sons sous formes de fichier doivent être ouvertes avec un serveur local). Il y a des nombreuses possibilités pour cela et beaucoup de documentation en ligne : personnellement j'utilise 'sinatra' un serveur en ruby, simplehttpserver pour python peut-être une alternative, ou d'autres encore via nodejs voire même des logiciels comme mamp.
 
-Une solution intéressante peut-être Brackets : http://brackets.io/
-Cet éditeur de texte est fait pour le développement web, il dispose d'une bonne ergonomie, il permet d'ouvrir des dossiers entiers et de naviguer à l'intérieur tout en éditant des fichiers, un serveur web est intégré (il suffit de cliquer sur le petit éclair en haut à droite pour ouvrir le fichier édité dans une page web) et il dispose aussi d'une intégration github.
+Une solution intéressante peut-être Brackets : http://brackets.io/, ou visual studio code : https://code.visualstudio.com/
+Ces éditeurs de texte sont faits pour le développement web, ils disposent d'une bonne ergonomie, ils permettent d'ouvrir des dossiers entiers et de naviguer à l'intérieur tout en éditant des fichiers, ils disposent d'extensions communautaires utiles (serveur web, intégration git, beautify etc.)
+
+
+### Installation et paramètrage de Visual Studio Code 
+
+Vous pourrez trouver VSCode à cette adresse : https://code.visualstudio.com/
+Après l'avoir installé et démarré vous pourrez remarquer la barre de gauche un petit icone permettant d'installer des extensions :
+
+![extension icon](assets/VSCode_extensions.png)
+
+Je vous conseille d'installer :
+- **Live Server de Ritwick Dey** (cette extension va nous permettre de servir des pages web et sera donc utile dès que nos pages auront besoin à des images ou sons stockés sur notre disque dur)
+- **p5js Snippets** (cette extension permet de fournir une forme d'autocompletion pour p5js ce qui permet d'être aidé sur la syntaxe notament)
+
+d'autres extensions qui pourraient vous être utiles :
+- **Beautify par HookyQR** (permet de ré-organiser le code selon les conventions)
+- **Markdown Preview Gihtub** par Matt Bierner (permet de visualiser localement les fichiers écrits en markdown, comme ce cours!)
+
+Une fois cela fait je vous propose d'ajouter ce cours à notre workspace de travail : 
+
+- pour cela il va d'abord vous falloir télécharger  l'ensemble des fichiers depuis github, en cliquant sur le bouton vert *Clone or download* puis en cliquant sur *Download as zip*.  : https://github.com/b2renger/Introduction_p5js
+
+![github download](assets/github_download.png)
+
+- Il vous faudra dézipper le fichier, puis dans VSCode cliquer sur *File* puis *Add folder to workspace*.
+
+Une fois cela fait, vous aurez un nouveau dossier qui contient l'ensemble des exemples ainsi que ce fichier. Chaque exemple est dans un dossier qui lui est propre. Il y a un dossier *libraries* qui contient la bibliothèque *p5js* et quelques autres bibliothèques, un dossier *assets* qui contient les différentes captures d'écran utilisées dans ce fichier, et enfin le fichier *readme.md* qui contient le texte de ce cours.
+
+Visual studio devrait alors ressembler à cela :
+
+![vscode](assets/VSCode.png)
+
+Si vous souhaitez éxecuter les programmes d'exemple sur votre ordinateur il vous suffit de cliquer sur le bouton *Go Live* en bas à droite de l'interface.
+
+![vscode go live](assets/VSCode_golive.png)
+
+Cela aura pour effet d'ouvrir un nouvel onglet dans votre navigateur par défaut ressembblant à ceci :
+
+![vscode liveserver](assets/VSCode_liveserver.png)
+
+Vous pouvez alors cliquer sur le nom de l'exemple qui vous intéresse et celui s'éxecutera dans cet onglet.
+
+Si vous souhaitez voir ce fichier vous pouvez depuis VSCode ouvrir ce fichier en double cliquant sur son nom. Puis dans la barre d'onglet, en haut à droite cliquer sur cet icône :
+
+![vscode md](assets/VSCode_mdpreview.png)
+
+Cela ouvrira dans un nouvel onglet le fichier mis en forme avec les règles établies par le format [Markdown](https://fr.wikipedia.org/wiki/Markdown).
+
+Une dernière chose ... souvenez vous bien du racourcis *Option* + *Shift* + *F* qui vous permettra de reformatter votre code.
+
+Vous pouvez bien sûr ajouter d'autres dossier à votre workspace.
+
+Je vous conseille de créer un dossier de travail dans lequel vous pourrez vous exercer à ré-écrire et modifier les exemples fournis ici. N'oubliez pas de copier dans ce nouveau dossier le dossier *libraries* et je vous conseille aussi de copier le dossier *00_empty_example*. Ce dernier est une structure de dossier avec un fichier *index.html* pointant vers les bibliothèques nécessaires et un fichier *sketch.js* prêt à être utilisé dans le cadre de l'utilisation de p5js. Cela sera décrit plus en détail un peu plus bas.
 
 
 ### Des bibliothèques
 
 P5js recense un bon nombre de bibliothèques compatibles et revendiquant le même esprit : http://p5js.org/libraries/
-Mais il peut aussi être utilisé avec n'impote quelles autres bibliothèques js.
+Mais il peut aussi être utilisé avec n'impote quelles autres bibliothèques js. Comme vous pourrez le voir dès les premiers exemples de la partie consacrée à webgl puisque nous utiliserons la la bibliothèques [quicksettings.js](https://github.com/bit101/quicksettings)
 
 
 [^ home](#contenu)<br>
@@ -150,7 +206,7 @@ Un programme p5js est destiné à être utilisé dans une page web. Généraleme
 
 ### HTML et JS
 
-Le fichier *sketch.js* est lié au fichier *index.html* par une déclaration dans ce dernier.
+Le fichier *sketch.js* est lié au fichier *index.html* par une déclaration écrite dans ce dernier.
 
 ```HTML
 <script language="javascript" type="text/javascript" src="sketch.js"></script>
@@ -160,7 +216,7 @@ Lorsqu'on ouvre le fichier *index.html* celui-ci executera alors le fichier *ske
 
 Dans le cas de nos exemples nous trouverons les bibliothèques javascripts dans un dossier **/bibliothèques** dédié : on y trouve *p5.js*, *p5.dom.js*, *p5.sound.js*.
 
-Le fichier *index.html* ressemblera donc à ceci si on utilise toutes les bibliothèques :
+Le fichier *index.html* ressemblera donc à ceci si on utilise toutes les bibliothèques et que celles-ci sont placées dans un dossier 'libraries' :
 
 ```HTML
 <html>
@@ -176,6 +232,11 @@ Le fichier *index.html* ressemblera donc à ceci si on utilise toutes les biblio
 </body>
 </html>
 ```
+
+Cette définition de *index.html* correspond donc à cette organisation de dossier sur votre disque dur :
+
+![structure](assets/structure_dossier_1.png)
+![structure](assets/structure_dossier_2.png)
 
 
 ### p5js
@@ -286,6 +347,7 @@ background(100)
 ### Les couleurs et la transparence
  
 Pour coloriser nos dessins il est possible d'utiliser les fonctions **stroke()** ou **noStroke()** et **fill()** ou **noFill()**.
+
 "stroke" signifie contour et permet donc de préciser la couleur du trait, et "fill" signifie remplissage et permet donc de préciser la couleur de remplissage de la forme. A partir du moment ou sont fonctions sont appelées, elles s'appliquent à tous les dessins qui suivent.
 
 Ce programme vous permettra d'illustrer l'utilisation de ces fonctions : https://www.openprocessing.org/sketch/181425
