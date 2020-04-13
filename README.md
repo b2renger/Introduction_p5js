@@ -14,7 +14,7 @@ P5js est différent de processing.js par le fait que le langage de base est le j
 
 Cette introduction va couvrir l'essentiel du workflow avec p5js, présenter les différentes fonctions de dessin et la base de la programmation en js (conditions, boucles for, variables, fonctions, utilisation de tableaux et prototypage d'objets javascript et à la toute fin des exemples couvrant les bases de la 3D avec webgl et de l'audio avec la web audio api = waa).
 
-Vous pourrez retrouver l'intégralité du code détaillé ici sur le repo [github](https://github.com/b2renger/Introduction_p5js).
+Vous pourrez retrouver l'intégralité du code détaillé ici sur le dépôt [github](https://github.com/b2renger/Introduction_p5js).
 
 Note cette introduction a été écrite avec ces versions de p5js :
 - p5.js v0.5.7 February 08, 2017
