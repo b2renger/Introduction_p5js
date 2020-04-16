@@ -93,7 +93,7 @@ Depuis p5js intègre directement la bibliothèque "dom", qui permet d'interagir 
 * [Références](#references)<br>
 
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 
 ## Comment travailler avec p5js
@@ -102,7 +102,7 @@ Vous avez plusieurs possibilités : des éditeurs en ligne (si vous souhaitez qu
 
 Nous allons privilégier cette dernière solution, mais par soucis d'exhaustivité les différentes options sont quand même présentées.
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 
 
@@ -121,7 +121,7 @@ Openprocessing est pratique car il permet de se passer de serveur local et perme
 ![Openprocessing](assets/openprocessing.png)
 ![Openprocessing](assets/openprocessing-2.png)
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 
 ### Editor
@@ -135,7 +135,7 @@ https://editor.p5js.org/
 
 Vous pouvez créer un compte et vos sketchs seront sauvegardés en ligne.
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 
 ### Ajout du mode p5js dans processing
@@ -154,7 +154,7 @@ Nous pouvons maintenant taper du code javascript dans l'éditeur de processing e
 
 Processing lance alors un serveur web local qui va nous permettre d'accéder à notre page comme-ci celle ci était en ligne (cela est utile particulièrement lorsqu'on ajoute des medias à notre page web : son, images etc. - en effet pour des raisons de sécurité évidentes un navigateur n'a pas les autorisations nécessaires pour aller chercher automatiquement des fichiers sur notre disque dur).    
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 
 ### Developpeur web
@@ -168,7 +168,7 @@ Généralement un bon éditeur de texte suffit. Parfois il pourra être utile d'
 Une solution intéressante peut-être Brackets : http://brackets.io/, ou visual studio code : https://code.visualstudio.com/
 Ces éditeurs de texte sont faits pour le développement web, ils disposent d'une bonne ergonomie, ils permettent d'ouvrir des dossiers entiers et de naviguer à l'intérieur tout en éditant des fichiers, ils disposent d'extensions communautaires utiles (serveur web, intégration git, beautify etc.)
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 
 ### Installation et configuration de Visual Studio Code 
@@ -222,7 +222,7 @@ Vous pouvez bien sûr ajouter d'autres dossier à votre workspace.
 
 Je vous conseille de créer un dossier de travail dans lequel vous pourrez vous exercer à ré-écrire et modifier les exemples fournis ici. N'oubliez pas de copier dans ce nouveau dossier le dossier *libraries* et je vous conseille aussi de copier le dossier *00_empty_example*. Ce dernier est une structure de dossier avec un fichier *index.html* pointant vers les bibliothèques nécessaires et un fichier *sketch.js* prêt à être utilisé dans le cadre de l'utilisation de p5js. Cela sera décrit plus en détail un peu plus bas.
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 
 ### Des bibliotheques pour ajouter de nouvelles fonctions
@@ -231,14 +231,14 @@ P5js recense un bon nombre de bibliothèques compatibles et revendiquant le mêm
 Mais il peut aussi être utilisé avec n'importe quelles autres bibliothèques js. Comme vous pourrez le voir dès les premiers exemples de la partie consacrée à webgl puisque nous utiliserons la la bibliothèques [quicksettings.js](https://github.com/bit101/quicksettings)
 
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 
 ## Les principes de base
 
 Un programme p5js est destiné à être utilisé dans une page web. Généralement en dispose d'un fichier *index.html* qui nous permet de définir notre page web et les fichiers ressources (liens vers les bibliothèques) et d'un fichier *sketch.js* qui va être notre programme écrit en javascript.
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 
 ### HTML et JS
@@ -275,7 +275,7 @@ Cette définition de *index.html* correspond donc à cette organisation de dossi
 ![structure](assets/structure_dossier_1.png)
 ![structure](assets/structure_dossier_2.png)
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 ### p5js
 
@@ -320,7 +320,7 @@ function windowResized() {
 ```
 
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 ## Dessiner avec la souris
 
@@ -371,7 +371,7 @@ background(100)
 à ce moment là : à chaque image le fond sera remplacé par un fond gris avant dessiner notre ellipse. Le résultat sera alors un rond qui suivra la position de la souris.
 
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 
 ### Les couleurs et la transparence
@@ -410,7 +410,7 @@ function draw() {
  ```
 
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 ### Utilisation de variables - simuler un pinceau
 
@@ -462,7 +462,7 @@ https://www.openprocessing.org/sketch/388464
 
 https://b2renger.github.io/Introduction_p5js/01_dessiner_01/index.html
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 
 ### Construire des symetries
@@ -545,7 +545,7 @@ https://www.openprocessing.org/sketch/388511
 
 https://b2renger.github.io/Introduction_p5js/01_dessiner_03/index.html
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 
 ### Fonctions
@@ -562,7 +562,7 @@ Pour utiliser cette fonction, il nous suffit alors cette fois dans le **draw()**
 ```javascript
 draw_square(25,25,50) // dessiner un carré au coordonnées (25,25) dont le côté fait 50 pixels.
 ```
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 
 ### Transformation de l'espace - effet spirographe
@@ -697,13 +697,13 @@ https://www.openprocessing.org/sketch/388514
 https://b2renger.github.io/Introduction_p5js/01_dessiner_04/index.html
 
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 ### Conditions et coordonnees polaires
 
 Dans cet exemple nous allons simuler l'effet d'un bombe de peinture. Nous allons utiliser : le mode de couleur HSB, une fonction spécifique utilisant des coordonées polaire pour notre dessin, et des conditions **if** pour actionner le dessin uniquement lorsque la souris est clickée et permettre de choisir la teinte en appuyant sur des touches du clavier.
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 #### Conditions if()
 
@@ -753,7 +753,7 @@ Il ne nous reste plus qu'à informer notre utilisateur de son choix de couleur e
   rect(0, windowHeight -25 ,25,25)
  ```
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 #### Coordonnees polaires
 
@@ -823,7 +823,7 @@ Le problème est que nous ne pouvons pas utiliser cette valeur pour dessiner not
 
 Ce petit programme vous permettra de mieux vous rendre compte de cela et pourra faire office de pense-bête : https://www.openprocessing.org/sketch/151087
 
- [^ home](#contenu)<br>
+ [^ home](#Contenu)<br>
 
 
 #### Boucles for()
@@ -922,7 +922,7 @@ https://www.openprocessing.org/sketch/389230
 
 https://b2renger.github.io/Introduction_p5js/01_dessiner_06/index.html
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 
 
@@ -935,7 +935,7 @@ Aujourd'hui la bibliothèque DOM est inclue directement dans p5js. Il n'est plus
 - p5.sound.js v0.3.2 2016-11-01
 
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 ### Installation de p5.dom.js
 
@@ -952,7 +952,7 @@ Tout d'abord, il faut ajouter la bibliothèque à notre page en ajoutant la lign
 <script language="javascript" type="text/javascript" src="../libraries/p5.dom.js"></script>
 ```
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 ### Modifier et ajouter des objets html5 avec du code javascript
 
@@ -977,7 +977,7 @@ Nous créeons donc deux éléments un slider et un *paragraphe* faisant office d
 ```javascript
 fill(s_hue.value(),100,100,100)
 ```
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 ### Styliser avec du CSS
 
@@ -1095,7 +1095,7 @@ https://www.openprocessing.org/sketch/389277
 https://b2renger.github.io/Introduction_p5js/02_dom_01/index.html
 
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 L'exemple suivant *02_dom_02*, applique ces principes à notre outil de dessin symétrique. On utilise cette fois la fonction **createInput()** pour créer un champ de texte dans lequel l'utilisateur peut rentrer la valeur qu'il souhaite : nous pourrons donc choisir le nombre de branches de manière interactive.
 
@@ -1171,7 +1171,7 @@ https://b2renger.github.io/Introduction_p5js/02_dom_02/index.html
 https://www.openprocessing.org/sketch/390491
 
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 
 ### Video
@@ -1217,7 +1217,7 @@ image(capture,-320,0,320,240)
 l'abscisse de notre point d'ancrage pour l'image sera donc * -320 x -1 = 320 *
 
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 ### Transformations de video
 
@@ -1319,7 +1319,7 @@ et tout particulièrement le checkbox miror qui restitue un flux vidéo par une 
 Vous pouvez aussi consulter ce [cours](https://github.com/b2renger/p5js_image_alteration/blob/master/README.md) sur la transformation d'images à travers l'analyse de leurs pixels :
 
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 ### Mode instance
 
@@ -1504,7 +1504,7 @@ https://b2renger.github.io/Introduction_p5js/02_dom_05/index.html
 
 
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 
 ### Exemple de site web
@@ -1524,7 +1524,7 @@ Pour entrer un peu dans le code, il sera nécessaire d'avoir quelques bases sur 
 Attention le code n'est pas exemplaire : il s'agit ici plus d'une expérimentation. A priori le choix d'utiliser le csv n'est pas idéal, car il empêche d'utiliser des virgules dans le texte des paragraphes (la virgule étant le séparateur du format CSV), il serait préférable d'utiliser le format JSON. Un autre défaut est que le site n'est pas très réactif : les éléments sont parsés du format json et disposé selon un grille fixe, il serait mieux de mapper les éléments vers des div qui pourraient alors être stylisées, déplacées en fonction de la taille de la fenêtre du client etc.
 
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 
 ## Websocket et SocketIO
@@ -1534,7 +1534,7 @@ Dans le cadre de cette découverte de p5js nous allons effleurer le sujet des we
 Un excellent exemple est l'application de musique collaborative **Plink** :  http://dinahmoelabs.com/#plink
 
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 ### SocketIO
 
@@ -1619,7 +1619,7 @@ function setup() {
  ```
  
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 ### Format JSON soit JavaScript Object Notation
 
@@ -1688,7 +1688,7 @@ function draw_params(data){
 ```
 
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 ### Envoyer et Recevoir des informations
 
@@ -1734,7 +1734,7 @@ Et voilà ! : https://www.openprocessing.org/sketch/390497
 Voici l'adaptation du sketch de "spray-paint" : https://www.openprocessing.org/sketch/390650
 
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 ### Node et serveur local
 
@@ -1762,7 +1762,7 @@ Pour faire résumer et faire fonctionner les exemples fournis, il faut :
 		http://localhost:8080/
 		```
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 ## Quicksettings.js et les fonctions  callback
 
@@ -1875,14 +1875,14 @@ function eltChecked(val) { // val correspond à la valeur de l'élément
 ```
 
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 ## Animer un mouvement
 
 Il existe de nombreuses façons d'animer des déplacements d'objet, nous allons ici voir différentes modes de déplacements relativement simples. Pour réaliser des choses plus complexes il est souvent intéressant de se tourner vers de implémentations de lois physiques et donc de manipuler des vitesses, des accélérations, des forces etc. Vous trouverez des liens dans les ressources notamment avec le livre et les cours de Daniel Shiffman autour du thème [Nature of Code](http://natureofcode.com/book/chapter-2-forces/).
 
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 ### Balle dans une boite
 
@@ -1976,7 +1976,7 @@ https://b2renger.github.io/Introduction_p5js/04_animation_01/index.html
 https://www.openprocessing.org/sketch/401282
 
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 ### Suivre la souris
 
@@ -2065,7 +2065,7 @@ Il existe de nombreuses bibliothèques d'animation, [tween.js](https://github.co
 Le sujet peut aussi être codé en css et s'appliquer à des éléments html : https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Animations/Using_CSS_animations
 
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 ### Suivre la souris avec des forces
 
@@ -2311,7 +2311,7 @@ ce dernier raccourcis est utile lorsque les conséquences de la conditions peuve
 
 
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 ### Croissance de Tentacules
 
@@ -2393,7 +2393,7 @@ Vous pouvez aussi vous référer à ce [cours](https://github.com/b2renger/p5js-
 Les exemples sont codés à l'aide de [processing](https://processing.org/) qui a sensiblement la même syntaxe que p5js (p5js étant la petite soeur de processing) mais processing utilise le langage java qui est au demeurant très différents de javascript.
 
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 
 ## Objets en js
@@ -2407,7 +2407,7 @@ Pour résumer et faire une analogie concrète une classe c'est la définition d'
 L'utilisateur peut alors récupérer sa table en kit la monter, et l'utiliser : il peut alors poser des livres, ordinateurs, téléphones sur le plateau, régler la hauteur des pieds, et la déplacer en la faisant rouler. Définir ce à quoi la table ressemble et ce qu'on va pouvoir faire avec correspond à l'écriture d'une classe.
 
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 ### Objets et instances
 
@@ -2575,7 +2575,7 @@ Notez que dans l'exemple de code fournit, nous initialisons la vitesse par une v
 Dans ces [exemples sur le théme de la typographie](https://b2renger.github.io/p5js_typo/) on passe généralement un point d'ancrage comme argument à chaque instance d'objet, c'est à dire les coordonnées où doit être dessinée une forme si rien ne vient perturber cela. (note ces exemples sont encore un peu trop avancés à ce stade. Avant des les aborder je vous conseille de finir le prochain paragraphe).
 
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 
 ### Des tableaux remplis avec des objets
@@ -2673,7 +2673,7 @@ Il ne vous reste plus qu'à pratiquer, expérimenter pour gagner de l'expérienc
 
 Il pourrait être d'ailleurs assez intéressant comme exercice pratique d'essayer d'adapter quelques uns des exemples vus dans le chapitre d'animation en classes (et probablement celui utilisant des forces...)
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 ### Pour aller un peu plus loin
 
@@ -2761,7 +2761,7 @@ https://www.openprocessing.org/sketch/387567
 https://www.openprocessing.org/sketch/387602
 
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 
 ## Webgl pour la 3D
@@ -2775,7 +2775,7 @@ Ce chapitre n'est pour l'instant pas complété en version texte, mais le code e
 * Algorithme de "flocking" - [**DEMO**](https://b2renger.github.io/Introduction_p5js/06_webgl_05/index.html) - [**CODE**](https://github.com/b2renger/Introduction_p5js/tree/master/06_webgl_05)<br> 
 
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 ## Audio et p5.sound
 Ce chapitre n'est pour l'instant pas complété en version texte, mais le code est disponible est très largement commenté en français; vous pouvez donc d'ores et déjà vous y référer. Si vous avez lu et compris l'ensemble du texte ci-dessus (déjà un grand merci et toutes mes félicitations !) vous ne devriez pas avoir trop de souci à comprendre ces nouveaux exemples.
@@ -2797,7 +2797,7 @@ Les deux exemples Sping et Flock peuvent être intéressants et abordent le thè
 
 
 
-[**home**](#contenu)<br>r>
+[**home**](#Contenu)<br>r>
 
 
 
@@ -2840,7 +2840,7 @@ Les deux exemples Sping et Flock peuvent être intéressants et abordent le thè
 * explications sur push() et pop() : http://genekogan.com/code/p5js-transformations/
 
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 
 ## References
@@ -2883,6 +2883,6 @@ Des projets exclusivement web :
 * Loops : projet de musique collaborative nantais : http://solam.co/loops/
 
 
-[**home**](#contenu)<br>
+[**home**](#Contenu)<br>
 
 
