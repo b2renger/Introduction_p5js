@@ -43,7 +43,7 @@ Depuis p5js intègre directement la bibliothèque "dom", qui permet d'interagir 
 	*	[Utilisation de variables](#Utilisation-de-variables---simuler-un-pinceau) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/01_dessiner_01/index.html)<br>
 	*	[Construire des symetriques](#Construire-des-symetries) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/01_dessiner_02/index.html)<br>
 	*	[Creer des fonctions javascript](#Fonctions)<br>
-	*	[Utiliser les transformations de l'espace : effet spirographe](#Transformation-de-l'espace---effet-spirographe) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/01_dessiner_04/index.html)<br>
+	*	[Utiliser les transformations de l'espace : effet spirographe](#Transformation-du-repere---effet-spirographe) - [**DEMO**](https://b2renger.github.io/Introduction_p5js/01_dessiner_04/index.html)<br>
 	*	[Conditions, boucles et coordonnées polaires : effet "spray-can"](#Conditions-et-coordonnees-polaires) - [**DEMO 1**](https://b2renger.github.io/Introduction_p5js/01_dessiner_05/index.html) - [**DEMO 2**](https://b2renger.github.io/Introduction_p5js/01_dessiner_06/index.html)<br>
 		*	[Conditions : "if"](#Conditions-if())<br>
 		*	[Coordonnées polaires](#Coordonnees-polaires)<br>
@@ -565,7 +565,7 @@ draw_square(25,25,50) // dessiner un carré au coordonnées (25,25) dont le côt
 [**home**](#Contenu)<br>
 
 
-### Transformation de l'espace - effet spirographe
+### Transformation du repere - effet spirographe
 
 Pour l'instant nous avons vu que le repère dans lequel on exprimait les coordonnées dans était fixe. Mais il est possible de le déplacer et de le faire tourner. Cela peu notament être utile pour faire tourner un carré autour de son centre.
 
