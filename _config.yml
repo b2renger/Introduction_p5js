@@ -11,6 +11,6 @@ collections:
 description: This is a french introduction to p5*js
 google_analytics: 
 show_downloads: true
-theme: jekyll-theme-hacker
+theme: jekyll-theme-tactile
 gems:
 - jekyll-mentions
